@@ -55,6 +55,13 @@
     display: flex;
   }
 
+  /* Force explicit 50/50 column widths in case grid classes are overridden */
+  .event-detail .event-image-col,
+  .event-detail .col-md-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+
   /* Make the right column content stretch vertically */
   .event-detail .col-md-6 > .p-4,
   .event-detail .col-md-6 > .p-md-5 {
@@ -62,6 +69,17 @@
     display: flex;
     flex-direction: column;
   }
+}
+
+/* Stronger rules to ensure images fill their column */
+.event-image-col img,
+.event-image-col picture,
+.event-image-col .media {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
 }
 
 /* Title & meta tweaks */
