@@ -1,0 +1,83 @@
+/* Modern card styles inspired by online.me */
+.card-wrapper {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.content-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+}
+
+.content-card-title a {
+    color: #2d3436;
+    transition: color 0.2s ease;
+}
+
+.content-card-title a:hover {
+    color: #0984e3;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.75rem;
+}
+
+.btn-link {
+    color: #0984e3;
+    font-weight: 500;
+    padding: 0;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.btn-link:hover {
+    color: #0062cc;
+    text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 180px;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .content-card-title {
+        font-size: 1.1rem;
+    }
+}
