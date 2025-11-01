@@ -130,7 +130,7 @@ body {
 .content-card-title a:hover::after {
     width: 100%;
 }
-}
+
 
 .card-body {
     padding: 1.5rem;
