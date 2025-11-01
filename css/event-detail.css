@@ -119,3 +119,26 @@
   padding-left: 1rem;
   padding-right: 1rem;
 }
+
+/* Make the page title block match the event H1 styling so the two titles look identical */
+#block-kaliyattam-subtheme-page-title h1,
+.block-page-title-block h1 {
+  font-size: 2.25rem; /* similar to Bootstrap display-5 */
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0.5rem 0 1rem 0;
+  color: var(--kaliyattam-text);
+}
+
+@media (min-width: 768px) {
+  #block-kaliyattam-subtheme-page-title h1,
+  .block-page-title-block h1 {
+    font-size: 2.6rem;
+  }
+}
+
+/* Hide the page-title block on event node pages so only the themed H1 remains */
+body.node--type-event #block-kaliyattam-subtheme-page-title,
+body.node--type-event .block-page-title-block {
+  display: none !important;
+}
