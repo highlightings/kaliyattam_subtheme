@@ -17,19 +17,52 @@
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin: 2rem 0;
+    margin: 2rem auto;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: block;
 }
 
 /* Image container */
 .field--name-field-media-image {
-    margin: 2rem -1rem;
+    margin: 2rem auto;
+    text-align: center;
+    max-width: 100%;
+    clear: both;
+}
+
+.align-left {
+    float: none;
+    margin: 2rem auto;
+}
+
+.align-right {
+    float: none;
+    margin: 2rem auto;
 }
 
 @media (min-width: 768px) {
     .field--name-field-media-image {
-        margin: 2rem 0;
+        margin: 2rem auto;
     }
+    
+    .align-left {
+        float: left;
+        margin: 1rem 3rem 2rem 0;
+        max-width: 50%;
+    }
+    
+    .align-right {
+        float: right;
+        margin: 1rem 0 2rem 3rem;
+        max-width: 50%;
+    }
+}
+
+/* Clear floats */
+.node__content::after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 /* Image caption and credit */
@@ -37,8 +70,9 @@
     font-size: 0.9rem;
     color: #666;
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     font-style: italic;
+    padding: 0 1rem;
 }
 
 /* Responsive image container */
@@ -47,6 +81,18 @@
     max-width: 100%;
     overflow: hidden;
     border-radius: 8px;
+    display: inline-block; /* This helps with alignment */
+}
+
+/* Add spacing between image and surrounding content */
+.field--name-field-media-image + p,
+p + .field--name-field-media-image {
+    margin-top: 2rem;
+}
+
+/* Handle nested content near images */
+.field--name-field-media-image + * {
+    overflow: hidden; /* Creates new block formatting context */
 }
 
 /* Image aspect ratio container */
@@ -77,10 +123,20 @@
     margin-top: 2.5rem;
     margin-bottom: 1.5rem;
     color: var(--kaliyattam-primary);
+    clear: both; /* Ensure headings clear floated images */
 }
 
 .node--type-article p {
     margin-bottom: 1.5rem;
+    line-height: 1.8;
+    overflow-wrap: break-word;
+}
+
+/* Ensure proper text wrapping around images */
+.node--type-article p:has(+ .field--name-field-media-image),
+.node--type-article .field--name-field-media-image + p {
+    margin-top: 0;
+    display: flow-root;
 }
 
 /* Article meta information */
