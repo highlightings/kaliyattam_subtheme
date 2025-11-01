@@ -27,8 +27,6 @@
         {% if content.field_event_image is not empty %}
             <a href="{{ url }}" class="text-decoration-none">
                 <div class="event-cover-image rounded-top" style="background-image:url('{{ content.field_event_image.0 }}');">
-                    {# NOTE: You need to configure the 'Image' field to output the URL only, or rely on a pre-processed image style. #}
-                    {# For simplicity, this assumes the image field itself renders an <img>, but it's often better to wrap it in a link. #}
                     {{ content.field_event_image }}
                 </div>
             </a>

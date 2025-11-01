@@ -7,3 +7,4 @@ global-styling:
       css/article.css: {}
 #      css/grid-layouts.css: {}
       css/event-detail.css: {}
+      css/custom.css: {}

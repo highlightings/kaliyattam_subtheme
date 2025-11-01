@@ -1,0 +1,11 @@
+
+.view-header .btn-primary {
+  color: var(--bs-white) !important;
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  margin-bottom: 2rem;
+ 
+  /*color: var(--bs-link-color-rgb) !important;*/
+  /* or use a variable from your theme */
+  /* color: var(--bs-body-color) !important; */
+}
