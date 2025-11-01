@@ -1,0 +1,97 @@
+{#
+/**
+ * @file
+ * Theme implementation to display a node (Event content type).
+ *
+ * Available variables:
+ * - node: The node entity.
+ * - content: All node items for display.
+ * - label: The title of the node.
+ * - author_name: The username or display name of the node author.
+ * - date: Formatted date of node creation.
+ * - view_mode: View mode, e.g., 'full', 'teaser'.
+ * - url: Direct URL of the current node.
+ *
+ * Custom fields for an Event (assumed based on standard Event recipes):
+ * - content.field_event_date (The date/time of the event)
+ * - content.field_event_location (Location field)
+ * - content.field_event_image (The cover image)
+ */
+#}
+
+{% set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'shadow-lg',
+  'bg-white',
+  'rounded-3',
+  'mb-5'
+] %}
+
+<article{{ attributes.addClass(classes) }}>
+
+    <div class="container-fluid">
+        <div class="row g-0 align-items-stretch event-detail">
+
+            {# Left: Cover image (stacked on mobile, left on md+) #}
+            <div class="col-12 col-md-6 event-image-col">
+                {% if content.field_event_image is not empty %}
+                    <div class="event-image-container h-100 w-100">
+                        {{ content.field_event_image.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            {# Right: Content column #}
+            <div class="col-12 col-md-6">
+                <div class="p-4 p-md-5 h-100 d-flex flex-column">
+
+                    {# Title and Meta #}
+                    <div class="mb-3">
+                        <h1 class="display-5 fw-bold mb-1">{{ label }}</h1>
+                        <div class="text-primary fw-bold fs-5 mb-2">
+                            {% if content.field_event_date is not empty %}
+                                <i class="bi bi-calendar-event me-2"></i>
+                                {{ content.field_event_date }}
+                            {% endif %}
+                        </div>
+                        <div class="text-muted small mb-3">
+                            {% if content.field_event_location is not empty %}
+                                <i class="bi bi-geo-alt-fill me-2"></i>
+                                {{ content.field_event_location }}
+                            {% endif %}
+                        </div>
+                        <div class="d-flex gap-2 mb-3">
+                            <a href="#" class="btn btn-outline-secondary rounded-pill"><i class="bi bi-share"></i> Share</a>
+                            <a href="#" class="btn btn-success rounded-pill"><i class="bi bi-ticket-fill"></i> Get Tickets</a>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    {# Body / Description - take remaining space #}
+                    <div class="event-body flex-grow-1">
+                        <h2 class="h4 mb-3 text-secondary">Event Details</h2>
+                        {{ content|without('field_event_image', 'field_event_date', 'field_event_location') }}
+                    </div>
+
+                    {# Organizer card at bottom #}
+                    <div class="mt-4">
+                        <div class="card p-3 border-start border-4 border-info">
+                            <h3 class="h6 card-title text-info mb-3">Organized By</h3>
+                            <p class="mb-1 fw-semibold">{{ author_name }}</p>
+                            <p class="small text-muted mb-0">Posted on {{ date }}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</article>

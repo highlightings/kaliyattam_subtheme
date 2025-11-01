@@ -1,0 +1,103 @@
+/* Event detail layout styles inspired by Devpost layout
+   - Large cover image on left (desktop) and stacked on mobile
+   - Content on right with date/time, meta, description and organizer card
+*/
+.event-detail {
+  --event-image-height: 520px;
+}
+
+.event-image-col {
+  background: #f5f5f5;
+}
+
+
+/* Make image column a flex container so images fill the column height */
+.event-image-col {
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+}
+
+.event-image-container,
+.event-image-col picture,
+.event-image-col .media,
+.event-image-col img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Ensure the picture/media wrapper fills available space */
+.event-image-container {
+  flex: 1 1 auto;
+  min-height: var(--event-image-height);
+  display: block;
+}
+
+/* Make image full-height of column on larger screens */
+@media (min-width: 768px) {
+  /* On desktop make row stretch to match heights and use the variable height as minimum */
+  .event-detail {
+    align-items: stretch;
+  }
+
+  .event-detail .event-image-container,
+  .event-detail .event-image-col picture,
+  .event-detail .event-image-col .media {
+    min-height: var(--event-image-height);
+  }
+
+  /* Ensure the columns match height */
+  .event-detail .col-md-6 {
+    min-height: var(--event-image-height);
+    display: flex;
+  }
+
+  /* Make the right column content stretch vertically */
+  .event-detail .col-md-6 > .p-4,
+  .event-detail .col-md-6 > .p-md-5 {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Title & meta tweaks */
+.event-detail .display-5 {
+  line-height: 1.05;
+}
+
+.event-detail .text-primary {
+  color: var(--kaliyattam-primary) !important;
+}
+
+.event-body {
+  color: var(--kaliyattam-text);
+}
+
+/* Organizer card stick to bottom on taller content */
+.event-detail .card.border-start {
+  width: 100%;
+}
+
+/* Responsive image for smaller screens */
+@media (max-width: 767px) {
+  .event-image-container,
+  .event-image-col picture,
+  .event-image-col .media,
+  .event-image-col img {
+    height: 320px;
+  }
+}
+
+/* Small polish */
+.event-detail hr {
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.event-detail .btn.rounded-pill {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
