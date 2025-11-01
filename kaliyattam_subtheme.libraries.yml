@@ -5,3 +5,4 @@ global-styling:
       css/modern-cards.css: {}
       css/navbar.css: {}
       css/article.css: {}
+      css/project-grid.css: {}

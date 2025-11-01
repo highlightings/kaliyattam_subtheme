@@ -66,15 +66,26 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.card-img-wrapper {
+.card .field--name-field-featured-image {
     position: relative;
     overflow: hidden;
+    height: 220px; /* Set fixed height for wrapper */
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-.card-img-top {
-    height: 220px;
+.card .field--name-field-featured-image img {
+    height: 100%;
+    width: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform 0.5s ease;
+}
+
+/* Maintain hover effect */
+.card:hover .field--name-field-featured-image img {
+    transform: scale(1.08);
 }
 
 .card:hover .card-img-top {

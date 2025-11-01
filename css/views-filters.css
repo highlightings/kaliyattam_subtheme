@@ -1,0 +1,307 @@
+/* Views exposed filters — inline, responsive, Kaliyattam-themed */
+.views-exposed-form,
+.view-filters .form--inline,
+.views-exposed-widgets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  margin: 0 0 1.25rem 0;
+  padding: 0.5rem;
+  background: rgba(137,0,0,0.03);
+  border-radius: 10px;
+}
+
+.views-exposed-form .views-exposed-widget,
+.view-filters .form--inline > div,
+.views-exposed-widgets .views-exposed-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.views-exposed-form .views-exposed-widget label,
+.views-exposed-form .views-exposed-widget .form-item label {
+  margin: 0 0.25rem 0 0;
+  font-weight: 600;
+  color: var(--kaliyattam-text, #333);
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.views-exposed-form .views-exposed-widget .form-item input[type="text"],
+.views-exposed-form .views-exposed-widget .form-item select,
+.views-exposed-form .views-exposed-widget .form-item input[type="search"] {
+  min-width: 180px;
+  max-width: 320px;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03) inset;
+}
+
+/* Smaller inputs (like limit, offset) */
+.views-exposed-form .views-exposed-widget .form-item .form-control--small {
+  min-width: 80px;
+  max-width: 120px;
+}
+
+/* Submit / Reset buttons styling */
+.views-exposed-form .form-actions,
+.view-filters .form-actions {
+  margin-left: auto; /* push actions to the right when space permits */
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.views-exposed-form .form-actions .button,
+.view-filters .form-actions .button,
+.views-exposed-form .form-actions input[type="submit"] {
+  background: var(--kaliyattam-primary, #890000);
+  color: #fff;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(137,0,0,0.12);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.views-exposed-form .form-actions .button.secondary,
+.views-exposed-form .form-actions button.secondary,
+.view-filters .form-actions .button.secondary {
+  background: transparent;
+  color: var(--kaliyattam-primary, #890000);
+  border: 1px solid rgba(137,0,0,0.12);
+}
+
+.views-exposed-form .form-actions .button:hover,
+.views-exposed-form .form-actions input[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(137,0,0,0.14);
+}
+
+/* Make sure long labels or controls wrap nicely */
+.views-exposed-form .views-exposed-widget,
+.view-filters .form--inline > div {
+  flex: 0 1 auto;
+}
+
+/* Responsive: on very small screens stack controls */
+@media (max-width: 640px) {
+  .views-exposed-form,
+  .view-filters .form--inline {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .views-exposed-form .form-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .views-exposed-form .views-exposed-widget,
+  .view-filters .form--inline > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .views-exposed-form .views-exposed-widget label {
+    margin-right: 0.5rem;
+  }
+
+  .views-exposed-form .views-exposed-widget .form-item input[type="text"],
+  .views-exposed-form .views-exposed-widget .form-item select {
+    min-width: 0;
+    max-width: 100%;
+    flex: 1 1 auto;
+  }
+}
+
+/* Tweak for Views using '.view-filters' wrapper specifically */
+.view-filters .form--inline {
+  align-items: center;
+}
+
+/* Make checkbox / radio option lists inline */
+.views-exposed-form .form-type-checkboxes .form-item,
+.views-exposed-form .form-type-radios .form-item,
+.view-filters .form--inline .form-type-checkboxes .form-item,
+.view-filters .form--inline .form-type-radios .form-item,
+.views-exposed-form .form-item--checkbox,
+.form-checkboxes .form-item,
+.views-exposed-form .form-type-checkbox .form-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 1rem;
+  gap: 0.4rem;
+}
+
+.views-exposed-form .form-type-checkboxes .form-item label,
+.views-exposed-form .form-type-radios .form-item label,
+.view-filters .form--inline .form-item label {
+  margin: 0;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Better Exposed Filters (BEF) checkbox lists */
+.bef-checkboxes,
+.views-exposed-form .bef-checkboxes,
+.view-filters .bef-checkboxes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.bef-checkboxes li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bef-checkboxes input[type="checkbox"],
+.bef-checkboxes input[type="radio"] {
+  margin: 0;
+  transform: translateY(1px);
+}
+
+/* Small screens: stack checkbox groups */
+@media (max-width: 640px) {
+  .views-exposed-form .form-type-checkboxes .form-item,
+  .views-exposed-form .form-type-radios .form-item,
+  .bef-checkboxes li {
+    display: flex;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .views-exposed-form .views-exposed-widget,
+  .view-filters .form--inline > div {
+    width: 100%;
+  }
+}
+
+/* Stronger rules to handle different markup outputs (fieldset/div/ul/li) */
+form.views-exposed-form.bef-exposed-form .form-type-checkboxes,
+form.views-exposed-form.bef-exposed-form .form-checkboxes,
+.views-exposed-form .form-type-checkboxes,
+.view-filters .form-type-checkboxes,
+.view-filters .form-checkboxes,
+.view-filters .bef-checkboxes {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fieldset outputs: div.form-item or ul > li */
+form.views-exposed-form .form-type-checkboxes fieldset > div,
+form.views-exposed-form .form-type-checkboxes fieldset > ul > li,
+.view-filters .form-type-checkboxes fieldset > div,
+.view-filters .form-type-checkboxes fieldset > ul > li,
+.view-filters .form-checkboxes .form-item,
+.view-filters .form-checkboxes li {
+  display: inline-flex !important;
+  align-items: center;
+  margin: 0 1.25rem 0 0;
+  gap: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Ensure checkbox inputs and labels align nicely */
+.view-filters .form-item input[type="checkbox"],
+.view-filters .form-item input[type="radio"] {
+  margin: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.view-filters .form-item label {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--kaliyattam-text, #333);
+  cursor: pointer;
+}
+
+/* Make the filter header label sit above the inline controls but aligned */
+.views-exposed-form .views-exposed-widget legend,
+.views-exposed-form .views-exposed-widget .form-item--label,
+.view-filters .views-exposed-widget legend {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  form.views-exposed-form .form-type-checkboxes fieldset > div,
+  form.views-exposed-form .form-type-checkboxes fieldset > ul > li,
+  .view-filters .form-checkboxes .form-item,
+  .view-filters .bef-checkboxes li {
+    display: flex !important;
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* Strong, targeted rules for the Blog view exposed form (force horizontal checkboxes) */
+#views-exposed-form-blog-all .views-exposed-widget {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
+}
+
+#views-exposed-form-blog-all .form-type-checkboxes fieldset,
+#views-exposed-form-blog-all .form-checkboxes,
+#views-exposed-form-blog-all .bef-checkboxes {
+  display: flex !important;
+  gap: 1rem !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#views-exposed-form-blog-all .form-type-checkboxes fieldset > div,
+#views-exposed-form-blog-all .form-type-checkboxes fieldset > ul > li,
+#views-exposed-form-blog-all .form-checkboxes li,
+#views-exposed-form-blog-all .bef-checkboxes li {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+}
+
+#views-exposed-form-blog-all .form-item input[type="checkbox"],
+#views-exposed-form-blog-all .form-item input[type="radio"] {
+  margin: 0 !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+}
+
+#views-exposed-form-blog-all .form-item label {
+  margin: 0 !important;
+  cursor: pointer !important;
+}
+
+@media (max-width: 640px) {
+  #views-exposed-form-blog-all .form-type-checkboxes fieldset > div,
+  #views-exposed-form-blog-all .form-type-checkboxes fieldset > ul > li,
+  #views-exposed-form-blog-all .form-checkboxes .form-item,
+  #views-exposed-form-blog-all .bef-checkboxes li {
+    display: flex !important;
+    width: 100% !important;
+  }
+}
