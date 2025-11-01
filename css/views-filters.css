@@ -305,3 +305,52 @@ form.views-exposed-form .form-type-checkboxes fieldset > ul > li,
     width: 100% !important;
   }
 }
+
+/* Horizontal card layout for views cards */
+.horizontal-card .card-horizontal-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.horizontal-card .card-img-left {
+  flex: 0 0 180px;
+  max-width: 220px;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  border-radius: 12px 0 0 12px;
+  overflow: hidden;
+}
+
+.horizontal-card .card-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px 0 0 12px;
+}
+
+.horizontal-card .card-body.card-text-right {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 2rem;
+}
+
+@media (max-width: 900px) {
+  .horizontal-card .card-horizontal-wrapper {
+    flex-direction: column;
+  }
+  .horizontal-card .card-img-left {
+    max-width: 100%;
+    min-width: 0;
+    border-radius: 12px 12px 0 0;
+  }
+  .horizontal-card .card-body.card-text-right {
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+}
