@@ -1,0 +1,53 @@
+{#
+/**
+ * @file
+ * Theme implementation to display a node in teaser/grid view mode.
+ * This is the generic template used as a fallback for all content types
+ * that don't have a specific node--[type]--teaser.html.twig file.
+ */
+#}
+
+{% set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  'node--view-mode-teaser',
+  'h-100',
+  'border-0',
+  'shadow-sm',
+  'card-wrapper'
+] %}
+
+<div{{ attributes.addClass(classes) }}>
+    <div class="card h-100">
+        {# 1. Optional: Render the default image field if present (e.g., field_media_image) #}
+        {% if content.field_media_image is not empty %}
+            <a href="{{ url }}" class="text-decoration-none">
+                {# 
+                  FIX: Added 'img-fluid' to prevent images from overflowing the card bounds.
+                  'img-fluid' sets max-width: 100% and height: auto. 
+                #}
+                {{ content.field_media_image.0|merge({ '#attributes': { 'class': ['card-img-top', 'rounded-top', 'img-fluid'] } }) }}
+            </a>
+        {% endif %}
+
+        <div class="card-body p-3">
+            {# 2. Title and Link #}
+            <h5 class="content-card-title mb-1">
+                <a href="{{ url }}" class="text-decoration-none text-dark hover-link">{{ label }}</a>
+            </h5>
+
+            {# 3. Metadata (Content Type and Author/Date) #}
+            <div class="text-muted small mb-2">
+                <span class="badge bg-secondary me-2">{{ node.bundle|capitalize }}</span>
+                By {{ author_name }} &bull; {{ date }}
+            </div>
+
+            {# 4. Body Summary / Teaser #}
+            {# Render all remaining content fields set to appear in the Teaser view mode #}
+            {{ content|without('field_media_image') }}
+
+            {# Read More Link #}
+            <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">Read More &rarr;</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+{#
+/**
+ * @file
+ * Theme implementation to display a node (Event content type).
+ *
+ * Available variables:
+ * - node: The node entity.
+ * - content: All node items for display.
+ * - label: The title of the node.
+ * - author_name: The username or display name of the node author.
+ * - date: Formatted date of node creation.
+ * - view_mode: View mode, e.g., 'full', 'teaser'.
+ * - url: Direct URL of the current node.
+ *
+ * Custom fields for an Event (assumed based on standard Event recipes):
+ * - content.field_event_date (The date/time of the event)
+ * - content.field_event_location (Location field)
+ * - content.field_event_image (The cover image)
+ */
+#}
+
+{% set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'shadow-lg',
+  'bg-white',
+  'rounded-3',
+  'mb-5'
+] %}
+
+<article{{ attributes.addClass(classes) }}>
+
+    {# Event Cover Image (Assumes field_event_image is the first item) #}
+    {% if content.field_event_image is not empty %}
+        <div class="event-image-container">
+            {{ content.field_event_image.0 }}
+        </div>
+    {% endif %}
+
+    <div class="p-4 p-md-5">
+
+        {# Title and Metadata Row #}
+        <div class="row mb-4 align-items-center">
+            <div class="col-12 col-md-8">
+                {# Event Title #}
+                <h1 class="display-5 fw-bold mb-1">{{ label }}</h1>
+
+                {# Event Date and Location #}
+                <div class="text-primary fw-bold fs-5 mb-2">
+                    {% if content.field_event_date is not empty %}
+                        <i class="bi bi-calendar-event me-2"></i>
+                        {{ content.field_event_date }}
+                    {% endif %}
+                </div>
+                <div class="text-muted small">
+                    {% if content.field_event_location is not empty %}
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+                        {{ content.field_event_location }}
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Optional: Share/Action Buttons #}
+            <div class="col-12 col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="#" class="btn btn-outline-secondary me-2 rounded-pill"><i class="bi bi-share"></i> Share</a>
+                <a href="#" class="btn btn-success rounded-pill"><i class="bi bi-ticket-fill"></i> Get Tickets</a>
+            </div>
+        </div>
+
+        <hr class="mb-4">
+
+        {# Main Body/Description and Author Info #}
+        <div class="row">
+            {# Left Column: Event Body/Description #}
+            <div class="col-12">
+                <h2 class="h4 mb-3 text-secondary">Event Details</h2>
+                {# The main body field (usually field_body or just content without specific fields) #}
+                {{ content|without('field_event_image', 'field_event_date', 'field_event_location') }}
+            </div>
+        </div>
+        <div class="row">
+
+            {# Right Column: Author/Organizer Info #}
+            <div class="col-12 ">
+                <div class="card p-3 border-start border-4 border-info h-100">
+                    <h3 class="h6 card-title text-info mb-3">Organized By</h3>
+                    <p class="mb-1 fw-semibold">{{ author_name }}</p>
+                    <p class="small text-muted mb-0">Posted on {{ date }}</p>
+                    {# You might add fields like content.field_organizer_contact here #}
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
