@@ -37,17 +37,8 @@
     <div class="container-fluid">
         <div class="row g-0 align-items-stretch event-detail">
 
-            {# Left: Cover image (stacked on mobile, left on md+) #}
-            <div class="col-12 col-md-6 event-image-col">
-                {% if content.field_event_image is not empty %}
-                    <div class="event-image-container h-100 w-100">
-                        {{ content.field_event_image.0 }}
-                    </div>
-                {% endif %}
-            </div>
-
             {# Right: Content column #}
-            <div class="col-12 col-md-6">
+            <div class="col-12 ">
                 <div class="p-4 p-md-5 h-100 d-flex flex-column">
 
                     {# Title and Meta #}
@@ -76,7 +67,7 @@
                     {# Body / Description - take remaining space #}
                     <div class="event-body flex-grow-1">
                         <h2 class="h4 mb-3 text-secondary">Event Details</h2>
-                        {{ content|without('field_event_image', 'field_event_date', 'field_event_location') }}
+                        {{ content|without('field_featured_image', 'field_event_date', 'field_event_location') }}
                     </div>
 
                     {# Organizer card at bottom #}
