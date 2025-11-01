@@ -5,5 +5,5 @@ global-styling:
       css/modern-cards.css: {}
       css/navbar.css: {}
       css/article.css: {}
-      css/grid-layouts.css: {}
-  css/event-detail.css: {}
+#      css/grid-layouts.css: {}
+      css/event-detail.css: {}

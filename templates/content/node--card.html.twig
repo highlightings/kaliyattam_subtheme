@@ -1,9 +1,14 @@
 {#
 /**
  * @file
- * Theme implementation to display a node in teaser/grid view mode.
- * This is the generic template used as a fallback for all content types
- * that don't have a specific node--[type]--teaser.html.twig file.
+ * Theme implementation to display a node (Node card display) in card view mode.
+ *
+ * This template is optimized for use within a Drupal View that uses a Grid,
+ * List, or Bootstrap Card layout.
+ *
+ * Assumed fields:
+ * - content.field_featured_image (The cover image)
+ * - content.field_event_date (The date/time of the event)
  */
 #}
 
@@ -11,34 +16,43 @@
   'node',
   'node--type-' ~ node.bundle|clean_class,
   'node--view-mode-teaser',
-  'h-100',
-  'card-wrapper'
+  'h-100', # Ensures all cards in a row have the same height
+  'border-0',
+  'shadow-sm',
 ] %}
 
 <div{{ attributes.addClass(classes) }}>
-    <div class="card h-100 horizontal-card">
-        <div class="card-horizontal-wrapper">
-            {% if content.field_media_image is not empty %}
-                <div class="card-img-left">
-                    <a href="{{ url }}" class="text-decoration-none">
-                        {{ content.field_media_image.0|merge({ '#attributes': { 'class': ['card-img', 'img-fluid', 'rounded-start'] } }) }}
-                    </a>
-                    <div class="card-img-overlay">
-                        <span class="badge bg-light text-dark">{{ node.bundle|capitalize }}</span>
-                    </div>
+    <div class="card h-100">
+        {# Event Cover Image Link #}
+        {% if content.field_event_image is not empty %}
+            <a href="{{ url }}" class="text-decoration-none">
+                <div class="event-cover-image rounded-top" style="background-image:url('{{ content.field_event_image.0 }}');">
+                    {# NOTE: You need to configure the 'Image' field to output the URL only, or rely on a pre-processed image style. #}
+                    {# For simplicity, this assumes the image field itself renders an <img>, but it's often better to wrap it in a link. #}
+                    {{ content.field_event_image }}
                 </div>
-            {% endif %}
-            <div class="card-body p-3 card-text-right">
-                <h5 class="content-card-title mb-1">
-                    <a href="{{ url }}" class="text-decoration-none text-dark hover-link">{{ label }}</a>
-                </h5>
-                <div class="text-muted small mb-2">
-                    <span class="badge bg-secondary me-2">{{ node.bundle|capitalize }}</span>
-                    By {{ author_name }} &bull; {{ date }}
-                </div>
-                {{ content|without('field_media_image') }}
-                <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">Read More &rarr;</a>
+            </a>
+        {% endif %}
+
+        <div class="card-body p-3">
+            {# Event Title Link #}
+            <h5 class="content-card-title mb-1">
+                <a href="{{ url }}" class="text-decoration-none text-dark hover-link">{{ label }}</a>
+            </h5>
+            
+            {# Node Date #}
+            <div class="text-primary small fw-semibold mb-2">
+                {% if content.field_event_date is not empty %}
+                    <i class="bi bi-calendar-event me-1"></i>
+                    {{ content.field_event_date }}
+                {% endif %}
             </div>
+
+            {# Event Summary/Body Teaser #}
+            {{ content|without('field_event_image', 'field_event_date', 'field_event_location') }}
+            
+            {# Read More Link (Optional) #}
+            <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">View Details &rarr;</a>
         </div>
     </div>
 </div>
