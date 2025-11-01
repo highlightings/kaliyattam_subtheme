@@ -1,29 +1,99 @@
-/* Modern card styles inspired by online.me */
+/* Modern card styles with Kaliyattam color scheme */
+:root {
+    --kaliyattam-primary: #890000;
+    --kaliyattam-secondary: #4a0000;
+    --kaliyattam-accent: #ff9800;
+    --kaliyattam-text: #333333;
+    --kaliyattam-light: #ffffff;
+    --kaliyattam-gradient: linear-gradient(135deg, var(--kaliyattam-primary), var(--kaliyattam-secondary));
+}
+
+/* Add a subtle gradient background to the body */
+body {
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+}
+
+/* Modern section styling */
+.region-content {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.region-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: var(--kaliyattam-gradient);
+    opacity: 0.05;
+    z-index: -1;
+}
 .card-wrapper {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    position: relative;
+}
+
+.card-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--kaliyattam-gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+    z-index: -1;
 }
 
 .card-wrapper:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 15px 30px rgba(137, 0, 0, 0.1) !important;
+}
+
+.card-wrapper:hover::after {
+    opacity: 0.05;
 }
 
 .card {
     border: none;
     border-radius: 12px;
     overflow: hidden;
-    background: #ffffff;
+    background: var(--kaliyattam-light);
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+.card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
 .card-img-top {
-    height: 200px;
+    height: 220px;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
 }
 
 .card:hover .card-img-top {
-    transform: scale(1.05);
+    transform: scale(1.08);
+}
+
+.card-img-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .card-img-overlay {
+    opacity: 1;
 }
 
 .content-card-title {
@@ -31,15 +101,35 @@
     font-weight: 600;
     line-height: 1.4;
     margin-bottom: 0.75rem;
+    position: relative;
+    display: inline-block;
 }
 
 .content-card-title a {
-    color: #2d3436;
-    transition: color 0.2s ease;
+    color: var(--kaliyattam-text);
+    transition: color 0.3s ease;
+    position: relative;
+    text-decoration: none;
+}
+
+.content-card-title a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--kaliyattam-primary);
+    transition: width 0.3s ease;
 }
 
 .content-card-title a:hover {
-    color: #0984e3;
+    color: var(--kaliyattam-primary);
+}
+
+.content-card-title a:hover::after {
+    width: 100%;
+}
 }
 
 .card-body {
@@ -52,19 +142,33 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 0.75rem;
+    backdrop-filter: blur(4px);
 }
 
 .btn-link {
-    color: #0984e3;
+    color: var(--kaliyattam-primary);
     font-weight: 500;
     padding: 0;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-link::after {
+    content: '→';
+    margin-left: 0.5rem;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
 }
 
 .btn-link:hover {
-    color: #0062cc;
-    text-decoration: none;
+    color: var(--kaliyattam-secondary);
+}
+
+.btn-link:hover::after {
+    transform: translateX(5px);
 }
 
 /* Responsive adjustments */
