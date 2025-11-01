@@ -3,3 +3,5 @@ global-styling:
     theme:
       css/style.css: {}
       css/modern-cards.css: {}
+      css/navbar.css: {}
+      css/article.css: {}

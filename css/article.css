@@ -1,0 +1,111 @@
+/* Blog post content styling */
+.node--type-article {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Main content area */
+.node__content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+/* Image styling */
+.node__content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 2rem 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Image container */
+.field--name-field-media-image {
+    margin: 2rem -1rem;
+}
+
+@media (min-width: 768px) {
+    .field--name-field-media-image {
+        margin: 2rem 0;
+    }
+}
+
+/* Image caption and credit */
+.field--name-field-media-image figcaption {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* Responsive image container */
+.field--name-field-media-image .field__item {
+    margin: 0 auto;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* Image aspect ratio container */
+.field--name-field-media-image .field__item img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+/* Image wrapper for article content */
+.article-image-wrapper {
+    position: relative;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+    .article-image-wrapper {
+        padding: 0;
+        max-width: 90%;
+    }
+}
+
+/* Article typography */
+.node--type-article h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--kaliyattam-primary);
+}
+
+.node--type-article p {
+    margin-bottom: 1.5rem;
+}
+
+/* Article meta information */
+.node__meta {
+    margin-bottom: 2rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Content spacing */
+.node__content > * + * {
+    margin-top: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .node--type-article {
+        padding: 1rem;
+    }
+    
+    .node__content {
+        font-size: 1rem;
+    }
+    
+    .field--name-field-media-image {
+        margin: 1.5rem -1rem;
+    }
+}
