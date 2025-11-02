@@ -9,3 +9,7 @@
   /* or use a variable from your theme */
   /* color: var(--bs-body-color) !important; */
 }
+
+.views-row {
+  margin-bottom: 2rem;
+}

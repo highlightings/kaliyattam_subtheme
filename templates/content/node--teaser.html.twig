@@ -25,9 +25,22 @@
             {% endif %}
         </div> 
         <div class="col-9">
-            <p >{{ content|without('field_featured_image') }}
-            <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">Read More &rarr;</a></p>
-            <p ><small class="text-muted">{{ node.bundle|capitalize }} By {{ author_name }} &bull; {{ date }}</small></p>    
+            <div class="row align-items-start"><div class="col">
+                <h5 class="content-card-title mb-1">
+                    <a href="{{ url }}" class="text-decoration-none text-dark hover-link">{{ label }}</a>
+                </h5>
+            </div></div>
+            <div class="row align-items-center"><div class="col">
+                <p >{{ content|without('field_featured_image') }}
+            </div></div>
+            <div class="row align-items-end">
+                <div class="col-10 text-left">
+                    <p ><small class="text-muted">{{ node.bundle|capitalize }} By {{ author_name }} &bull; {{ date }}</small></p>
+                </div>
+                <div class="col-2 text-right">
+                    <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">Read More &rarr;</a></p>
+                </div>                
+            </div>
         </div>
     </div>
 </div>

@@ -33,7 +33,7 @@
         {% endif %}
 
         <div class="card-body p-3">
-            {# Event Title Link #}
+            {# Node Title Link #}
             <h5 class="content-card-title mb-1">
                 <a href="{{ url }}" class="text-decoration-none text-dark hover-link">{{ label }}</a>
             </h5>
@@ -46,7 +46,7 @@
                 {% endif %}
             </div>
 
-            {# Event Summary/Body Teaser #}
+            {# Node Summary/Body Teaser #}
             {{ content|without('field_featured_image', 'field_event_date', 'field_event_location') }}
             
             {# Read More Link (Optional) #}
