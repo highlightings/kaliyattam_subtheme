@@ -1,0 +1,51 @@
+{#
+/**
+ * @file
+ * Theme implementation to display a node in teaser/grid view mode.
+ * This is the generic template used as a fallback for all content types
+ * that don't have a specific node--[type]--teaser.html.twig file.
+ */
+#}
+
+{% set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  'node--view-mode-teaser'
+] %}
+
+
+
+<div class="container shadow">
+    <div class="row ">
+        <div class="col ">
+            <h5 class="content-card-title mb-1">
+                {{ label }}
+            </h5>
+        </div>
+    </div>  
+    <div class="row">
+        <div class="col">     
+            {% if content.field_featured_image is not empty %}
+            <a href="{{ url }}" class="text-decoration-none">
+                {{ content.field_featured_image.0|merge({ '#attributes': { 'class': ['card-img', 'img-fluid', 'rounded-start'] } }) }}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-8">
+            <p >{{ content|without('field_featured_image', 'field_geofield', 'field_location_address') }}   </p>         
+        </div>
+        <div class="col-4">     
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8">
+            <p >{{ content.field_geofield }}</p>
+        </div>
+        <div class="col-4 shadow">
+             <p >{{ content.field_location_address }}</p>              
+        </div>
+    </div>    
+</div>
