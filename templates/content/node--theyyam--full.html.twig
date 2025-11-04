@@ -1,19 +1,3 @@
-{#
-/**
- * @file
- * Theme implementation to display a node in teaser/grid view mode.
- * This is the generic template used as a fallback for all content types
- * that don't have a specific node--[type]--teaser.html.twig file.
- */
-#}
-
-{% set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  'node--view-mode-teaser'
-] %}
-
-
 
 <div class="container shadow">
     <div class="row ">
