@@ -38,10 +38,7 @@
             </h5>
             
             {# Node Summary/Body Teaser #}
-            {{ content|without('field_featured_image', 'field_location_address', 'field_geofield') }}
-            
-            {# Read More Link (Optional) #}
-            <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">View Details &rarr;</a>
+            {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'url') }}            
         </div>
     </div>
 </div>

@@ -25,10 +25,8 @@
             </h5>
             
             {# Node Summary/Body Teaser #}
-            {{ content|without('field_featured_image') }}
+            {{ content|without('field_featured_image', 'links') }}
             
-            {# Read More Link (Optional) #}
-            <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">View Details &rarr;</a>
         </div>
     </div>
 </div>

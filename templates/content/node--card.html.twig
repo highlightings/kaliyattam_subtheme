@@ -46,10 +46,8 @@
             </div>
 
             {# Node Summary/Body Teaser #}
-            {{ content|without('field_featured_image', 'field_event_date', 'field_event_location') }}
+            {{ content|without('field_featured_image', 'field_event_date', 'field_event_location', 'url') }}
             
-            {# Read More Link (Optional) #}
-            <a href="{{ url }}" class="btn btn-sm btn-link p-0 mt-2">View Details &rarr;</a>
         </div>
     </div>
 </div>
