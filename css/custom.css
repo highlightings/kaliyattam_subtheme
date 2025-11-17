@@ -13,3 +13,8 @@
 .views-row {
   margin-bottom: 2rem;
 }
+
+.container .region-content {
+  padding: 1rem;
+  background-color: white;
+}
