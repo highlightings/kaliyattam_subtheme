@@ -43,7 +43,6 @@
     {{ title_suffix }}
 
     <div{{ content_attributes.addClass('node__content') }}>
-
       {% if content.field_featured_image is not empty %}
         <div class="row">
           <div class="col-12">     
@@ -52,15 +51,15 @@
             </div>
           </div>
         </div>
-      {% endif %}  
+      {% endif %}
       {% if node.field_geofield is not empty %}
         {% if node.field_location_address is not empty %}
           <div class="row shadow">
-              <div class="col-8">
+              <div class="col-12">
                   <p >{{ content.field_geofield }}</p>
               </div>
-              <div class="col-4">
-                  <p >{{ content.field_location_address }}</p>              
+              <div class="col-12">
+                  <p >{{ content.field_location_address |render|trim|replace({'<br>': ' - '})|striptags|raw  }}</p>
               </div>
           </div> 
         {% else %}
@@ -68,40 +67,28 @@
               <div class="col-12">
                   <p >{{ content.field_geofield }}</p>
               </div>
-          </div>        
+          </div>
         {% endif %}
       {% endif %}
-            
-      {{ content.field_media | add_attr('image_attributes', {class: ['d-block','w-100']}) }}
-
-      {# Image Media Field with machine name field_media#}
-      {% set img_media_arr = node.field_media %}
-      {% set length_image_media = node.field_media|length %}
-      {% if length_image_media > 1 %}
-        {% for img_item in img_media_arr %}
-
-          {% set img_uri = img_item.entity.field_media_image.entity.fileuri %}
-          {% set img_alt = img_item.entity.field_media_image.alt %}
-
-          <div class="col-12 col-md-6"><img attributes.addClass('d-block','w-100')  src="{{ img_uri | image_style('3_2_300x200_focal_point_webp') }}" alt="{{ img_alt }}"></div>
-
-        {% endfor %}
-      {% endif %}
-
 
       {# Bootstrap 5.3 Carousel for Media #}
       {% if node.field_media is not empty %}
-        <div class="row">
+        <div class="row   bg-dark">
+          <div class="col-12">
             <div id="carousel-{{ node.id }}" class="carousel slide mb-4" data-bs-ride="carousel">
               <div class="carousel-indicators" >
                 {% for key, media_item in node.field_media %}
-                  <button type="button" data-bs-target="#carousel-{{ node.id }}" data-bs-slide-to="{{ key }}" class="{{ loop.first ? 'active' : '' }}" aria-current="{{ loop.first ? 'true' : 'false' }}" aria-label="Slide {{ loop.index }}"></button>
+                  <button type="button" data-bs-target="#carousel-{{ node.id }}" data-bs-slide-to="{{ key }}" class="{{ loop.first ? 'active' : ' ' }}" aria-current="{{ loop.first ? 'true' : 'false' }}" aria-label="Slide {{ loop.index }}"></button>
                 {% endfor %}
               </div>
-              <div class="carousel-inner" role="listbox" style="max-width:900px; max-height:600px !important;">
+              <div class="carousel-inner" >
                 {% for media_item in node.field_media %}
                   <div class="carousel-item {{ loop.first ? 'active' : '' }}">
-                    {{ media_item.entity|view  }}
+                    {% set img_uri = media_item.entity.field_media_image.entity.fileuri %}
+                    {% set img_alt = media_item.entity.field_media_image.alt %}
+                    <div class="col-12 mx-auto col-md-6 justify-content-center">
+                      <img class="d-block w-100 mx-auto img-thumbnail" src="{{ img_uri | image_style('3_2_300x200_focal_point_webp') }}" alt="{{ img_alt }}">
+                    </div>
                   </div>
                 {% endfor %}
               </div>
@@ -113,14 +100,15 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
               </button>
-          </div>      
+            </div>
+          </div>
         </div>
       {% endif %}
 
       {# Render the Theyyam teaser using Bootstrap Cards in a grid #}
       {% if node.field_theyyam is not empty %}
         <div class="theyyam-related mt-5">
-          <h3 class="mb-3">Related Theyyam</h3>
+          <h3 class="mb-3">{{ 'Theyyam at this location'|trans }}</h3>
           <div class="row">
             {% for theyyam_item in node.field_theyyam %}
               <div class="col-md-6 col-lg-4 mb-4">
@@ -135,9 +123,14 @@
       {# Render all other content fields except the ones we've handled #}
       <div class="row">
         <div class="col-12">     
-          {{ content|without('field_media', 'field_theyyam', 'field_comments','field_featured_image') }}
+          {{ content|without('field_media', 'field_theyyam', 'field_comments','field_featured_image', 'field_location_address', 'field_geofield') }}
         </div>
-      </div>  
+      </div>
+      <div class="row">
+        <div class="col-12">
+          {{ content.field_comments }}
+        </div>
+      </div>
     </div>
 
   </div>
