@@ -18,3 +18,19 @@
   padding: 1rem;
   background-color: white;
 }
+
+.action-flag, .action-unflag {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: inline-block;
+  padding: 0.2em 0.5em;
+}
+.action-flag a, .action-unflag a, .action-unflag a:hover {
+  background: url(../bootstrap-icons/icons/bookmark-plus.svg) transparent left center/1.5em no-repeat;
+  color: #4e4e4e;
+  padding: 0.2em 0.2em 0.2em 2em;
+  text-decoration: none;
+}
+.action-unflag a, .action-flag a:hover {
+  background: url(../bootstrap-icons/icons/bookmark-plus-fill.svg) transparent left center/1.5em no-repeat;
+}
