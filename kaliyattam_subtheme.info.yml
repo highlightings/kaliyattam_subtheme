@@ -21,3 +21,6 @@ regions:
   footer: Footer
 libraries-override:
   bootstrap5/global-styling: false
+libraries-extend:
+  core/drupal.dialog:
+    - kaliyattam_subtheme/modal-dialog

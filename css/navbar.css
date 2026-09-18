@@ -101,17 +101,20 @@
 }
 
 /* Search form in navbar */
-.form-inline .form-control {
+.navbar .form-inline .form-control,
+.navbar .form-control {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #ffffff;
 }
 
-.form-inline .form-control::placeholder {
+.navbar .form-inline .form-control::placeholder,
+.navbar .form-control::placeholder {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.form-inline .form-control:focus {
+.navbar .form-inline .form-control:focus,
+.navbar .form-control:focus {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.3);
     box-shadow: none;

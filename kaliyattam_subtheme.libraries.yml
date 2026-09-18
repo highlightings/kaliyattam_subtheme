@@ -8,4 +8,10 @@ global-styling:
       css/grid-layouts.css: {}
       css/event-detail.css: {}
       css/custom.css: {}
+      css/modal-dialog.css: {}
       bootstrap-icons/font/bootstrap-icons.css: {}
+
+modal-dialog:
+  css:
+    theme:
+      css/modal-dialog.css: {}

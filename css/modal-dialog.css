@@ -1,0 +1,584 @@
+/**
+ * @file
+ * Modal Dialog & Event Form Theming for Kaliyattam Subtheme.
+ */
+
+/* ==========================================================================
+   1. Modal Dialog Overlay & Backdrop
+   ========================================================================== */
+.ui-widget-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+  opacity: 1 !important;
+  z-index: 1250 !important;
+}
+
+/* ==========================================================================
+   2. Modal Window Container
+   ========================================================================== */
+.ui-dialog {
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  z-index: 1260 !important;
+  padding: 0 !important;
+  font-family: inherit;
+}
+
+/* Responsive Modal Sizing: Give Event forms comfortable breathing room */
+@media all and (min-width: 768px) {
+  .ui-dialog {
+    width: min(840px, 92vw) !important;
+    max-width: 840px !important;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .ui-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 0 auto;
+  }
+}
+
+/* ==========================================================================
+   3. Dialog Header & Titlebar
+   ========================================================================== */
+.ui-dialog .ui-dialog-titlebar {
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000)) !important;
+  color: #ffffff !important;
+  padding: 1.1rem 1.5rem !important;
+  border: none !important;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  position: relative !important;
+}
+
+.ui-dialog .ui-dialog-title {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+  float: none !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+  position: absolute !important;
+  right: 1.25rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.2) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/12px 12px no-repeat !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+  background-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-50%) scale(1.08) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close .ui-button-icon {
+  display: none !important;
+}
+
+/* ==========================================================================
+   4. Dialog Content Area
+   ========================================================================== */
+.ui-dialog .ui-dialog-content {
+  padding: 1.75rem 2rem !important;
+  max-height: calc(85vh - 130px) !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(137, 0, 0, 0.3) transparent;
+}
+
+.ui-dialog .ui-dialog-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ui-dialog .ui-dialog-content::-webkit-scrollbar-thumb {
+  background-color: rgba(137, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+/* ==========================================================================
+   5. "When" Field (Smart Date Range) Theming
+   ========================================================================== */
+/* Hide tabledrag toggle weight and drag clutter in field_when */
+.field--name-field-when .tabledrag-toggle-weight-wrapper,
+.field--name-field-when .field-multiple-drag,
+.field--name-field-when .delta-order,
+.field--name-field-when thead th:not(.field-label) {
+  display: none !important;
+}
+
+.field--name-field-when .field-multiple-table {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  margin-bottom: 1rem !important;
+  width: 100% !important;
+}
+
+.field--name-field-when .field-multiple-table thead {
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.field--name-field-when .field-multiple-table thead th.field-label {
+  padding: 0.85rem 1.25rem !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  border: none !important;
+}
+
+.field--name-field-when .field-multiple-table thead th.field-label h4.label {
+  margin: 0 !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.field--name-field-when .field-multiple-table thead th.field-label h4.label::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 18px !important;
+  height: 18px !important;
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23890000'%3e%3cpath d='M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z'/%3e%3c/svg%3e") center/contain no-repeat !important;
+}
+
+.field--name-field-when .field-multiple-table tbody tr {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 1.25rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  position: relative !important;
+}
+
+.field--name-field-when .field-multiple-table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+.field--name-field-when .field-multiple-table td {
+  border: none !important;
+  padding: 0 !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Hide drag handle and delta order completely */
+.field--name-field-when .field-multiple-table td.field-multiple-drag,
+.field--name-field-when .field-multiple-table td.delta-order {
+  display: none !important;
+}
+
+/* Remove button positioned cleanly at top-right of row */
+.field--name-field-when .field-multiple-table td:has(input[name*="_remove_button"]),
+.field--name-field-when .field-multiple-table td:nth-child(3) {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1.25rem !important;
+  width: auto !important;
+  display: block !important;
+}
+
+.field--name-field-when .smartdate--widget {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.field--name-field-when .smartdate--widget .fieldset-wrapper {
+  padding: 0 !important;
+}
+
+/* Time Inline Layout: 2 Columns (Start on left, End on right, TO in middle) */
+.field--name-field-when .smartdate--time-inline {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  gap: 0.35rem 1rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.field--name-field-when .smartdate--time-inline h4.label:first-of-type {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  margin: 0 !important;
+}
+
+.field--name-field-when .smartdate--time-inline div.time-start {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+.field--name-field-when .smartdate--time-inline .smartdate--separator {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+.field--name-field-when .smartdate--time-inline h4.label:last-of-type {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  margin: 0 !important;
+}
+
+.field--name-field-when .smartdate--time-inline div.time-end {
+  grid-column: 3 !important;
+  grid-row: 2 !important;
+}
+
+@media (max-width: 767px) {
+  .field--name-field-when .smartdate--time-inline {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* Start and End labels: styled on top of their inputs */
+.field--name-field-when .smartdate--time-inline h4.label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  width: auto !important;
+  float: none !important;
+  text-align: left !important;
+  padding: 0 !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.field--name-field-when .smartdate--time-inline h4.label:last-of-type {
+  color: #475569 !important;
+}
+
+/* Container Box for Date and Time */
+.field--name-field-when .smartdate--time-inline div.time-start,
+.field--name-field-when .smartdate--time-inline div.time-end {
+  display: grid !important;
+  grid-template-columns: 1.15fr 0.85fr !important;
+  gap: 0.5rem !important;
+  background: #f8fafc !important;
+  padding: 0.75rem !important;
+  border-radius: 10px !important;
+  border: 1px solid #e2e8f0 !important;
+  position: static !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 480px) {
+  .field--name-field-when .smartdate--time-inline div.time-start,
+  .field--name-field-when .smartdate--time-inline div.time-end {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Ensure inputs are crisp, clear, and visible with proper dark text */
+.field--name-field-when .form-date,
+.field--name-field-when .form-time {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.65rem !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  width: 100% !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.field--name-field-when .form-date:focus,
+.field--name-field-when .form-time:focus {
+  border-color: var(--kaliyattam-primary, #890000) !important;
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.15) !important;
+  outline: none !important;
+}
+
+/* Separator badge */
+.field--name-field-when .smartdate--separator {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: #e2e8f0 !important;
+  color: #64748b !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  margin: 0 auto !important;
+}
+
+/* Duration and All day options */
+.field--name-field-when .duration-wrapper {
+  margin-top: 0.5rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.field--name-field-when .duration-wrapper label {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  margin: 0 !important;
+  min-width: unset !important;
+  padding: 0 !important;
+}
+
+.field--name-field-when .field-duration {
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 0.35rem 0.75rem !important;
+  font-size: 0.85rem !important;
+  color: #1e293b !important;
+  background-color: #ffffff !important;
+}
+
+.field--name-field-when .field-add-more-submit {
+  background: transparent !important;
+  border: 1px dashed var(--kaliyattam-primary, #890000) !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1.25rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.field--name-field-when .field-add-more-submit:hover {
+  background: rgba(137, 0, 0, 0.06) !important;
+}
+
+/* Remove button */
+.field--name-field-when input[name*="_remove_button"] {
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  padding: 0.35rem 0.75rem !important;
+  border: 1px solid #e2e8f0 !important;
+  background: #ffffff !important;
+  color: #64748b !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.2s ease !important;
+}
+
+.field--name-field-when input[name*="_remove_button"]:hover {
+  background: #fee2e2 !important;
+  border-color: #fca5a5 !important;
+  color: #dc2626 !important;
+}
+
+/* ==========================================================================
+   6. Accordions & "Where" Field Theming
+   ========================================================================== */
+.ui-dialog .accordion-item {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  margin-bottom: 1rem !important;
+}
+
+.ui-dialog summary.accordion-button {
+  background: #f8fafc !important;
+  color: var(--kaliyattam-text, #333) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  padding: 0.9rem 1.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  cursor: pointer !important;
+  list-style: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.ui-dialog summary.accordion-button::-webkit-details-marker {
+  display: none !important;
+}
+
+.ui-dialog summary.accordion-button::after {
+  content: '' !important;
+  margin-left: auto !important;
+  width: 14px !important;
+  height: 14px !important;
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2364748b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") center/contain no-repeat !important;
+  transition: transform 0.2s ease-in-out !important;
+}
+
+.ui-dialog details[open] > summary.accordion-button::after {
+  transform: rotate(180deg) !important;
+}
+
+.ui-dialog details[open] > summary.accordion-button {
+  border-bottom: 1px solid #e2e8f0 !important;
+  background: #f1f5f9 !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.ui-dialog .accordion-body {
+  padding: 1.25rem !important;
+  background: #ffffff;
+}
+
+/* Where header specific icon */
+.field--name-field-where summary.accordion-button::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 18px !important;
+  height: 18px !important;
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23890000'%3e%3cpath d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/%3e%3c/svg%3e") center/contain no-repeat !important;
+  flex-shrink: 0 !important;
+}
+
+.field--name-field-where .alert-info {
+  background-color: rgba(137, 0, 0, 0.04) !important;
+  border: 1px solid rgba(137, 0, 0, 0.12) !important;
+  color: var(--kaliyattam-secondary, #4a0000) !important;
+  border-radius: 8px !important;
+  font-size: 0.88rem !important;
+  padding: 0.65rem 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.field--name-field-where .btn-secondary {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.88rem !important;
+  padding: 0.45rem 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.field--name-field-where input[name*="ief-add-existing"] {
+  background-color: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+.field--name-field-where input[name*="ief-add-existing"]:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+.field--name-field-where input[name="ief-field_where-form-add"],
+.field--name-field-where .ief-entity-submit {
+  background: var(--kaliyattam-primary, #890000) !important;
+  border: 1px solid var(--kaliyattam-primary, #890000) !important;
+  color: #ffffff !important;
+}
+
+.field--name-field-where input[name="ief-field_where-form-add"]:hover,
+.field--name-field-where input[name="ief-field_where-form-add"]:focus,
+.field--name-field-where input[name="ief-field_where-form-add"]:active,
+.field--name-field-where .ief-entity-submit:hover,
+.field--name-field-where .ief-entity-submit:focus,
+.field--name-field-where .ief-entity-submit:active {
+  background: var(--kaliyattam-secondary, #4a0000) !important;
+  border-color: var(--kaliyattam-secondary, #4a0000) !important;
+  color: #ffffff !important;
+}
+
+.field--name-field-where input[name*="cancel"],
+.field--name-field-where .ief-entity-cancel {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+.field--name-field-where input[name*="cancel"]:hover,
+.field--name-field-where input[name*="cancel"]:focus,
+.field--name-field-where .ief-entity-cancel:hover,
+.field--name-field-where .ief-entity-cancel:focus {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Autocomplete field in Where */
+.field--name-field-where .form-autocomplete {
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.9rem !important;
+}
+
+.field--name-field-where .form-autocomplete:focus {
+  border-color: var(--kaliyattam-primary, #890000) !important;
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.15) !important;
+}
+
+/* ==========================================================================
+   7. Form Actions (Save / Preview)
+   ========================================================================== */
+.ui-dialog #edit-actions {
+  margin-top: 1.5rem !important;
+  padding-top: 1rem !important;
+  border-top: 1px solid #e2e8f0 !important;
+  display: flex !important;
+  gap: 0.75rem !important;
+  justify-content: flex-end !important;
+}
+
+.ui-dialog #edit-actions .btn-primary {
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000)) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.6rem 1.75rem !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(137, 0, 0, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+.ui-dialog #edit-actions .btn-primary:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(137, 0, 0, 0.35) !important;
+}
+
+.ui-dialog #edit-actions .btn-secondary {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.6rem 1.25rem !important;
+  border: 1px solid #cbd5e1 !important;
+  background: #ffffff !important;
+  color: #475569 !important;
+}
+
+.ui-dialog #edit-actions .btn-secondary:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
