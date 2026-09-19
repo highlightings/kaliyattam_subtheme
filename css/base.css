@@ -266,3 +266,71 @@ hr {
   background: var(--kaliyattam-border);
   margin: 2rem 0;
 }
+
+/* ==========================================================================
+   Contextual Links Theming & Resets
+   ========================================================================== */
+[hidden],
+[hidden=""] {
+  display: none !important;
+}
+
+.contextual-region {
+  position: relative !important;
+}
+
+.contextual {
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  z-index: 500 !important;
+}
+
+.contextual ul.contextual-links {
+  display: none !important;
+}
+
+.contextual.open ul.contextual-links {
+  display: flex !important;
+  flex-direction: column !important;
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  z-index: 10000 !important;
+  background: #ffffff !important;
+  border-radius: var(--radius-md, 8px) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  padding: 0.35rem 0 !important;
+  min-width: 180px !important;
+  margin: 2px 0 0 0 !important;
+  list-style: none !important;
+}
+
+.contextual.open ul.contextual-links li {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.contextual.open ul.contextual-links li a {
+  display: block !important;
+  padding: 0.5rem 1.15rem !important;
+  color: #1e293b !important;
+  font-size: 0.825rem !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  text-align: left !important;
+  background: transparent !important;
+  transition: background var(--transition-fast, 0.15s ease), color var(--transition-fast, 0.15s ease) !important;
+}
+
+.contextual.open ul.contextual-links li a:hover,
+.contextual.open ul.contextual-links li a:focus {
+  background-color: #f1f5f9 !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+}
+

@@ -66,6 +66,113 @@
   color: var(--kaliyattam-primary);
 }
 
+/* ==========================================================================
+   Local Tasks Tabs (View, Edit, Delete, Revisions, etc.)
+   ========================================================================== */
+.block-local-tasks-block,
+[id*="local-tasks"],
+.tabs-wrapper {
+  margin: 1rem 0 1.5rem 0;
+  clear: both;
+  position: relative;
+}
+
+/* Flex container for horizontal tab layout */
+.block-local-tasks-block ul,
+[id*="local-tasks"] ul,
+.tabs-wrapper ul,
+ul.tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  list-style: none;
+  padding: 0.35rem;
+  margin: 0;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.block-local-tasks-block li,
+[id*="local-tasks"] li,
+.tabs-wrapper li,
+.tabs__tab {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+/* Individual tab link */
+.block-local-tasks-block li a,
+[id*="local-tasks"] li a,
+.tabs-wrapper li a,
+.tabs__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1.15rem;
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: #475569;
+  text-decoration: none;
+  border-radius: var(--radius-md, 8px);
+  background: transparent;
+  transition: all var(--transition-fast, 0.2s cubic-bezier(0.4, 0, 0.2, 1));
+  border: 1px solid transparent;
+  line-height: 1.35;
+}
+
+/* Hover state */
+.block-local-tasks-block li a:hover,
+[id*="local-tasks"] li a:hover,
+.tabs-wrapper li a:hover,
+.tabs__link:hover {
+  background: #ffffff;
+  color: var(--kaliyattam-primary, #890000);
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Active tab state */
+.block-local-tasks-block li a.is-active,
+.block-local-tasks-block li.is-active a,
+[id*="local-tasks"] li a.is-active,
+[id*="local-tasks"] li.is-active a,
+.tabs-wrapper li a.is-active,
+.tabs-wrapper li.is-active a,
+.tabs__tab.is-active .tabs__link,
+.tabs__link.is-active,
+.tabs-wrapper a[aria-current="page"] {
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000)) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(137, 0, 0, 0.3) !important;
+}
+
+/* Secondary Tabs (Sub-tasks) */
+.tabs-wrapper .tabs.secondary,
+.tabs.secondary {
+  margin-top: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  box-shadow: none;
+}
+
+.tabs.secondary .tabs__link {
+  font-size: var(--text-xs, 0.75rem);
+  padding: 0.35rem 0.85rem;
+  font-weight: 500;
+}
+
+.tabs.secondary .tabs__link.is-active {
+  background: #334155 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
 /* Main Content with Sidebars Layout */
 .site-layout {
   display: grid;

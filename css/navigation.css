@@ -27,7 +27,7 @@
   align-items: center;
 }
 
-.site-header-top ul {
+.site-header-top ul:not(.contextual-links) {
   list-style: none;
   display: inline-flex;
   gap: 1rem;
@@ -35,16 +35,16 @@
   padding: 0;
 }
 
-.site-header-top li {
+.site-header-top li:not(.contextual-links li) {
   margin: 0;
 }
 
-.site-header-top a {
+.site-header-top a:not(.contextual-links a) {
   color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
 }
 
-.site-header-top a:hover {
+.site-header-top a:not(.contextual-links a):hover {
   color: var(--kaliyattam-light);
 }
 
@@ -178,7 +178,7 @@
   margin-left: auto;
 }
 
-.nav-container ul {
+.nav-container ul:not(.contextual-links) {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -187,7 +187,7 @@
   gap: 0.5rem;
 }
 
-.nav-container li {
+.nav-container li:not(.contextual-links li) {
   margin: 0;
 }
 
@@ -207,7 +207,7 @@
 }
 
 .nav-menu a,
-.nav-container a {
+.nav-container a:not(.contextual-links a) {
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 0.85rem;
@@ -327,7 +327,7 @@
     display: flex;
   }
 
-  .nav-container ul,
+  .nav-container ul:not(.contextual-links),
   .nav-menu {
     flex-direction: column;
     align-items: stretch;
@@ -336,7 +336,7 @@
   }
 
   .nav-menu a,
-  .nav-container a {
+  .nav-container a:not(.contextual-links a) {
     padding: 0.75rem 1rem;
     font-size: var(--text-base);
     border-radius: var(--radius-sm);
