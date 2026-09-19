@@ -36,3 +36,15 @@ modal-dialog:
   css:
     theme:
       css/modal-dialog.css: {}
+
+post-composer:
+  version: 1.0
+  css:
+    theme:
+      css/post-composer.css: {}
+  js:
+    js/post-composer.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once

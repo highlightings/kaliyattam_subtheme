@@ -1,0 +1,603 @@
+/**
+ * @file
+ * Facebook / LinkedIn style social feed composer for Kaliyattam Subtheme.
+ */
+
+/* ==========================================================================
+   1. Modal Dialog Sizing for Post Composer
+   ========================================================================== */
+.ui-dialog:has(.post-composer-form) {
+  width: min(660px, 94vw) !important;
+  max-width: 660px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+}
+
+@media (max-width: 767px) {
+  .ui-dialog:has(.post-composer-form) {
+    width: 96vw !important;
+    max-width: 96vw !important;
+  }
+}
+
+/* Modal Content Inner Padding */
+.ui-dialog:has(.post-composer-form) .ui-dialog-content {
+  padding: 1.5rem 1.75rem !important;
+}
+
+/* ==========================================================================
+   2. Post Composer Container & Form
+   ========================================================================== */
+.post-composer-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  position: relative !important;
+}
+
+/* Hide raw title wrapper (auto entity label handled) */
+.post-composer-form .field--name-title {
+  display: none !important;
+}
+
+/* ==========================================================================
+   3. Author Header (Facebook / LinkedIn Style)
+   ========================================================================== */
+.post-composer-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.post-composer-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 10px rgba(137, 0, 0, 0.25);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.post-composer-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.post-composer-author {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.post-composer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  width: fit-content;
+  user-select: none;
+}
+
+.post-composer-badge svg {
+  color: #64748b;
+}
+
+/* ==========================================================================
+   4. Content Field & CKEditor 5 Composer
+   ========================================================================== */
+.post-composer-form .field--name-field-content {
+  margin: 0 !important;
+}
+
+.post-composer-form .field--name-field-content label,
+.post-composer-form .field--name-field-content .description,
+.post-composer-form .field--name-field-content .form-item__description,
+.post-composer-form .field--name-field-content [id$="--description"],
+.post-composer-form .field--name-field-content .filter-wrapper {
+  display: none !important;
+}
+
+/* CKEditor 5 Styling */
+.post-composer-form .ck.ck-editor {
+  width: 100% !important;
+  border: none !important;
+}
+
+.post-composer-form .ck.ck-toolbar {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-bottom: none !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+.post-composer-form .ck.ck-editor__main > .ck-editor__editable {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0 0 12px 12px !important;
+  min-height: 150px !important;
+  max-height: 380px !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 1.05rem !important;
+  line-height: 1.65 !important;
+  color: #1e293b !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.post-composer-form .ck.ck-editor__main > .ck-editor__editable.ck-focused {
+  border-color: var(--kaliyattam-primary, #890000) !important;
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.12) !important;
+  outline: none !important;
+}
+
+/* Placeholder styling */
+.post-composer-form .ck.ck-editor__main > .ck-editor__editable.ck-placeholder::before {
+  color: #94a3b8 !important;
+  font-size: 1.05rem !important;
+  font-style: normal !important;
+}
+
+/* Fallback for standard textarea if CKEditor is disabled */
+.post-composer-form textarea.form-textarea {
+  width: 100% !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  min-height: 140px !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 1.05rem !important;
+  line-height: 1.6 !important;
+  color: #1e293b !important;
+  background: #ffffff !important;
+  resize: vertical !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+.post-composer-form textarea.form-textarea:focus {
+  border-color: var(--kaliyattam-primary, #890000) !important;
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.12) !important;
+  outline: none !important;
+}
+
+/* ==========================================================================
+   5. Action Attachment Bar ("Add to your post")
+   ========================================================================== */
+.post-composer-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  margin-top: 0.85rem;
+  margin-bottom: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  position: relative;
+  gap: 0.5rem;
+}
+
+.post-composer-actions-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.post-composer-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.post-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.825rem;
+  font-weight: 600;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.post-action-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.post-action-btn:hover svg {
+  transform: scale(1.15);
+}
+
+/* Vibrant color accents */
+.post-action-photo {
+  color: #059669;
+}
+.post-action-photo:hover {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.post-action-video {
+  color: #0284c7;
+}
+.post-action-video:hover {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+
+.post-action-emoji {
+  color: #d97706;
+}
+.post-action-emoji:hover,
+.post-action-emoji.is-active {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.post-action-tag {
+  color: #7c3aed;
+}
+.post-action-tag:hover {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+
+.post-action-advanced {
+  color: #475569;
+}
+.post-action-advanced:hover,
+.post-action-advanced.is-active {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+@media (max-width: 540px) {
+  .post-composer-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .post-composer-action-buttons {
+    justify-content: space-between;
+  }
+  .post-action-btn span {
+    display: none;
+  }
+  .post-action-btn {
+    padding: 0.5rem;
+  }
+}
+
+/* ==========================================================================
+   6. Inline Emoji Tray Popover
+   ========================================================================== */
+.post-composer-emoji-tray {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  padding: 0.85rem;
+  z-index: 1000;
+  width: 280px;
+  animation: postEmojiPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes postEmojiPop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.post-composer-emoji-tray[hidden] {
+  display: none !important;
+}
+
+.emoji-tray-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.emoji-tray-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.emoji-tray-close:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+.emoji-tray-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+
+.emoji-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emoji-btn:hover {
+  background: #f1f5f9;
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   7. Advanced Configuration Drawer
+   ========================================================================== */
+.post-composer-advanced {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #f8fafc;
+  padding: 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: postDrawerSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes postDrawerSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.post-composer-advanced.is-collapsed {
+  display: none !important;
+}
+
+.post-advanced-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--kaliyattam-primary, #890000);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.post-advanced-heading svg {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+/* Advanced fields clean styling */
+.post-composer-advanced .form-item {
+  margin: 0 !important;
+}
+
+.post-composer-advanced label {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.post-composer-advanced select,
+.post-composer-advanced input[type="text"] {
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.9rem !important;
+  background: #ffffff !important;
+}
+
+/* Vertical tabs inside advanced drawer */
+.post-composer-advanced .form-type-vertical-tabs {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   8. Post Footer & Action Buttons
+   ========================================================================== */
+.post-composer-form .form-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.75rem !important;
+  padding-top: 0.85rem !important;
+  border-top: 1px solid #f1f5f9 !important;
+  margin: 0 !important;
+}
+
+/* Hide redundant form-actions inside modal dialog (rendered in ui-dialog-buttonpane) */
+.ui-dialog .post-composer-form .form-actions {
+  display: none !important;
+}
+
+/* Prominent Kaliyattam "Post" button */
+.post-composer-form .button--post,
+.post-composer-form input[type="submit"].button--post {
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000)) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  padding: 0.7rem 2.25rem !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(137, 0, 0, 0.28) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 130px !important;
+  margin: 0 !important;
+  order: 2 !important;
+}
+
+.post-composer-form .button--post:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(137, 0, 0, 0.38) !important;
+}
+
+.post-composer-form .button--post:active {
+  transform: translateY(0) !important;
+}
+
+/* Preview button */
+.post-composer-form input[name="op"][value="Preview"] {
+  background: #ffffff !important;
+  color: #475569 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 9999px !important;
+  padding: 0.6rem 1.4rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  order: 1 !important;
+  margin: 0 !important;
+}
+
+.post-composer-form input[name="op"][value="Preview"]:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+/* Published status footer toggle */
+.post-composer-form .entity-content-form-footer {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.post-composer-form .entity-content-form-footer .form-item {
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   9. Modal Dialog Buttonpane (Post & Preview Buttons in Dialog)
+   ========================================================================== */
+.ui-dialog:has(.post-composer-form) .ui-dialog-buttonpane {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  padding: 1rem 1.75rem !important;
+  background: #f8fafc !important;
+  border-top: 1px solid #e2e8f0 !important;
+  margin: 0 !important;
+}
+
+.ui-dialog:has(.post-composer-form) .ui-dialog-buttonpane .ui-dialog-buttonset {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  float: none !important;
+  margin: 0 !important;
+}
+
+.ui-dialog:has(.post-composer-form) .ui-dialog-buttonpane button.button--post {
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000)) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  padding: 0.65rem 2.25rem !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(137, 0, 0, 0.28) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  min-width: 120px !important;
+  order: 2 !important;
+}
+
+.ui-dialog:has(.post-composer-form) .ui-dialog-buttonpane button.button--post:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(137, 0, 0, 0.38) !important;
+}
+
+.ui-dialog:has(.post-composer-form) .ui-dialog-buttonpane button:not(.button--post) {
+  background: #ffffff !important;
+  color: #475569 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 9999px !important;
+  padding: 0.6rem 1.4rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  order: 1 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.ui-dialog:has(.post-composer-form) .ui-dialog-buttonpane button:not(.button--post):hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
