@@ -870,8 +870,9 @@
   display: block !important;
 }
 
-.media-library-widget-modal form.js-media-library-views-form,
-.media-library-widget-modal .media-library-views-form,
+/* Grid view layout (when not in table view) */
+.media-library-widget-modal form.js-media-library-views-form:not(:has(table)),
+.media-library-widget-modal .media-library-views-form:not(:has(table)),
 .media-library-widget-modal .media-library-views-form__rows {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)) !important;
@@ -884,6 +885,184 @@
 
 .media-library-widget-modal form.js-media-library-views-form #media-library-messages {
   grid-column: 1 / -1 !important;
+}
+
+/* ==========================================================================
+   Media Library Table View Theming
+   ========================================================================== */
+.media-library-widget-modal form.js-media-library-views-form:has(table) {
+  display: block !important;
+  width: 100% !important;
+  margin: 1rem 0 !important;
+  overflow-x: auto !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.media-library-widget-modal table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-size: 0.875rem !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+.media-library-widget-modal table thead {
+  background: #f8fafc !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.media-library-widget-modal table thead th {
+  padding: 0.85rem 1rem !important;
+  font-weight: 700 !important;
+  font-size: 0.775rem !important;
+  color: #475569 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  border: none !important;
+}
+
+.media-library-widget-modal table thead th a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.media-library-widget-modal table thead th a:hover {
+  color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.media-library-widget-modal table tbody tr {
+  border-bottom: 1px solid #f1f5f9 !important;
+  transition: background-color 0.15s ease !important;
+  cursor: pointer !important;
+}
+
+.media-library-widget-modal table tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+.media-library-widget-modal table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+/* Selected row state in table */
+.media-library-widget-modal table tbody tr.checked,
+.media-library-widget-modal table tbody tr.is-active,
+.media-library-widget-modal table tbody tr:has(input:checked) {
+  background-color: rgba(137, 0, 0, 0.04) !important;
+}
+
+.media-library-widget-modal table tbody td {
+  padding: 0.75rem 1rem !important;
+  vertical-align: middle !important;
+  color: #334155 !important;
+  border: none !important;
+}
+
+/* Checkbox Column in Table */
+.media-library-widget-modal table th.views-field-media-library-select-form,
+.media-library-widget-modal table td.views-field-media-library-select-form {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  padding: 0.75rem 0.5rem 0.75rem 1rem !important;
+  position: static !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  text-align: center !important;
+}
+
+.media-library-widget-modal table td.views-field-media-library-select-form .form-item {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.media-library-widget-modal table td.views-field-media-library-select-form input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  accent-color: var(--kaliyattam-primary, #890000) !important;
+}
+
+/* Thumbnail Column in Table */
+.media-library-widget-modal table th.views-field-thumbnail__target-id {
+  width: 90px !important;
+  min-width: 90px !important;
+  max-width: 90px !important;
+  padding: 0.85rem 0.5rem !important;
+  text-align: center !important;
+  font-size: 0.725rem !important;
+}
+
+.media-library-widget-modal table td.views-field-thumbnail__target-id {
+  width: 90px !important;
+  min-width: 90px !important;
+  max-width: 90px !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+}
+
+.media-library-widget-modal table td.views-field-thumbnail__target-id img {
+  width: 50px !important;
+  height: 50px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  border: 1px solid #e2e8f0 !important;
+  display: inline-block !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: transform 0.2s ease !important;
+}
+
+.media-library-widget-modal table tbody tr:hover td.views-field-thumbnail__target-id img {
+  transform: scale(1.06) !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Name Column in Table */
+.media-library-widget-modal table th.views-field-name,
+.media-library-widget-modal table td.views-field-name {
+  padding-left: 1.5rem !important;
+}
+
+.media-library-widget-modal table td.views-field-name {
+  font-weight: 600 !important;
+  color: #1e293b !important;
+  max-width: 280px !important;
+  word-break: break-word !important;
+}
+
+/* Author Column in Table */
+.media-library-widget-modal table td.views-field-uid {
+  color: #64748b !important;
+  white-space: nowrap !important;
+}
+
+.media-library-widget-modal table td.views-field-uid a {
+  color: #475569 !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.media-library-widget-modal table td.views-field-uid a:hover {
+  color: var(--kaliyattam-primary, #890000) !important;
+  text-decoration: underline !important;
+}
+
+/* Changed/Updated Column in Table */
+.media-library-widget-modal table td.views-field-changed {
+  color: #64748b !important;
+  font-size: 0.825rem !important;
+  white-space: nowrap !important;
 }
 
 /* Media Item Card (both native core views-row and grid items) */
@@ -1007,10 +1186,11 @@
   text-overflow: ellipsis !important;
 }
 
-/* Checkbox overlay badge */
-.media-library-widget-modal .views-field-media-library-select-form,
-.media-library-widget-modal .js-click-to-select-checkbox,
-.media-library-widget-modal .media-library-item__click-to-select-checkbox {
+/* Checkbox overlay badge (Grid view only) */
+.media-library-widget-modal .views-row .views-field-media-library-select-form,
+.media-library-widget-modal .media-library-item--grid .views-field-media-library-select-form,
+.media-library-widget-modal .views-row .js-click-to-select-checkbox,
+.media-library-widget-modal .media-library-item--grid .media-library-item__click-to-select-checkbox {
   position: absolute !important;
   top: 8px !important;
   left: 8px !important;
@@ -1031,9 +1211,10 @@
   transition: all 0.2s ease !important;
 }
 
-.media-library-widget-modal .views-field-media-library-select-form .form-item,
-.media-library-widget-modal .js-click-to-select-checkbox .form-item,
-.media-library-widget-modal .media-library-item__click-to-select-checkbox .form-check {
+.media-library-widget-modal .views-row .views-field-media-library-select-form .form-item,
+.media-library-widget-modal .media-library-item--grid .views-field-media-library-select-form .form-item,
+.media-library-widget-modal .views-row .js-click-to-select-checkbox .form-item,
+.media-library-widget-modal .media-library-item--grid .media-library-item__click-to-select-checkbox .form-check {
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
@@ -1041,9 +1222,10 @@
   justify-content: center !important;
 }
 
-.media-library-widget-modal .views-field-media-library-select-form input[type="checkbox"],
-.media-library-widget-modal .js-click-to-select-checkbox input[type="checkbox"],
-.media-library-widget-modal .media-library-item__click-to-select-checkbox input[type="checkbox"] {
+.media-library-widget-modal .views-row .views-field-media-library-select-form input[type="checkbox"],
+.media-library-widget-modal .media-library-item--grid .views-field-media-library-select-form input[type="checkbox"],
+.media-library-widget-modal .views-row .js-click-to-select-checkbox input[type="checkbox"],
+.media-library-widget-modal .media-library-item--grid .media-library-item__click-to-select-checkbox input[type="checkbox"] {
   width: 16px !important;
   height: 16px !important;
   margin: 0 !important;
@@ -1051,17 +1233,21 @@
   accent-color: var(--kaliyattam-primary, #890000) !important;
 }
 
-/* Checked badge styling */
-.media-library-widget-modal .js-media-library-item:has(input:checked) .views-field-media-library-select-form,
-.media-library-widget-modal .js-media-library-item:has(input:checked) .js-click-to-select-checkbox,
+/* Checked badge styling (Grid view only) */
+.media-library-widget-modal .views-row:has(input:checked) .views-field-media-library-select-form,
+.media-library-widget-modal .media-library-item--grid.checked .views-field-media-library-select-form,
+.media-library-widget-modal .media-library-item--grid:has(input:checked) .views-field-media-library-select-form,
+.media-library-widget-modal .views-row:has(input:checked) .js-click-to-select-checkbox,
 .media-library-widget-modal .media-library-item--grid.checked .media-library-item__click-to-select-checkbox,
 .media-library-widget-modal .media-library-item--grid:has(input:checked) .media-library-item__click-to-select-checkbox {
   background: var(--kaliyattam-primary, #890000) !important;
   border-color: var(--kaliyattam-primary, #890000) !important;
 }
 
-.media-library-widget-modal .js-media-library-item:has(input:checked) .views-field-media-library-select-form input[type="checkbox"],
-.media-library-widget-modal .js-media-library-item:has(input:checked) .js-click-to-select-checkbox input[type="checkbox"],
+.media-library-widget-modal .views-row:has(input:checked) .views-field-media-library-select-form input[type="checkbox"],
+.media-library-widget-modal .media-library-item--grid.checked .views-field-media-library-select-form input[type="checkbox"],
+.media-library-widget-modal .media-library-item--grid:has(input:checked) .views-field-media-library-select-form input[type="checkbox"],
+.media-library-widget-modal .views-row:has(input:checked) .js-click-to-select-checkbox input[type="checkbox"],
 .media-library-widget-modal .media-library-item--grid.checked .media-library-item__click-to-select-checkbox input[type="checkbox"],
 .media-library-widget-modal .media-library-item--grid:has(input:checked) .media-library-item__click-to-select-checkbox input[type="checkbox"] {
   accent-color: #ffffff !important;
