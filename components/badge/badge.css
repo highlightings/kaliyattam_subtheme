@@ -1,0 +1,39 @@
+/**
+ * @file
+ * Single Directory Component: Badge Styles.
+ */
+
+.kaliyattam-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-xs);
+}
+
+.kaliyattam-badge--primary {
+  background: var(--kaliyattam-primary);
+  color: var(--kaliyattam-light);
+}
+
+.kaliyattam-badge--gold {
+  background: var(--kaliyattam-gold);
+  color: var(--kaliyattam-dark);
+}
+
+.kaliyattam-badge--dark {
+  background: var(--kaliyattam-dark);
+  color: var(--kaliyattam-light);
+}
+
+.kaliyattam-badge--light {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--kaliyattam-primary);
+  backdrop-filter: blur(4px);
+}

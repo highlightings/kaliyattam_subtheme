@@ -1,0 +1,82 @@
+{#
+/**
+ * @file
+ * Modern semantic HTML5 page template for Kaliyattam Arts Theme.
+ * Zero external CSS/JS framework dependencies. Responsive CSS Grid & Flexbox.
+ */
+#}
+<div class="site-wrapper">
+
+  <header role="banner" class="site-header">
+    {% if page.header %}
+      <div class="site-header-top">
+        <div class="container">
+          {{ page.header }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.nav_branding or page.nav_main or page.nav_additional %}
+      <div class="container">
+        <nav class="site-nav" role="navigation" aria-label="{{ 'Main navigation'|t }}">
+          {{ page.nav_branding }}
+
+          {% if page.nav_main or page.nav_additional %}
+            <button class="nav-toggle" type="button" aria-controls="site-nav-drawer" aria-expanded="false" aria-label="{{ 'Toggle navigation'|t }}">
+              <span class="nav-toggle-icon" aria-hidden="true"></span>
+            </button>
+
+            <div id="site-nav-drawer" class="nav-container">
+              {{ page.nav_main }}
+              {{ page.nav_additional }}
+            </div>
+          {% endif %}
+        </nav>
+      </div>
+    {% endif %}
+  </header>
+
+  <main id="main-content" role="main" class="site-main" tabindex="-1">
+    <div class="container">
+      {% if page.breadcrumb %}
+        <div class="site-breadcrumb">
+          {{ page.breadcrumb }}
+        </div>
+      {% endif %}
+
+      {% set layout_classes = [
+        'site-layout',
+        page.sidebar_first ? 'has-sidebar-first' : '',
+        page.sidebar_second ? 'has-sidebar-second' : '',
+        (page.sidebar_first and page.sidebar_second) ? 'has-both-sidebars' : '',
+      ] %}
+
+      <div class="{{ layout_classes|join(' ')|trim }}">
+        {% if page.sidebar_first %}
+          <aside class="site-sidebar site-sidebar-first" role="complementary" aria-label="{{ 'First sidebar'|t }}">
+            {{ page.sidebar_first }}
+          </aside>
+        {% endif %}
+
+        <div class="site-content">
+          {{ page.content }}
+        </div>
+
+        {% if page.sidebar_second %}
+          <aside class="site-sidebar site-sidebar-second" role="complementary" aria-label="{{ 'Second sidebar'|t }}">
+            {{ page.sidebar_second }}
+          </aside>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+
+  {% if page.footer %}
+    <footer role="contentinfo" class="site-footer">
+      <div class="container">
+        {{ page.footer }}
+      </div>
+    </footer>
+  {% endif %}
+
+</div>

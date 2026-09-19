@@ -1,0 +1,371 @@
+/**
+ * @file
+ * Responsive Navigation Styles for Kaliyattam Arts Theme.
+ * Mobile-first, sticky header, smooth micro-interactions, no jQuery.
+ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: var(--kaliyattam-gradient);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all var(--transition-normal);
+}
+
+/* Header Top Region (Language switcher, etc.) */
+.site-header-top {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.35rem 0;
+  font-size: var(--text-xs);
+}
+
+.site-header-top .container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.site-header-top ul {
+  list-style: none;
+  display: inline-flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.site-header-top li {
+  margin: 0;
+}
+
+.site-header-top a {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.site-header-top a:hover {
+  color: var(--kaliyattam-light);
+}
+
+/* Visually hide redundant block titles in header and footer */
+.site-header .block-title,
+.site-header h2,
+.site-footer .block-title,
+.site-footer h2 {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0;
+  gap: 1.5rem;
+}
+
+/* Brand / Logo */
+.site-branding {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--kaliyattam-light);
+  flex-shrink: 0;
+}
+
+.site-branding:hover {
+  color: var(--kaliyattam-light);
+}
+
+.site-logo img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  transition: transform var(--transition-fast);
+}
+
+.site-branding:hover .site-logo img {
+  transform: scale(1.05);
+}
+
+.site-title {
+  font-family: var(--font-serif-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--kaliyattam-light);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.site-slogan {
+  font-size: var(--text-xs);
+  color: var(--kaliyattam-gold-light);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* Mobile Nav Toggle (Hamburger Button) */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.65rem;
+  color: var(--kaliyattam-light);
+  cursor: pointer;
+  box-shadow: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--kaliyattam-light);
+  transform: none;
+}
+
+.nav-toggle-icon {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--kaliyattam-light);
+  position: relative;
+  transition: background-color var(--transition-fast);
+}
+
+.nav-toggle-icon::before,
+.nav-toggle-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background-color: var(--kaliyattam-light);
+  transition: transform var(--transition-fast);
+}
+
+.nav-toggle-icon::before { top: -6px; }
+.nav-toggle-icon::after { bottom: -6px; }
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon {
+  background-color: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon::before {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Nav Menu Container */
+.nav-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+
+.nav-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-container li {
+  margin: 0;
+}
+
+/* Navigation Links */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.nav-menu > li {
+  margin: 0;
+  position: relative;
+}
+
+.nav-menu a,
+.nav-container a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.nav-menu a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--kaliyattam-gold-light);
+  transform: translateX(-50%);
+  transition: width var(--transition-fast);
+}
+
+.nav-menu a:hover,
+.nav-menu a.is-active,
+.nav-container a:hover {
+  color: var(--kaliyattam-light);
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.is-active::after {
+  width: 80%;
+}
+
+.nav-container .menu--account a {
+  color: var(--kaliyattam-gold-light);
+  font-weight: 600;
+}
+
+.nav-container .menu--account a:hover {
+  color: var(--kaliyattam-light);
+}
+
+/* Dropdown menus */
+.nav-menu .has-dropdown {
+  position: relative;
+}
+
+.nav-menu .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: var(--kaliyattam-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--kaliyattam-border);
+  list-style: none;
+  padding: 0.5rem;
+  margin-top: 0.35rem;
+  z-index: 1010;
+  animation: fadeIn 0.2s ease;
+}
+
+.nav-menu .has-dropdown:hover .dropdown-menu,
+.nav-menu .has-dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+
+.nav-menu .dropdown-menu li {
+  margin: 0;
+}
+
+.nav-menu .dropdown-menu a {
+  color: var(--kaliyattam-text);
+  padding: 0.6rem 0.9rem;
+  display: block;
+}
+
+.nav-menu .dropdown-menu a:hover {
+  background: rgba(137, 0, 0, 0.05);
+  color: var(--kaliyattam-primary);
+}
+
+.nav-menu .dropdown-menu a::after {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Breakpoint (< 992px) */
+@media (max-width: 991.98px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--kaliyattam-primary-dark);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.25rem var(--container-padding);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-container.is-open {
+    display: flex;
+  }
+
+  .nav-container ul,
+  .nav-menu {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    width: 100%;
+  }
+
+  .nav-menu a,
+  .nav-container a {
+    padding: 0.75rem 1rem;
+    font-size: var(--text-base);
+    border-radius: var(--radius-sm);
+  }
+
+  .nav-menu a:hover,
+  .nav-container a:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-menu a::after {
+    display: none;
+  }
+
+  .nav-menu .dropdown-menu {
+    position: static;
+    background: rgba(0, 0, 0, 0.15);
+    box-shadow: none;
+    border: none;
+    padding-left: 1rem;
+    margin: 0.25rem 0 0.5rem 0;
+  }
+
+  .nav-menu .dropdown-menu a {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .nav-menu .dropdown-menu a:hover {
+    color: var(--kaliyattam-gold-light);
+    background: transparent;
+  }
+}

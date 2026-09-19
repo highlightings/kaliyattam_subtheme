@@ -1,13 +1,14 @@
+/**
+ * @file
+ * Custom Views and Page Layout overrides for Kaliyattam Arts Theme.
+ */
 
-.view-header .btn-primary {
-  color: var(--bs-white) !important;
-  background-color: var(--bs-primary) !important;
-  border-color: var(--bs-primary) !important;
+.view-header .btn-primary,
+.view-header .button {
+  color: var(--kaliyattam-light) !important;
+  background-color: var(--kaliyattam-primary) !important;
+  border-color: var(--kaliyattam-primary) !important;
   margin-bottom: 2rem;
- 
-  /*color: var(--bs-link-color-rgb) !important;*/
-  /* or use a variable from your theme */
-  /* color: var(--bs-body-color) !important; */
 }
 
 .views-row {
@@ -15,22 +16,34 @@
 }
 
 .container .region-content {
-  padding: 1rem;
-  background-color: white;
+  padding: 1.5rem;
+  background-color: var(--kaliyattam-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--kaliyattam-border);
 }
 
-.action-flag, .action-unflag {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  display: inline-block;
-  padding: 0.2em 0.5em;
+/* Card wrappers in views */
+.card-wrapper {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  height: 100%;
 }
-.action-flag a, .action-unflag a, .action-unflag a:hover {
-  background: url(../bootstrap-icons/icons/bookmark-plus.svg) transparent left center/1.5em no-repeat;
-  color: #4e4e4e;
-  padding: 0.2em 0.2em 0.2em 2em;
-  text-decoration: none;
+
+.card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-crimson);
 }
-.action-unflag a, .action-flag a:hover {
-  background: url(../bootstrap-icons/icons/bookmark-plus-fill.svg) transparent left center/1.5em no-repeat;
+
+/* Theyyam cover image styling */
+.theyyam-cover-image {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.theyyam-cover-image img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
 }

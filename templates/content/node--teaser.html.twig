@@ -1,44 +1,20 @@
 {#
 /**
  * @file
- * Theme implementation to display a node (Node card display) in card view mode.
- *
- * This template is optimized for use within a Drupal View that uses a Grid,
- * List, or Bootstrap Card layout.
- *
- * Assumed fields:
- * - content.field_featured_image (The cover image)
- * - content.field_event_date (The date/time of the event)
+ * Display a node in teaser view mode using Single Directory Component.
  */
 #}
-
-{% set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  'node--view-mode-teaser',
-  'border-0',
-  'shadow-sm',
-] %}
-
-<div{{ attributes.addClass(classes) }}>
-    <div class="card h-100">
-        {# Event Cover Image Link #}
-        {% if content.field_featured_image is not empty %}
-            <a href="{{ url }}" class="text-decoration-none">
-                <div class="theyyam-cover-image rounded-top" >
-                    {{ content.field_featured_image }}
-                </div>
-            </a>
-        {% endif %}
-
-        <div class="card-body p-3">
-            {# Node Title Link #}
-            <h5 class="content-card-title mb-1">
-                <a href="{{ url }}" class="text-decoration-none text-dark hover-link">{{ label }}</a>
-            </h5>
-            
-            {# Node Summary/Body Teaser #}
-            {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'url') }}            
-        </div>
-    </div>
+<div{{ attributes }}>
+  {% embed 'kaliyattam_subtheme:card' with {
+    title: label,
+    url: url,
+    variant: 'default',
+  } %}
+    {% block image %}
+      {{ content.field_featured_image }}
+    {% endblock %}
+    {% block content %}
+      {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'url') }}
+    {% endblock %}
+  {% endembed %}
 </div>

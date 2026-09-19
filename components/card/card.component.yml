@@ -1,0 +1,26 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.json
+name: Card
+description: 'Cultural arts card for Theyyam, events, locations, and articles.'
+status: stable
+props:
+  type: object
+  properties:
+    title:
+      type: [string, object, 'null']
+      title: Title
+    url:
+      type: [string, 'null']
+      title: URL
+    date:
+      type: [string, object, 'null']
+      title: Date or Event Time
+    variant:
+      type: [string, 'null']
+      title: Card Variant
+slots:
+  image:
+    title: Cover Image
+  content:
+    title: Card Content / Teaser
+  badge:
+    title: Badge

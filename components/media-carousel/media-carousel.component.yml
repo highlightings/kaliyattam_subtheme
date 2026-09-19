@@ -1,0 +1,13 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.json
+name: Media Carousel
+description: 'Touch-enabled responsive media carousel for Theyyam and location galleries.'
+status: stable
+props:
+  type: object
+  properties:
+    id:
+      type: [string, 'null']
+      title: Unique Carousel ID
+slots:
+  slides:
+    title: Carousel Slides

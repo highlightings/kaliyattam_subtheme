@@ -1,53 +1,21 @@
 {#
 /**
  * @file
- * Theme implementation to display a node (Node card display) in card view mode.
- *
- * This template is optimized for use within a Drupal View that uses a Grid,
- * List, or Bootstrap Card layout.
- *
- * Assumed fields:
- * - content.field_featured_image (The cover image)
- * - content.field_event_date (The date/time of the event)
+ * Display a node in card view mode using Single Directory Component.
  */
 #}
-
-{% set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  'node--view-mode-teaser',
-  'border-0',
-  'shadow-sm',
-] %}
-
-<div{{ attributes.addClass(classes) }}>
-    <div class="card h-100">
-        {# Event Cover Image Link #}
-        {% if content.field_featured_image is not empty %}
-            <a href="{{ url }}" class="text-decoration-none">
-                <div class="event-cover-image rounded-top" >
-                    {{ content.field_featured_image }}
-                </div>
-            </a>
-        {% endif %}
-
-        <div class="card-body p-3">
-            {# Node Title Link #}
-            <h5 class="content-card-title mb-1">
-                <a href="{{ url }}" class="text-decoration-none text-dark hover-link">{{ label }}</a>
-            </h5>
-            
-            {# Node Date #}
-            <div class="text-primary small fw-semibold mb-2">
-                {% if content.field_event_date is not empty %}
-                    <i class="bi bi-calendar-event me-1"></i>
-                    {{ content.field_event_date }}
-                {% endif %}
-            </div>
-
-            {# Node Summary/Body Teaser #}
-            {{ content|without('field_featured_image', 'field_event_date', 'field_event_location', 'url') }}
-            
-        </div>
-    </div>
+<div{{ attributes }}>
+  {% embed 'kaliyattam_subtheme:card' with {
+    title: label,
+    url: url,
+    date: content.field_event_date is not empty ? content.field_event_date : null,
+    variant: 'default',
+  } %}
+    {% block image %}
+      {{ content.field_featured_image }}
+    {% endblock %}
+    {% block content %}
+      {{ content|without('field_featured_image', 'field_event_date', 'field_event_location', 'url') }}
+    {% endblock %}
+  {% endembed %}
 </div>

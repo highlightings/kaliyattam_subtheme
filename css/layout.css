@@ -1,0 +1,330 @@
+/**
+ * @file
+ * Mobile-First Responsive Layout & Grid System for Kaliyattam Arts Theme.
+ * Zero external CSS dependencies. Pure modern CSS Grid and Flexbox.
+ */
+
+/* Container */
+.container,
+.site-container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.container-fluid {
+  width: 100%;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+/* Page Layout Structure */
+.site-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-main {
+  flex: 1 0 auto;
+  padding: 1.5rem 0 3rem 0;
+}
+
+.site-breadcrumb {
+  margin-bottom: 1.5rem;
+  font-size: var(--text-sm);
+}
+
+.site-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0.5rem;
+}
+
+.site-breadcrumb li::after {
+  content: "›";
+  margin-left: 0.5rem;
+  color: var(--kaliyattam-text-muted);
+}
+
+.site-breadcrumb li:last-child::after {
+  content: "";
+}
+
+.site-breadcrumb a {
+  color: var(--kaliyattam-text-secondary);
+}
+
+.site-breadcrumb a:hover {
+  color: var(--kaliyattam-primary);
+}
+
+/* Main Content with Sidebars Layout */
+.site-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* 1 Sidebar (sidebar_first or sidebar_second) */
+@media (min-width: 992px) {
+  .site-layout.has-sidebar-first:not(.has-sidebar-second) {
+    grid-template-columns: 280px 1fr;
+  }
+  
+  .site-layout.has-sidebar-second:not(.has-sidebar-first) {
+    grid-template-columns: 1fr 300px;
+  }
+  
+  .site-layout.has-both-sidebars {
+    grid-template-columns: 260px 1fr 280px;
+  }
+}
+
+.site-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.site-content {
+  min-width: 0; /* Prevent grid overflow */
+}
+
+/* Views Grid Auto-layout for Cards */
+.view-content:has(.kaliyattam-card),
+.view-content:has(.views-row > .kaliyattam-card),
+.view-content:has([class*="node--view-mode-teaser"]),
+.view-content:has([class*="node--view-mode-card"]) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.view-content:has(.kaliyattam-card) .views-row,
+.view-content:has([class*="node--view-mode-teaser"]) .views-row {
+  margin-bottom: 0;
+  height: 100%;
+}
+
+/* Drupal Pager / Pagination */
+.pager {
+  margin: 2.5rem 0 1rem 0;
+}
+
+.pager__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pager__item {
+  margin: 0;
+}
+
+.pager__item a,
+.pager__item span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--kaliyattam-border);
+  background: var(--kaliyattam-light);
+  color: var(--kaliyattam-text);
+  transition: all var(--transition-fast);
+}
+
+.pager__item a:hover {
+  background: var(--kaliyattam-surface-warm);
+  border-color: var(--kaliyattam-primary);
+  color: var(--kaliyattam-primary);
+}
+
+.pager__item--current span,
+.pager__item.is-active a {
+  background: var(--kaliyattam-primary) !important;
+  color: var(--kaliyattam-light) !important;
+  border-color: var(--kaliyattam-primary) !important;
+}
+
+/* Modern Responsive Grid Utilities */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: 1.5rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Lightweight Flex & Helper Utilities (Replaces Bootstrap Grid bloat seamlessly) */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.row > * {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.col-12 { flex: 0 0 100%; width: 100%; }
+.col-6 { flex: 0 0 50%; width: 50%; }
+.col-4 { flex: 0 0 33.3333%; width: 33.3333%; }
+.col-8 { flex: 0 0 66.6667%; width: 66.6667%; }
+
+@media (min-width: 768px) {
+  .col-md-4 { flex: 0 0 33.3333%; width: 33.3333%; }
+  .col-md-6 { flex: 0 0 50%; width: 50%; }
+  .col-md-8 { flex: 0 0 66.6667%; width: 66.6667%; }
+  .col-md-12 { flex: 0 0 100%; width: 100%; }
+}
+
+@media (min-width: 992px) {
+  .col-lg-3 { flex: 0 0 25%; width: 25%; }
+  .col-lg-4 { flex: 0 0 33.3333%; width: 33.3333%; }
+  .col-lg-6 { flex: 0 0 50%; width: 50%; }
+  .col-lg-8 { flex: 0 0 66.6667%; width: 66.6667%; }
+  .col-lg-9 { flex: 0 0 75%; width: 75%; }
+  .col-lg-12 { flex: 0 0 100%; width: 100%; }
+}
+
+.d-flex { display: flex !important; }
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.flex-column { flex-direction: column !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+.align-items-center { align-items: center !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-between { justify-content: space-between !important; }
+.justify-content-end { justify-content: flex-end !important; }
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+.my-auto { margin-top: auto !important; margin-bottom: auto !important; }
+.mb-1 { margin-bottom: 0.25rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mb-5 { margin-bottom: 2rem !important; }
+.mt-1 { margin-top: 0.25rem !important; }
+.mt-2 { margin-top: 0.5rem !important; }
+.mt-3 { margin-top: 1rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.mt-5 { margin-top: 2rem !important; }
+.p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.shadow-sm { box-shadow: var(--shadow-sm) !important; }
+.shadow { box-shadow: var(--shadow-md) !important; }
+.shadow-lg { box-shadow: var(--shadow-lg) !important; }
+.rounded { border-radius: var(--radius-md) !important; }
+.rounded-top { border-top-left-radius: var(--radius-md) !important; border-top-right-radius: var(--radius-md) !important; }
+.h-100 { height: 100% !important; }
+.w-100 { width: 100% !important; }
+.text-dark { color: var(--kaliyattam-dark) !important; }
+.text-primary { color: var(--kaliyattam-primary) !important; }
+.text-muted { color: var(--kaliyattam-text-muted) !important; }
+.small { font-size: var(--text-sm) !important; }
+.fw-semibold { font-weight: 600 !important; }
+.fw-bold { font-weight: 700 !important; }
+.text-decoration-none { text-decoration: none !important; }
+
+/* Site Footer Layout */
+.site-footer {
+  margin-top: auto;
+  background: var(--kaliyattam-dark);
+  color: var(--kaliyattam-text-light);
+  padding: 3rem 0 2rem 0;
+  border-top: 3px solid var(--kaliyattam-gold);
+}
+
+.site-footer a {
+  color: var(--kaliyattam-text-light-muted);
+}
+
+.site-footer a:hover {
+  color: var(--kaliyattam-gold-light);
+}
+
+.site-footer p {
+  color: var(--kaliyattam-text-light-muted);
+}

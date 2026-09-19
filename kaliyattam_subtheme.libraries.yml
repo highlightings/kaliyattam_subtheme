@@ -1,17 +1,38 @@
 global-styling:
+  version: 1.0
   css:
     theme:
-      css/style.css: {}
-      css/modern-cards.css: {}
-      css/navbar.css: {}
+      css/tokens.css: {}
+      css/base.css: {}
+      css/layout.css: {}
+      css/icons.css: {}
       css/article.css: {}
-      css/grid-layouts.css: {}
       css/event-detail.css: {}
+      css/views-filters.css: {}
       css/custom.css: {}
-      css/modal-dialog.css: {}
-      bootstrap-icons/font/bootstrap-icons.css: {}
+
+navigation:
+  version: 1.0
+  css:
+    theme:
+      css/navigation.css: {}
+  js:
+    js/navigation.js: {}
+  dependencies:
+    - core/drupal
+
+carousel:
+  version: 1.0
+  css:
+    theme:
+      css/carousel.css: {}
+  js:
+    js/carousel.js: {}
+  dependencies:
+    - core/drupal
 
 modal-dialog:
+  version: 1.0
   css:
     theme:
       css/modal-dialog.css: {}

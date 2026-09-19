@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * Single Directory Component: Card
+ *
+ * Available props:
+ * - title: Card headline
+ * - url: Link destination
+ * - date: Formatted date or time
+ * - variant: default | minicard | horizontal
+ *
+ * Available slots (blocks):
+ * - image: Cover image or media
+ * - content: Card summary or body
+ * - badge: Category or status badge
+ */
+#}
+{% set card_classes = [
+  'kaliyattam-card',
+  variant ? 'kaliyattam-card--' ~ variant : 'kaliyattam-card--default',
+] %}
+
+<article class="{{ card_classes|join(' ') }}">
+  <div class="card-media">
+    {% block image %}
+      {% if url %}
+        <a href="{{ url }}" class="card-media-link" tabindex="-1" aria-hidden="true">
+          {{ image }}
+        </a>
+      {% else %}
+        {{ image }}
+      {% endif %}
+    {% endblock %}
+
+    <div class="card-badge-overlay">
+      {% block badge %}{{ badge }}{% endblock %}
+    </div>
+  </div>
+
+  <div class="card-content">
+    {% if date is not empty %}
+      <div class="card-date">
+        <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
+        <span>{{ date }}</span>
+      </div>
+    {% endif %}
+
+    {% if title is not empty %}
+      <h3 class="card-title">
+        {% if url %}
+          <a href="{{ url }}" class="card-title-link">{{ title }}</a>
+        {% else %}
+          {{ title }}
+        {% endif %}
+      </h3>
+    {% endif %}
+
+    <div class="card-body-text">
+      {% block content %}{{ content }}{% endblock %}
+    </div>
+  </div>
+</article>

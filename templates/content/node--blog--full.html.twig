@@ -1,49 +1,59 @@
 {#
 /**
  * @file
- * Theme implementation to display a node in teaser/grid view mode.
- * This is the generic template used as a fallback for all content types
- * that don't have a specific node--[type]--teaser.html.twig file.
+ * Theme implementation to display a Blog/Article node in full view mode.
  */
 #}
-
-{% set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  'node--view-mode-teaser'
-] %}
-
-
-
-<div class="container shadow">
-    <div class="row ">
-        <div class="col ">
-            <h5 class="content-card-title mb-1">
-                {{ label }}
-            </h5>
+<article{{ attributes.addClass('node', 'node--type-article', 'node--view-mode-full') }}>
+  <div class="container">
+    {{ title_prefix }}
+    <header class="article-header mb-4">
+      <h1{{ title_attributes.addClass('article-title') }}>
+        {{ label }}
+      </h1>
+      {% if display_submitted %}
+        <div class="node__meta">
+          {{ author_picture }}
+          <span{{ author_attributes }}>
+            {{ 'By'|t }} {{ author_name }} — {{ date }}
+          </span>
+          {{ metadata }}
         </div>
-    </div> 
-    <div class="row">
-        <div class="col">     
-            {% if content.field_featured_image is not empty %}
-                <div class="theyyam-cover-image rounded-top" >
-                    {{ content.field_featured_image }}
+      {% endif %}
+    </header>
+    {{ title_suffix }}
+
+    <div{{ content_attributes.addClass('node__content') }}>
+      {% if content.field_featured_image is not empty %}
+        <div class="theyyam-cover-image mb-4">
+          {{ content.field_featured_image }}
+        </div>
+      {% endif %}
+
+      <div class="article-body">
+        {{ content|without('field_featured_image', 'field_media', 'field_comments') }}
+      </div>
+
+      {% if node.field_media is not empty %}
+        <div class="article-media-gallery mt-5 mb-5">
+          <h2 class="mb-3">{{ 'Gallery'|t }}</h2>
+          {% embed 'kaliyattam_subtheme:media-carousel' with { id: 'article-carousel-' ~ node.id } %}
+            {% block slides %}
+              {% for media in node.field_media %}
+                <div class="carousel-slide">
+                  {{ content.field_media }}
                 </div>
-            {% endif %}
+              {% endfor %}
+            {% endblock %}
+          {% endembed %}
         </div>
+      {% endif %}
+
+      {% if content.field_comments is not empty %}
+        <div class="node-comments-section mt-5">
+          {{ content.field_comments }}
+        </div>
+      {% endif %}
     </div>
-    <div class="row ">
-        <div class="col-8">
-            <p >{{ content|without('field_featured_image') }}   </p>         
-        </div>
-        <div class="col-4">     
-        </div>
-    </div>
-    <div class="row">
-        {% for media in node.field_media  %}
-          <div class="col shadow">
-            <img src="{{ file_url(media.entity.field_image.entity.uri.value) }}">
-          </div>
-        {% endfor %}    
-    </div>    
-</div>
+  </div>
+</article>

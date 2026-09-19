@@ -1,40 +1,72 @@
 {#
 /**
  * @file
- * Theme implementation to display a node in teaser/grid view mode.
- * This is the generic template used as a fallback for all content types
- * that don't have a specific node--[type]--teaser.html.twig file.
+ * Theme implementation to display an Event node in full view mode.
  */
 #}
+<article{{ attributes.addClass('node', 'node--type-event', 'node--view-mode-full', 'event-detail') }}>
+  <div class="container">
+    <div class="event-detail-card shadow-md rounded bg-white overflow-hidden">
+      <div class="row g-0">
+        {% if content.field_featured_image is not empty %}
+          <div class="col-12 col-md-6 event-image-col">
+            <div class="event-image-container">
+              {{ content.field_featured_image }}
+            </div>
+          </div>
+        {% endif %}
 
-{% set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  'node--view-mode-teaser'
-] %}
+        <div class="col-12 {{ content.field_featured_image is not empty ? 'col-md-6' : '' }}">
+          <div class="p-4 p-md-5">
+            {{ title_prefix }}
+            <h1{{ title_attributes.addClass('event-title', 'mb-3') }}>
+              {{ label }}
+            </h1>
+            {{ title_suffix }}
 
-<div class="container shadow">
-    <div class="row ">
-        <div class="col-12">
-            <h5 class="content-card-title mb-1">
-                {{ label }}
-            </h5>
-        </div>
-    </div>  
-    <div class="row">
-       <div class="card">     
-            {% if content.field_featured_image is not empty %}
-                    {{ content.field_featured_image }}
+            {% if content.field_event_date is not empty %}
+              <div class="event-date mb-3 text-primary fw-semibold">
+                <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
+                {{ content.field_event_date }}
+              </div>
             {% endif %}
-        </div>        
-    </div>
-    <div class="row ">
-        <div class="col-12">
-            <p >{{ content|without('field_featured_image', 'field_media') }}   </p>         
+
+            {% if content.field_event_location is not empty %}
+              <div class="event-location mb-3 text-muted">
+                <i class="icon icon-location bi-geo-alt me-1" aria-hidden="true"></i>
+                {{ content.field_event_location }}
+              </div>
+            {% endif %}
+
+            <div class="event-body mt-4">
+              {{ content|without('field_featured_image', 'field_media', 'field_event_date', 'field_event_location', 'field_comments') }}
+            </div>
+          </div>
         </div>
-    </div>   
-  <div class="row">
-    {{ content.field_media }}
+      </div>
+    </div>
+
+    {% if node.field_media is not empty %}
+      <div class="event-media-section mt-5">
+        <h2 class="mb-4">{{ 'Event Gallery'|trans }}</h2>
+        {% embed 'kaliyattam_subtheme:media-carousel' with { id: 'event-carousel-' ~ node.id } %}
+          {% block slides %}
+            {% for media_item in node.field_media %}
+              {% set img_uri = media_item.entity.field_media_image.entity.fileuri %}
+              {% set img_alt = media_item.entity.field_media_image.alt %}
+              <div class="carousel-slide">
+                <img src="{{ img_uri | image_style('3_2_300x200_focal_point_webp') }}" alt="{{ img_alt }}" loading="lazy">
+              </div>
+            {% endfor %}
+          {% endblock %}
+        {% endembed %}
+      </div>
+    {% endif %}
+
+    {% if content.field_comments is not empty %}
+      <div class="node-comments-section mt-5">
+        {{ content.field_comments }}
+      </div>
+    {% endif %}
   </div>
-</div>
- 
+</article>

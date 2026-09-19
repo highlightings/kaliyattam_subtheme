@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * Single Directory Component: Badge
+ */
+#}
+{% set badge_classes = [
+  'kaliyattam-badge',
+  variant ? 'kaliyattam-badge--' ~ variant : 'kaliyattam-badge--primary',
+] %}
+
+<span class="{{ badge_classes|join(' ') }}">
+  {% block content %}{{ text }}{% endblock %}
+</span>

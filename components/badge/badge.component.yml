@@ -1,0 +1,16 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.json
+name: Badge
+description: 'Tag or category badge for cultural arts items.'
+status: stable
+props:
+  type: object
+  properties:
+    text:
+      type: [string, 'null']
+      title: Badge Text
+    variant:
+      type: [string, 'null']
+      title: Variant
+slots:
+  default:
+    title: Badge Content

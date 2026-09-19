@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Theme implementation to display the basic html structure of a single Drupal page.
+ */
+#}
+<!DOCTYPE html>
+<html{{ html_attributes.addClass('kaliyattam-html') }}>
+  <head>
+    <head-placeholder token="{{ placeholder_token }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+  </head>
+  <body{{ attributes.addClass('kaliyattam-theme') }}>
+    <a href="#main-content" class="visually-hidden-focusable">
+      {{ 'Skip to main content'|t }}
+    </a>
+    {{ page_top }}
+    {{ page }}
+    {{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+  </body>
+</html>

@@ -1,14 +1,21 @@
-name: kaliyattam_subtheme
+name: 'Kaliyattam Theme'
 type: theme
-description: 'kaliyattam_subtheme subtheme based on Bootstrap 5 theme.'
+description: 'Native Drupal 11 sacred ritual arts theme with Single Directory Components (SDC), mobile-first responsive architecture, and zero jQuery.'
 core_version_requirement: '^10.1 || ^11.0'
-'base theme': bootstrap5
+'base theme': false
+
 libraries:
   - kaliyattam_subtheme/global-styling
+  - kaliyattam_subtheme/navigation
+
 ckeditor_stylesheets:
-  - css/style.css
+  - css/tokens.css
+  - css/base.css
+
 ckeditor5-stylesheets:
-  - css/ck5style.css
+  - css/tokens.css
+  - css/base.css
+
 regions:
   header: Header
   nav_branding: 'Navigation branding region'
@@ -19,8 +26,7 @@ regions:
   sidebar_first: 'Sidebar first'
   sidebar_second: 'Sidebar second'
   footer: Footer
-libraries-override:
-  bootstrap5/global-styling: false
+
 libraries-extend:
   core/drupal.dialog:
     - kaliyattam_subtheme/modal-dialog

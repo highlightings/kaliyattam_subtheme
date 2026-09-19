@@ -1,0 +1,268 @@
+/**
+ * @file
+ * Modern CSS Reset and Base Typography for Kaliyattam Arts Theme.
+ * Mobile-first, zero jQuery, high-performance vanilla CSS.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  line-height: var(--leading-normal);
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  font-family: var(--font-sans-body);
+  font-size: var(--text-base);
+  color: var(--kaliyattam-text);
+  background-color: var(--kaliyattam-surface);
+  background-image: var(--kaliyattam-gradient-subtle);
+  background-repeat: no-repeat;
+  background-size: 100% 400px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility: Skip to Content link */
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.visually-hidden-focusable:focus {
+  position: fixed !important;
+  top: 1rem !important;
+  left: 1rem !important;
+  z-index: 1000 !important;
+  padding: 0.75rem 1.25rem !important;
+  background: var(--kaliyattam-primary) !important;
+  color: var(--kaliyattam-light) !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-lg) !important;
+  outline: 3px solid var(--kaliyattam-gold) !important;
+  text-decoration: none !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--font-serif-heading);
+  color: var(--kaliyattam-dark);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: -0.015em;
+  margin-bottom: 0.75rem;
+}
+
+h1, .h1 { font-size: var(--text-4xl); }
+h2, .h2 { font-size: var(--text-3xl); color: var(--kaliyattam-primary); }
+h3, .h3 { font-size: var(--text-2xl); }
+h4, .h4 { font-size: var(--text-xl); }
+h5, .h5 { font-size: var(--text-lg); }
+h6, .h6 { font-size: var(--text-base); }
+
+p {
+  margin-bottom: 1.25rem;
+  line-height: var(--leading-relaxed);
+  color: var(--kaliyattam-text-secondary);
+}
+
+/* Media & Images */
+img, picture, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Links */
+a {
+  color: var(--kaliyattam-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+a:hover {
+  color: var(--kaliyattam-primary-dark);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--kaliyattam-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Lists */
+ul, ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+/* Modern Buttons */
+.button,
+.btn,
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans-body);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  line-height: 1;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  background-color: var(--kaliyattam-primary);
+  color: var(--kaliyattam-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.button:hover,
+.btn:hover,
+button:hover,
+input[type="submit"]:hover {
+  background-color: var(--kaliyattam-primary-dark);
+  color: var(--kaliyattam-light);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.button:active,
+.btn:active,
+button:active {
+  transform: translateY(0);
+}
+
+.button.secondary,
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--kaliyattam-border);
+  color: var(--kaliyattam-text);
+  box-shadow: none;
+}
+
+.button.secondary:hover,
+.btn-secondary:hover {
+  background-color: var(--kaliyattam-surface-warm);
+  border-color: var(--kaliyattam-border-hover);
+  color: var(--kaliyattam-primary);
+}
+
+.btn-link {
+  background: transparent;
+  color: var(--kaliyattam-primary);
+  padding: 0;
+  box-shadow: none;
+  border: none;
+  font-weight: 500;
+}
+
+.btn-link:hover {
+  background: transparent;
+  color: var(--kaliyattam-gold-dark);
+  box-shadow: none;
+  transform: none;
+}
+
+/* Form Controls */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-sans-body);
+  font-size: var(--text-base);
+  color: var(--kaliyattam-text);
+  background-color: var(--kaliyattam-light);
+  border: 1px solid var(--kaliyattam-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--kaliyattam-primary);
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.12);
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  margin-bottom: 0.35rem;
+  color: var(--kaliyattam-dark);
+}
+
+/* Drupal Status Messages */
+.messages-list,
+.messages {
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--kaliyattam-light);
+  border-left: 4px solid var(--kaliyattam-primary);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--text-sm);
+}
+
+.messages--status {
+  border-left-color: #10b981;
+  background: #f0fdf4;
+}
+
+.messages--warning {
+  border-left-color: var(--kaliyattam-gold);
+  background: #fffbeb;
+}
+
+.messages--error {
+  border-left-color: #ef4444;
+  background: #fef2f2;
+}
+
+/* HR divider */
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--kaliyattam-border);
+  margin: 2rem 0;
+}

@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Single Directory Component: Media Carousel
+ */
+#}
+{% set carousel_id = id ?: 'carousel-' ~ random() %}
+
+<div id="{{ carousel_id }}" class="kaliyattam-carousel" role="region" aria-roledescription="carousel" aria-label="Media Gallery">
+  <button type="button" class="carousel-btn carousel-btn-prev" aria-label="Previous Slide">
+    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+  </button>
+
+  <div class="carousel-track-wrapper">
+    <div class="carousel-track">
+      {% block slides %}{{ slides }}{% endblock %}
+    </div>
+  </div>
+
+  <button type="button" class="carousel-btn carousel-btn-next" aria-label="Next Slide">
+    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+  </button>
+
+  <div class="carousel-indicators" role="tablist" aria-label="Slide Indicators"></div>
+</div>

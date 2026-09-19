@@ -1,0 +1,159 @@
+/**
+ * @file
+ * Single Directory Component: Card Styles.
+ * High-performance, arts aesthetic, responsive aspect ratios.
+ */
+
+.kaliyattam-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--kaliyattam-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--kaliyattam-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  position: relative;
+}
+
+.kaliyattam-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-crimson);
+  border-color: var(--kaliyattam-border-hover);
+}
+
+/* Card Media / Image */
+.kaliyattam-card .card-media {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: var(--kaliyattam-surface-warm);
+  flex-shrink: 0;
+}
+
+.kaliyattam-card .card-media img,
+.kaliyattam-card .card-media picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--transition-smooth);
+}
+
+.kaliyattam-card:hover .card-media img {
+  transform: scale(1.06);
+}
+
+.kaliyattam-card .card-media-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.kaliyattam-card .card-badge-overlay {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+}
+
+/* Card Content Area */
+.kaliyattam-card .card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.kaliyattam-card .card-date {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--kaliyattam-primary);
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kaliyattam-card .card-title {
+  font-family: var(--font-serif-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  margin-bottom: 0.65rem;
+}
+
+.kaliyattam-card .card-title-link {
+  color: var(--kaliyattam-dark);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.kaliyattam-card .card-title-link:hover {
+  color: var(--kaliyattam-primary);
+}
+
+.kaliyattam-card .card-body-text {
+  font-size: var(--text-sm);
+  color: var(--kaliyattam-text-secondary);
+  line-height: var(--leading-normal);
+  flex: 1 1 auto;
+}
+
+.kaliyattam-card .card-body-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Variant: Minicard / Image Overlay */
+.kaliyattam-card--minicard {
+  position: relative;
+  min-height: 220px;
+}
+
+.kaliyattam-card--minicard .card-media {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.kaliyattam-card--minicard .card-content {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  background: var(--kaliyattam-gradient-overlay);
+  padding: 1rem;
+}
+
+.kaliyattam-card--minicard .card-title-link {
+  color: var(--kaliyattam-light);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Variant: Horizontal */
+.kaliyattam-card--horizontal {
+  flex-direction: row;
+}
+
+.kaliyattam-card--horizontal .card-media {
+  flex: 0 0 220px;
+  max-width: 220px;
+  height: auto;
+  min-height: 160px;
+}
+
+@media (max-width: 640px) {
+  .kaliyattam-card--horizontal {
+    flex-direction: column;
+  }
+  .kaliyattam-card--horizontal .card-media {
+    flex: 0 0 auto;
+    max-width: 100%;
+    height: 180px;
+  }
+}

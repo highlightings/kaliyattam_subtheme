@@ -2,5 +2,38 @@
 
 /**
  * @file
- * kaliyattam_subtheme theme file.
+ * Functions to support theming in the Kaliyattam Arts Theme.
  */
+
+declare(strict_types=1);
+
+use Drupal\Component\Utility\Html;
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function kaliyattam_subtheme_preprocess_html(array &$variables): void {
+  // Add node-type class to body if viewing a node.
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    $variables['attributes']['class'][] = 'page-node-' . $node->id();
+    $variables['attributes']['class'][] = 'node--type-' . Html::cleanCssIdentifier($node->bundle());
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function kaliyattam_subtheme_preprocess_page(array &$variables): void {
+  // Attach navigation library to all pages for responsive menu functionality.
+  $variables['#attached']['library'][] = 'kaliyattam_subtheme/navigation';
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function kaliyattam_subtheme_preprocess_node(array &$variables): void {
+  $node = $variables['node'];
+  $variables['attributes']['class'][] = 'node--type-' . Html::cleanCssIdentifier($node->bundle());
+  $variables['attributes']['class'][] = 'node--view-mode-' . Html::cleanCssIdentifier($variables['view_mode']);
+}

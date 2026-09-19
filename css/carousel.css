@@ -1,0 +1,139 @@
+/**
+ * @file
+ * Responsive Media Carousel Styles for Kaliyattam Arts Theme.
+ * Zero jQuery, hardware-accelerated, touch-friendly.
+ */
+
+.kaliyattam-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--kaliyattam-dark);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+}
+
+.carousel-track-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform var(--transition-smooth);
+  will-change: transform;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  max-height: 480px;
+  background: var(--kaliyattam-dark);
+}
+
+.carousel-slide img {
+  width: auto;
+  max-width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/* Navigation Buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(24, 24, 27, 0.65);
+  backdrop-filter: blur(4px);
+  color: var(--kaliyattam-light);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-md);
+  padding: 0;
+}
+
+.carousel-btn:hover {
+  background: var(--kaliyattam-primary);
+  border-color: var(--kaliyattam-gold);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.carousel-btn-prev {
+  left: 1rem;
+}
+
+.carousel-btn-next {
+  right: 1rem;
+}
+
+.carousel-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Indicators */
+.carousel-indicators {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: rgba(24, 24, 27, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.carousel-dot.is-active {
+  background: var(--kaliyattam-gold);
+  width: 24px;
+}
+
+/* Mobile sizing */
+@media (max-width: 768px) {
+  .carousel-slide {
+    min-height: 220px;
+    max-height: 340px;
+  }
+
+  .carousel-slide img {
+    max-height: 340px;
+  }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-btn-prev { left: 0.5rem; }
+  .carousel-btn-next { right: 0.5rem; }
+}
