@@ -33,20 +33,66 @@
   font-family: inherit;
 }
 
-/* Responsive Modal Sizing: Give Event forms comfortable breathing room */
+/* Responsive Modal Sizing: Give modal dialogs comfortable breathing room */
 @media all and (min-width: 768px) {
-  .ui-dialog {
+  .ui-dialog:not(.ui-dialog-off-canvas) {
     width: min(840px, 92vw) !important;
     max-width: 840px !important;
   }
 }
 
 @media all and (max-width: 767px) {
-  .ui-dialog {
+  .ui-dialog:not(.ui-dialog-off-canvas) {
     width: 95vw !important;
     max-width: 95vw !important;
     margin: 0 auto;
   }
+}
+
+/* ==========================================================================
+   2b. Off-Canvas Side Drawer Theming & Overrides
+   ========================================================================== */
+.ui-dialog.ui-dialog-off-canvas {
+  background: #ffffff !important;
+  color: var(--kaliyattam-text, #1e293b) !important;
+  border-radius: 0 !important;
+  border-left: 1px solid var(--kaliyattam-border, #cbd5e1) !important;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.25) !important;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-dialog-title::before {
+  display: none !important;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-dialog-content.drupal-off-canvas-reset,
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset {
+  background: #ffffff !important;
+  color: var(--kaliyattam-text, #1e293b) !important;
+}
+
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset * {
+  color: var(--kaliyattam-text, #1e293b) !important;
+}
+
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset label,
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset .form-item__label {
+  color: var(--kaliyattam-text, #1e293b) !important;
+  font-weight: 600 !important;
+}
+
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset input[type="text"],
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset input[type="tel"],
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset input[type="number"],
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset select,
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset textarea {
+  background: #ffffff !important;
+  color: var(--kaliyattam-text, #1e293b) !important;
+  border: 1px solid var(--kaliyattam-border, #cbd5e1) !important;
+  border-radius: 8px !important;
+}
+
+.ui-dialog.ui-dialog-off-canvas .drupal-off-canvas-reset .form-required::after {
+  color: #dc2626 !important;
 }
 
 /* ==========================================================================
