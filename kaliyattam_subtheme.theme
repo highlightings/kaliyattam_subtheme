@@ -45,6 +45,15 @@ function kaliyattam_subtheme_form_alter(array &$form, \Drupal\Core\Form\FormStat
   if ($form_id === 'node_post_form' || $form_id === 'node_post_edit_form') {
     kaliyattam_subtheme_alter_post_form($form, $form_state);
   }
+  elseif (in_array($form_id, ['node_event_form', 'node_event_edit_form'])) {
+    kaliyattam_subtheme_alter_content_node_form($form, $form_state, 'event');
+  }
+  elseif (in_array($form_id, ['node_theyyam_form', 'node_theyyam_edit_form'])) {
+    kaliyattam_subtheme_alter_content_node_form($form, $form_state, 'theyyam');
+  }
+  elseif (in_array($form_id, ['node_location_form', 'node_location_edit_form'])) {
+    kaliyattam_subtheme_alter_content_node_form($form, $form_state, 'location');
+  }
 }
 
 /**
@@ -191,3 +200,123 @@ function kaliyattam_subtheme_alter_post_form(array &$form, \Drupal\Core\Form\For
     $form['actions']['#weight'] = 100;
   }
 }
+
+/**
+ * Helper to streamline content node forms (Event, Theyyam, Location).
+ */
+function kaliyattam_subtheme_alter_content_node_form(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, string $bundle): void {
+  // Attach the dedicated node-form library.
+  $form['#attached']['library'][] = 'kaliyattam_subtheme/node-form';
+  $form['#attributes']['class'][] = 'node-form--styled';
+  $form['#attributes']['class'][] = 'node-form--' . $bundle;
+
+  // Bundle specific field ordering and weight optimization.
+  switch ($bundle) {
+    case 'event':
+      if (isset($form['title'])) $form['title']['#weight'] = 1;
+      if (isset($form['field_when'])) $form['field_when']['#weight'] = 2;
+      if (isset($form['field_where'])) $form['field_where']['#weight'] = 3;
+      if (isset($form['field_content'])) $form['field_content']['#weight'] = 4;
+      if (isset($form['field_media'])) $form['field_media']['#weight'] = 5;
+      break;
+
+    case 'theyyam':
+      if (isset($form['title'])) $form['title']['#weight'] = 1;
+      if (isset($form['body'])) $form['body']['#weight'] = 2;
+      if (isset($form['field_featured_image'])) $form['field_featured_image']['#weight'] = 3;
+      if (isset($form['field_media'])) $form['field_media']['#weight'] = 4;
+      if (isset($form['field_tags'])) $form['field_tags']['#weight'] = 5;
+      break;
+
+    case 'location':
+      if (isset($form['title'])) $form['title']['#weight'] = 1;
+      if (isset($form['field_location_address'])) $form['field_location_address']['#weight'] = 2;
+      if (isset($form['field_location_telephone'])) $form['field_location_telephone']['#weight'] = 3;
+      if (isset($form['body'])) $form['body']['#weight'] = 4;
+      if (isset($form['field_featured_image'])) $form['field_featured_image']['#weight'] = 5;
+      if (isset($form['field_media'])) $form['field_media']['#weight'] = 6;
+      if (isset($form['field_theyyam'])) $form['field_theyyam']['#weight'] = 7;
+      break;
+  }
+
+  // Advanced toggle button bar.
+  $form['advanced_toggle_bar'] = [
+    '#type' => 'inline_template',
+    '#template' => '
+      <div class="node-form-advanced-bar">
+        <button type="button" class="node-form-advanced-toggle" aria-expanded="false" title="' . t('Toggle secondary and administrative options') . '">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>' . t('Advanced Options') . '</span>
+          <span class="toggle-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <span class="node-form-advanced-hint">' . t('Language, publishing status, URL alias, and metadata') . '</span>
+      </div>
+    ',
+    '#weight' => 40,
+  ];
+
+  // Collapsible Advanced drawer container.
+  $form['advanced_drawer'] = [
+    '#type' => 'container',
+    '#tree' => FALSE,
+    '#attributes' => [
+      'class' => ['node-form-advanced', 'is-collapsed'],
+      'id' => 'node-form-advanced-' . $bundle,
+    ],
+    '#weight' => 45,
+  ];
+
+  $form['advanced_drawer']['advanced_title'] = [
+    '#type' => 'markup',
+    '#markup' => '<div class="advanced-header"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> <span>' . t('Advanced Configuration & Metadata') . '</span></div>',
+    '#weight' => -50,
+  ];
+
+  // Secondary keys to group under Advanced.
+  $advanced_keys = [
+    'footer',
+    'status',
+    'langcode',
+    'field_comments',
+    'path',
+    'scheduler_settings',
+    'publish_on',
+    'unpublish_on',
+    'publish_status',
+    'publish_state',
+    'unpublish_state',
+    'url_redirects',
+    'author',
+    'uid',
+    'created',
+    'promotion',
+    'promote',
+    'sticky',
+    'revision_information',
+    'revision_log',
+    'advanced',
+  ];
+
+  // For location bundle, also move geofield coordinates to advanced.
+  if ($bundle === 'location') {
+    $advanced_keys[] = 'field_geofield';
+  }
+
+  foreach ($advanced_keys as $key) {
+    if (isset($form[$key])) {
+      $form['advanced_drawer'][$key] = $form[$key];
+      unset($form[$key]);
+    }
+  }
+
+  // Customize submit actions.
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#attributes']['class'][] = 'button--primary';
+  }
+  if (isset($form['actions'])) {
+    $form['actions']['#weight'] = 100;
+  }
+}
+

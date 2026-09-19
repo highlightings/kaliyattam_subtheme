@@ -8,6 +8,7 @@ libraries:
   - kaliyattam_subtheme/global-styling
   - kaliyattam_subtheme/navigation
   - kaliyattam_subtheme/post-composer
+  - kaliyattam_subtheme/node-form
 
 ckeditor_stylesheets:
   - css/tokens.css

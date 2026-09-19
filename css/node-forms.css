@@ -1,0 +1,449 @@
+/**
+ * @file
+ * Modern, High-Visibility Form System for Kaliyattam Node Creation & Edit Forms.
+ * Mobile-first, pure CSS, high contrast, zero jQuery.
+ */
+
+/* -------------------------------------------------------------------------
+   1. Form Container & Card Layout
+   ------------------------------------------------------------------------- */
+.node-form--styled {
+  max-width: 880px;
+  margin: 1.5rem auto 3rem;
+  background: var(--kaliyattam-light);
+  border: 1px solid var(--kaliyattam-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.25rem;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Inside Drupal modal dialogs */
+.ui-dialog .node-form--styled {
+  max-width: 100%;
+  margin: 0;
+  padding: 0.75rem 0.25rem;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* Vertical rhythm between form groups */
+.node-form--styled > .form-item,
+.node-form--styled > .field--type-entity-reference,
+.node-form--styled > .field--type-text-long,
+.node-form--styled > .field--type-text-with-summary,
+.node-form--styled > .field--type-telephone,
+.node-form--styled > fieldset {
+  margin-bottom: 1.75rem;
+}
+
+/* -------------------------------------------------------------------------
+   2. High-Visibility Form Inputs & Controls
+   ------------------------------------------------------------------------- */
+.node-form--styled input.form-text,
+.node-form--styled input.form-tel,
+.node-form--styled input.form-number,
+.node-form--styled input.form-email,
+.node-form--styled select.form-select,
+.node-form--styled textarea.form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-sans-body);
+  font-size: 0.95rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.node-form--styled input.form-text:hover,
+.node-form--styled input.form-tel:hover,
+.node-form--styled input.form-number:hover,
+.node-form--styled select.form-select:hover,
+.node-form--styled textarea.form-textarea:hover {
+  border-color: #94a3b8;
+  background-color: #fdfdfd;
+}
+
+.node-form--styled input.form-text:focus,
+.node-form--styled input.form-tel:focus,
+.node-form--styled input.form-number:focus,
+.node-form--styled select.form-select:focus,
+.node-form--styled textarea.form-textarea:focus {
+  outline: none;
+  border-color: var(--kaliyattam-primary);
+  box-shadow: 0 0 0 3.5px rgba(137, 0, 0, 0.15);
+  background-color: #ffffff;
+}
+
+/* Labels */
+.node-form--styled label,
+.node-form--styled .form-item > label {
+  display: block;
+  font-family: var(--font-sans-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #1e293b;
+  margin-bottom: 0.45rem;
+  letter-spacing: -0.01em;
+}
+
+.node-form--styled .form-required::after {
+  content: " *";
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.node-form--styled .form-item__description,
+.node-form--styled .description {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-top: 0.4rem;
+  line-height: 1.45;
+}
+
+/* -------------------------------------------------------------------------
+   3. Title Field (Hero Input)
+   ------------------------------------------------------------------------- */
+.node-form--styled .field--name-title input.form-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  padding: 0.85rem 1.15rem;
+  border-color: #cbd5e1;
+  border-radius: 10px;
+}
+
+.node-form--styled .field--name-title input.form-text:focus {
+  border-color: var(--kaliyattam-primary);
+  box-shadow: 0 0 0 4px rgba(137, 0, 0, 0.16);
+}
+
+/* -------------------------------------------------------------------------
+   4. Card Framing for Fieldsets (Address, When, Media, Geofield)
+   ------------------------------------------------------------------------- */
+.node-form--styled fieldset,
+.node-form--styled .field-group-fieldset,
+.node-form--styled .field--type-address,
+.node-form--styled .field--name-field-when,
+.node-form--styled .field--name-field-featured-image,
+.node-form--styled .field--name-field-media {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.node-form--styled fieldset legend,
+.node-form--styled .field--type-address > legend,
+.node-form--styled .field--name-field-when > legend {
+  float: none;
+  width: auto;
+  padding: 0 0.5rem;
+  font-family: var(--font-sans-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--kaliyattam-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* -------------------------------------------------------------------------
+   5. Address Component Layout (Temple / Location)
+   ------------------------------------------------------------------------- */
+.node-form--styled .field--name-field-location-address {
+  background: #f8fafc;
+}
+
+.node-form--styled .field--name-field-location-address .address-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.node-form--styled .field--name-field-location-address .street-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+/* 2-Column Responsive Row for City & Postal Code */
+.node-form--styled .field--name-field-location-address .locality-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .node-form--styled .field--name-field-location-address .locality-block {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   6. SmartDate Component Layout (Events)
+   ------------------------------------------------------------------------- */
+.node-form--styled .field--name-field-when table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+.node-form--styled .field--name-field-when table th,
+.node-form--styled .field--name-field-when table td {
+  padding: 0.5rem 0.25rem;
+  border: none;
+  background: transparent;
+}
+
+.node-form--styled .field--name-field-when .smartdate--widget {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.node-form--styled .field--name-field-when .smartdate--widget input {
+  max-width: 180px;
+}
+
+.node-form--styled .field--name-field-when .tabledrag-toggle-weight-wrapper,
+.node-form--styled .field--name-field-when .tabledrag-handle {
+  display: none !important;
+}
+
+/* -------------------------------------------------------------------------
+   7. Media & Featured Image Widgets
+   ------------------------------------------------------------------------- */
+.node-form--styled .media-library-widget,
+.node-form--styled .field--type-entity-reference .media-library-selection {
+  margin-top: 0.75rem;
+}
+
+.node-form--styled .media-library-open-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #ffffff;
+  background: var(--kaliyattam-gradient);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(137, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.node-form--styled .media-library-open-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(137, 0, 0, 0.35);
+}
+
+.node-form--styled .media-library-item {
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* -------------------------------------------------------------------------
+   8. CKEditor 5 Description Container
+   ------------------------------------------------------------------------- */
+.node-form--styled .ck-editor {
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.node-form--styled .ck-editor:hover {
+  border-color: #94a3b8 !important;
+}
+
+.node-form--styled .ck-editor.ck-focused {
+  border-color: var(--kaliyattam-primary) !important;
+  box-shadow: 0 0 0 3.5px rgba(137, 0, 0, 0.15) !important;
+}
+
+.node-form--styled .ck-editor__top {
+  border-bottom: 1px solid #e2e8f0 !important;
+  background: #f8fafc !important;
+}
+
+.node-form--styled .ck-content {
+  min-height: 180px;
+  padding: 1rem !important;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------------------------------------
+   9. Advanced Options Drawer & Toggle Button
+   ------------------------------------------------------------------------- */
+.node-form-advanced-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px dashed #cbd5e1;
+}
+
+.node-form-advanced-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.15rem;
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 9999px;
+  font-family: var(--font-sans-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.node-form-advanced-toggle:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+
+.node-form-advanced-toggle .toggle-icon {
+  display: inline-flex;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.node-form-advanced-toggle[aria-expanded="true"] .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.node-form-advanced-hint {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+/* Collapsible Drawer Container */
+.node-form-advanced {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  animation: drawerFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.node-form-advanced.is-collapsed {
+  display: none !important;
+}
+
+@keyframes drawerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.node-form-advanced .advanced-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--kaliyattam-primary);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.node-form-advanced .form-item {
+  margin-bottom: 1.25rem;
+}
+
+/* -------------------------------------------------------------------------
+   10. Form Actions (Save & Preview Buttons)
+   ------------------------------------------------------------------------- */
+.node-form--styled .form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 1rem;
+}
+
+.node-form--styled .form-actions .button--primary,
+.node-form--styled .form-actions input[type="submit"]#edit-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  font-family: var(--font-sans-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--kaliyattam-gradient);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(137, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.node-form--styled .form-actions .button--primary:hover,
+.node-form--styled .form-actions input[type="submit"]#edit-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(137, 0, 0, 0.4);
+}
+
+.node-form--styled .form-actions input[type="submit"]#edit-preview {
+  background: transparent;
+  border: 1.5px solid #cbd5e1;
+  color: #475569;
+  border-radius: 9999px;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+}
+
+.node-form--styled .form-actions input[type="submit"]#edit-preview:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #1e293b;
+  transform: none;
+}
+
+/* When inside dialog, hide in-form actions since Drupal dialog clones buttons */
+.ui-dialog .node-form--styled .form-actions {
+  display: none !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane .button--primary,
+.ui-dialog .ui-dialog-buttonpane button:has-text("Save") {
+  background: var(--kaliyattam-gradient) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  padding: 0.65rem 1.75rem !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(137, 0, 0, 0.3) !important;
+}

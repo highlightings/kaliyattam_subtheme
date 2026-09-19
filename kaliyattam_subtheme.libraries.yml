@@ -48,3 +48,15 @@ post-composer:
     - core/drupal
     - core/drupalSettings
     - core/once
+
+node-form:
+  version: 1.0
+  css:
+    theme:
+      css/node-forms.css: {}
+  js:
+    js/node-forms.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once

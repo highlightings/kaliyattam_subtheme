@@ -179,20 +179,30 @@ button:active {
   color: var(--kaliyattam-primary);
 }
 
-.btn-link {
-  background: transparent;
-  color: var(--kaliyattam-primary);
-  padding: 0;
-  box-shadow: none;
-  border: none;
-  font-weight: 500;
+.btn-link,
+button.link,
+button.link-edit-summary,
+.field-edit-link button {
+  display: inline;
+  background: transparent !important;
+  color: var(--kaliyattam-primary) !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  font-weight: 500 !important;
+  text-decoration: underline !important;
+  cursor: pointer;
+  transform: none !important;
 }
 
-.btn-link:hover {
-  background: transparent;
-  color: var(--kaliyattam-gold-dark);
-  box-shadow: none;
-  transform: none;
+.btn-link:hover,
+button.link:hover,
+button.link-edit-summary:hover,
+.field-edit-link button:hover {
+  background: transparent !important;
+  color: var(--kaliyattam-gold-dark) !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 /* Form Controls */
@@ -203,10 +213,13 @@ input[type="number"],
 input[type="search"],
 input[type="tel"],
 input[type="url"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
 select,
 textarea {
   width: 100%;
-  padding: 0.65rem 0.9rem;
+  padding: 0.7rem 0.95rem;
   font-family: var(--font-sans-body);
   font-size: var(--text-base);
   color: var(--kaliyattam-text);
@@ -216,20 +229,49 @@ textarea {
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="number"]:hover,
+input[type="search"]:hover,
+input[type="tel"]:hover,
+input[type="url"]:hover,
+input[type="date"]:hover,
+input[type="time"]:hover,
+input[type="datetime-local"]:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--kaliyattam-border-hover);
+}
+
 input:focus,
 select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--kaliyattam-primary);
-  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.12);
+  box-shadow: 0 0 0 3px var(--kaliyattam-input-focus);
 }
 
 label {
   display: block;
   font-weight: 600;
   font-size: var(--text-sm);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
   color: var(--kaliyattam-dark);
+}
+
+.form-required::after {
+  content: " *";
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.form-item__description,
+.description {
+  font-size: var(--text-xs);
+  color: var(--kaliyattam-text-muted);
+  margin-top: 0.35rem;
+  line-height: 1.4;
 }
 
 /* Drupal Status Messages */
