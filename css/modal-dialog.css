@@ -582,3 +582,541 @@
   background: #f1f5f9 !important;
   color: #0f172a !important;
 }
+
+/* ==========================================================================
+   8. Drupal Media Library Modal & Grid Theming
+   ========================================================================== */
+/* Modal Dialog Sizing for Media Library */
+@media all and (min-width: 900px) {
+  .ui-dialog.media-library-widget-modal {
+    width: min(1040px, 95vw) !important;
+    max-width: 1040px !important;
+  }
+
+  .ui-dialog.media-library-widget-modal .ui-dialog-content {
+    height: 72vh !important;
+    max-height: 78vh !important;
+    padding: 1.5rem !important;
+  }
+}
+
+@media all and (max-width: 899px) {
+  .ui-dialog.media-library-widget-modal {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+
+  .ui-dialog.media-library-widget-modal .ui-dialog-content {
+    max-height: 75vh !important;
+    padding: 1rem !important;
+  }
+}
+
+/* Media Library Main Wrapper */
+.media-library-widget-modal #media-library-wrapper {
+  display: flex !important;
+  gap: 1.5rem !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+}
+
+@media all and (max-width: 767px) {
+  .media-library-widget-modal #media-library-wrapper {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+}
+
+/* Media Library Side Navigation Menu (Image / Remote video) */
+.media-library-widget-modal .js-media-library-menu {
+  flex: 0 0 160px !important;
+  max-width: 160px !important;
+  margin: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  align-self: flex-start !important;
+}
+
+@media all and (max-width: 767px) {
+  .media-library-widget-modal .js-media-library-menu {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    position: static !important;
+  }
+}
+
+.media-library-widget-modal .js-media-library-menu .nav-pills {
+  width: 100% !important;
+  gap: 0.35rem !important;
+}
+
+@media all and (max-width: 767px) {
+  .media-library-widget-modal .js-media-library-menu .nav-pills {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+.media-library-widget-modal .js-media-library-menu .nav-pills .nav-link {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  padding: 0.6rem 1rem !important;
+  color: #475569 !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  transition: all 0.2s ease !important;
+  text-align: left !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.media-library-widget-modal .js-media-library-menu .nav-pills .nav-link:hover {
+  background-color: #f1f5f9 !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.media-library-widget-modal .js-media-library-menu .nav-pills .nav-link.active,
+.media-library-widget-modal .js-media-library-menu .nav-pills .nav-link.is-active {
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000)) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(137, 0, 0, 0.25) !important;
+}
+
+/* Media Library Main Content Column */
+.media-library-widget-modal #media-library-content {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+/* Upload Area (Add files) */
+.media-library-widget-modal #media-library-add-form-wrapper {
+  background: #f8fafc !important;
+  border: 1.5px dashed #cbd5e1 !important;
+  border-radius: 12px !important;
+  padding: 1.25rem 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.media-library-widget-modal #media-library-add-form-wrapper:hover {
+  border-color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.media-library-widget-modal #media-library-add-form-wrapper .form-item label {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.media-library-widget-modal #media-library-add-form-wrapper .description {
+  font-size: 0.8rem !important;
+  color: #64748b !important;
+  margin-top: 0.4rem !important;
+}
+
+/* View Header / Display Mode Switcher (Grid / Table) */
+.media-library-widget-modal .view-media-library .view-header {
+  margin-bottom: 1rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  display: flex !important;
+  gap: 0.5rem !important;
+}
+
+.media-library-widget-modal .view-media-library .view-header a {
+  padding: 0.4rem 1rem !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  color: #64748b !important;
+  border-bottom: 2px solid transparent !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.media-library-widget-modal .view-media-library .view-header a:hover {
+  color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.media-library-widget-modal .view-media-library .view-header a.is-active,
+.media-library-widget-modal .view-media-library .view-header a.active {
+  color: var(--kaliyattam-primary, #890000) !important;
+  border-bottom-color: var(--kaliyattam-primary, #890000) !important;
+}
+
+/* Exposed Filters Bar */
+.media-library-widget-modal .view-filters {
+  margin-bottom: 1.25rem !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.media-library-widget-modal .view-filters .form--inline {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  gap: 0.75rem !important;
+}
+
+.media-library-widget-modal .view-filters .form-item {
+  margin: 0 !important;
+}
+
+.media-library-widget-modal .view-filters label {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.media-library-widget-modal .view-filters input.form-text {
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 0.45rem 0.75rem !important;
+  font-size: 0.85rem !important;
+}
+
+.media-library-widget-modal .view-filters select.form-select {
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 0.45rem 2.25rem 0.45rem 0.75rem !important;
+  font-size: 0.85rem !important;
+  background-position: right 0.75rem center !important;
+}
+
+.media-library-widget-modal .view-filters input.form-text:focus,
+.media-library-widget-modal .view-filters select.form-select:focus {
+  border-color: var(--kaliyattam-primary, #890000) !important;
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.15) !important;
+}
+
+.media-library-widget-modal .view-filters .form-actions input[type="submit"] {
+  border-radius: 8px !important;
+  padding: 0.45rem 1rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+  transition: all 0.2s ease !important;
+}
+
+.media-library-widget-modal .view-filters .form-actions input[type="submit"]:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+/* ==========================================================================
+   Media Library Grid Container & Items
+   ========================================================================== */
+.media-library-widget-modal .view-media-library .media-library-views-form {
+  width: 100% !important;
+  display: block !important;
+}
+
+/* CSS Grid layout for thumbnail items */
+.media-library-widget-modal .view-media-library .media-library-views-form__rows {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+  gap: 1.25rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Reset row margins and flex constraints on each item */
+.media-library-widget-modal .view-media-library .media-library-item--grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Card representation of each media item */
+.media-library-widget-modal .view-media-library .views-field-rendered-entity {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  padding: 0 !important;
+}
+
+.media-library-widget-modal .view-media-library .media-library-item--grid:hover .views-field-rendered-entity {
+  border-color: #94a3b8 !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Selected state with active brand border and glowing ring */
+.media-library-widget-modal .view-media-library .media-library-item--grid.checked .views-field-rendered-entity,
+.media-library-widget-modal .view-media-library .media-library-item--grid:has(input:checked) .views-field-rendered-entity {
+  border-color: var(--kaliyattam-primary, #890000) !important;
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.2), 0 8px 16px rgba(137, 0, 0, 0.1) !important;
+}
+
+.media-library-widget-modal .media-library-item__preview-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Thumbnail preview container */
+.media-library-widget-modal .media-library-item__preview {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  background-color: #f8fafc !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  position: relative !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hide the redundant "Thumbnail" field label */
+.media-library-widget-modal .field--name-thumbnail .field__label {
+  display: none !important;
+}
+
+.media-library-widget-modal .field--name-thumbnail,
+.media-library-widget-modal .field--name-thumbnail .field__item {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Image fills preview box properly with cover fit */
+.media-library-widget-modal .media-library-item__preview img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 0 !important;
+  transition: transform 0.35s ease !important;
+}
+
+.media-library-widget-modal .view-media-library .media-library-item--grid:hover .media-library-item__preview img {
+  transform: scale(1.05) !important;
+}
+
+/* Media Item Name & Metadata */
+.media-library-widget-modal .media-library-item__attributes {
+  padding: 0.65rem 0.75rem !important;
+  background: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+  flex-grow: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.media-library-widget-modal .media-library-item__name {
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  color: #334155 !important;
+  line-height: 1.35 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  word-break: break-word !important;
+}
+
+/* Checkbox overlay badge */
+.media-library-widget-modal .media-library-item__click-to-select-checkbox {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  z-index: 10 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 26px !important;
+  height: 26px !important;
+  transition: all 0.2s ease !important;
+}
+
+.media-library-widget-modal .media-library-item__click-to-select-checkbox .form-check {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.media-library-widget-modal .media-library-item__click-to-select-checkbox input[type="checkbox"] {
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  accent-color: var(--kaliyattam-primary, #890000) !important;
+}
+
+/* Checked badge styling */
+.media-library-widget-modal .media-library-item--grid.checked .media-library-item__click-to-select-checkbox,
+.media-library-widget-modal .media-library-item--grid:has(input:checked) .media-library-item__click-to-select-checkbox {
+  background: var(--kaliyattam-primary, #890000) !important;
+  border-color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.media-library-widget-modal .media-library-item--grid.checked .media-library-item__click-to-select-checkbox input[type="checkbox"],
+.media-library-widget-modal .media-library-item--grid:has(input:checked) .media-library-item__click-to-select-checkbox input[type="checkbox"] {
+  accent-color: #ffffff !important;
+}
+
+/* Media Library Footer & Selection Actions */
+.media-library-widget-modal .ui-dialog-buttonpane {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 1.1rem 1.75rem !important;
+  background: #f8fafc !important;
+  border-top: 1px solid #e2e8f0 !important;
+  margin: 0 !important;
+}
+
+.media-library-widget-modal .media-library-selected-count {
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  order: 1 !important;
+}
+
+.media-library-widget-modal .ui-dialog-buttonpane .form-actions,
+.media-library-widget-modal .ui-dialog-buttonpane .ui-dialog-buttonset {
+  order: 2 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.media-library-widget-modal .media-library-select {
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000, #4a0000)) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.65rem 1.75rem !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(137, 0, 0, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+.media-library-widget-modal .media-library-select:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(137, 0, 0, 0.35) !important;
+}
+
+/* ==========================================================================
+   9. Media Library Selected Items on Parent Entity Form
+   ========================================================================== */
+.media-library-selection {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+  gap: 1rem !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 1rem !important;
+  width: 100% !important;
+}
+
+.media-library-selection .media-library-item {
+  width: 100% !important;
+  position: relative !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.media-library-selection .media-library-item__preview {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  background: #f8fafc !important;
+}
+
+.media-library-selection .media-library-item__preview img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.media-library-selection .field--name-thumbnail .field__label {
+  display: none !important;
+}
+
+.media-library-selection .media-library-item__name {
+  padding: 0.4rem 0.5rem !important;
+  font-size: 0.75rem !important;
+  color: #475569 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  background: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+}
+
+/* Action buttons (Edit / Remove) on selected items */
+.media-library-selection .media-library-item__edit,
+.media-library-selection .media-library-item__remove {
+  position: absolute !important;
+  top: 6px !important;
+  z-index: 5 !important;
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  cursor: pointer !important;
+  transition: transform 0.2s ease !important;
+}
+
+.media-library-selection .media-library-item__edit:hover,
+.media-library-selection .media-library-item__remove:hover {
+  transform: scale(1.1) !important;
+}
+
+.media-library-selection .media-library-item__remove {
+  right: 6px !important;
+}
+
+.media-library-selection .media-library-item__edit {
+  right: 36px !important;
+}
