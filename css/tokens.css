@@ -91,4 +91,62 @@
   /* Layout Containers */
   --container-max-width: 1240px;
   --container-padding: clamp(1rem, 3vw, 2rem);
+
+  /* Semantic Theme Tokens - Light Mode (Default) */
+  --theme-bg: #faf8f5;
+  --theme-surface: #ffffff;
+  --theme-surface-warm: #f4efe8;
+  --theme-surface-alt: #f8fafc;
+  --theme-border: #cbd5e1;
+  --theme-border-subtle: rgba(0, 0, 0, 0.08);
+  --theme-border-hover: #94a3b8;
+  --theme-text: #1c1917;
+  --theme-text-secondary: #52525b;
+  --theme-text-muted: #71717a;
+  --theme-input-bg: #ffffff;
+  --theme-input-border: #cbd5e1;
+  --theme-header-bg: linear-gradient(135deg, #890000 0%, #4a0000 100%);
+  --theme-header-top-bg: rgba(0, 0, 0, 0.15);
+  --theme-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --theme-card-shadow-hover: 0 8px 30px rgba(137, 0, 0, 0.15);
 }
+
+/* ==========================================================================
+   Semantic Theme Tokens - Dark Mode
+   Inspired by released.in/kal_15unaA1/events:
+   #111827 body bg, #1f2937 card bg, #374151 border, #f3f4f6 / #9ca3af text
+   ========================================================================== */
+:root[data-theme="dark"],
+html.dark {
+  --theme-bg: #111827;
+  --theme-surface: #1f2937;
+  --theme-surface-warm: #1a2332;
+  --theme-surface-alt: #17202e;
+  --theme-border: #374151;
+  --theme-border-subtle: rgba(255, 255, 255, 0.08);
+  --theme-border-hover: #4b5563;
+  --theme-text: #f3f4f6;
+  --theme-text-secondary: #9ca3af;
+  --theme-text-muted: #6b7280;
+  --theme-input-bg: #111827;
+  --theme-input-border: #374151;
+  --theme-header-bg: linear-gradient(135deg, #3d0000 0%, #1e293b 60%, #111827 100%);
+  --theme-header-top-bg: rgba(0, 0, 0, 0.4);
+  --theme-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --theme-card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.5);
+
+  /* Legacy variable mappings in dark mode for immediate theme-wide compatibility */
+  --kaliyattam-surface: #111827;
+  --kaliyattam-surface-warm: #1a2332;
+  --kaliyattam-surface-alt: #17202e;
+  --kaliyattam-light: #1f2937;
+  --kaliyattam-text: #f3f4f6;
+  --kaliyattam-text-secondary: #9ca3af;
+  --kaliyattam-text-muted: #6b7280;
+  --kaliyattam-border: #374151;
+  --kaliyattam-border-subtle: rgba(255, 255, 255, 0.08);
+  --kaliyattam-border-hover: #4b5563;
+  --kaliyattam-gradient: linear-gradient(135deg, #420000 0%, #1e293b 60%, #111827 100%);
+  --kaliyattam-dark: #0d111a;
+}
+

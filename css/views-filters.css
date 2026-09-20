@@ -354,3 +354,38 @@ form.views-exposed-form .form-type-checkboxes fieldset > ul > li,
     padding-top: 1rem;
   }
 }
+
+/* ==========================================================================
+   Dark Mode Overrides for Views Filters & Cards
+   ========================================================================== */
+:root[data-theme="dark"] .views-exposed-form,
+:root[data-theme="dark"] .view-filters .form--inline,
+:root[data-theme="dark"] .views-exposed-widgets,
+html.dark .views-exposed-form,
+html.dark .view-filters .form--inline,
+html.dark .views-exposed-widgets {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+:root[data-theme="dark"] .views-exposed-form .views-exposed-widget label,
+:root[data-theme="dark"] .views-exposed-form .views-exposed-widget .form-item label,
+html.dark .views-exposed-form .views-exposed-widget label,
+html.dark .views-exposed-form .views-exposed-widget .form-item label {
+  color: var(--theme-text, #f3f4f6);
+}
+
+:root[data-theme="dark"] .views-exposed-form .views-exposed-widget .form-item input[type="text"],
+:root[data-theme="dark"] .views-exposed-form .views-exposed-widget .form-item select,
+:root[data-theme="dark"] .views-exposed-form .views-exposed-widget .form-item input[type="search"],
+html.dark .views-exposed-form .views-exposed-widget .form-item input[type="text"],
+html.dark .views-exposed-form .views-exposed-widget .form-item select,
+html.dark .views-exposed-form .views-exposed-widget .form-item input[type="search"] {
+  background: var(--theme-input-bg, #111827);
+  border-color: var(--theme-input-border, #374151);
+  color: var(--theme-text, #f3f4f6);
+}
+
+:root[data-theme="dark"] .horizontal-card .card-img-left,
+html.dark .horizontal-card .card-img-left {
+  background: #111827;
+}

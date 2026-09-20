@@ -50,9 +50,9 @@
   padding: 0.75rem 1rem;
   font-family: var(--font-sans-body);
   font-size: 0.95rem;
-  color: #1e293b;
-  background-color: #ffffff;
-  border: 1.5px solid #cbd5e1;
+  color: var(--theme-text, #1e293b);
+  background-color: var(--theme-input-bg, #ffffff);
+  border: 1.5px solid var(--theme-input-border, #cbd5e1);
   border-radius: 8px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -63,8 +63,7 @@
 .node-form--styled input.form-number:hover,
 .node-form--styled select.form-select:hover,
 .node-form--styled textarea.form-textarea:hover {
-  border-color: #94a3b8;
-  background-color: #fdfdfd;
+  border-color: var(--theme-border-hover, #94a3b8);
 }
 
 .node-form--styled input.form-text:focus,
@@ -75,7 +74,7 @@
   outline: none;
   border-color: var(--kaliyattam-primary);
   box-shadow: 0 0 0 3.5px rgba(137, 0, 0, 0.15);
-  background-color: #ffffff;
+  background-color: var(--theme-input-bg, #ffffff);
 }
 
 /* Labels */
@@ -85,7 +84,7 @@
   font-family: var(--font-sans-body);
   font-weight: 600;
   font-size: 0.875rem;
-  color: #1e293b;
+  color: var(--theme-text, #1e293b);
   margin-bottom: 0.45rem;
   letter-spacing: -0.01em;
 }
@@ -99,7 +98,7 @@
 .node-form--styled .form-item__description,
 .node-form--styled .description {
   font-size: 0.8125rem;
-  color: #64748b;
+  color: var(--theme-text-muted, #64748b);
   margin-top: 0.4rem;
   line-height: 1.45;
 }
@@ -111,7 +110,7 @@
   font-size: 1.15rem;
   font-weight: 600;
   padding: 0.85rem 1.15rem;
-  border-color: #cbd5e1;
+  border-color: var(--theme-input-border, #cbd5e1);
   border-radius: 10px;
 }
 
@@ -129,8 +128,8 @@
 .node-form--styled .field--name-field-when,
 .node-form--styled .field--name-field-featured-image,
 .node-form--styled .field--name-field-media {
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
+  background: var(--theme-surface-warm, #f8fafc);
+  border: 1.5px solid var(--theme-border, #e2e8f0);
   border-radius: 12px;
   padding: 1.35rem 1.5rem;
   margin-bottom: 1.75rem;
@@ -146,7 +145,7 @@
   font-family: var(--font-sans-body);
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--kaliyattam-dark);
+  color: var(--theme-text, var(--kaliyattam-dark));
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -248,17 +247,17 @@
 }
 
 .node-form--styled .media-library-item {
-  border: 1.5px solid #cbd5e1;
+  border: 1.5px solid var(--theme-border, #cbd5e1);
   border-radius: 10px;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--theme-surface, #ffffff);
 }
 
 /* -------------------------------------------------------------------------
    8. CKEditor 5 Description Container
    ------------------------------------------------------------------------- */
 .node-form--styled .ck-editor {
-  border: 1.5px solid #cbd5e1 !important;
+  border: 1.5px solid var(--theme-input-border, #cbd5e1) !important;
   border-radius: 10px !important;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
@@ -266,7 +265,7 @@
 }
 
 .node-form--styled .ck-editor:hover {
-  border-color: #94a3b8 !important;
+  border-color: var(--theme-border-hover, #94a3b8) !important;
 }
 
 .node-form--styled .ck-editor.ck-focused {
@@ -275,8 +274,8 @@
 }
 
 .node-form--styled .ck-editor__top {
-  border-bottom: 1px solid #e2e8f0 !important;
-  background: #f8fafc !important;
+  border-bottom: 1px solid var(--theme-border, #e2e8f0) !important;
+  background: var(--theme-surface-alt, #f8fafc) !important;
 }
 
 .node-form--styled .ck-content {
@@ -284,6 +283,8 @@
   padding: 1rem !important;
   font-size: 0.95rem;
   line-height: 1.6;
+  background: var(--theme-input-bg, #ffffff) !important;
+  color: var(--theme-text, #1e293b) !important;
 }
 
 /* -------------------------------------------------------------------------
@@ -295,7 +296,7 @@
   justify-content: space-between;
   margin: 2rem 0 1rem;
   padding-top: 1.5rem;
-  border-top: 1.5px dashed #cbd5e1;
+  border-top: 1.5px dashed var(--theme-border, #cbd5e1);
 }
 
 .node-form-advanced-toggle {
@@ -303,21 +304,21 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.6rem 1.15rem;
-  background: #f1f5f9;
-  border: 1.5px solid #cbd5e1;
+  background: var(--theme-surface-warm, #f1f5f9);
+  border: 1.5px solid var(--theme-border, #cbd5e1);
   border-radius: 9999px;
   font-family: var(--font-sans-body);
   font-size: 0.875rem;
   font-weight: 600;
-  color: #334155;
+  color: var(--theme-text, #334155);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .node-form-advanced-toggle:hover {
-  background: #e2e8f0;
-  border-color: #94a3b8;
-  color: #0f172a;
+  background: var(--theme-surface-alt, #e2e8f0);
+  border-color: var(--theme-border-hover, #94a3b8);
+  color: var(--theme-text, #0f172a);
   transform: translateY(-1px);
 }
 
@@ -332,13 +333,13 @@
 
 .node-form-advanced-hint {
   font-size: 0.8125rem;
-  color: #64748b;
+  color: var(--theme-text-muted, #64748b);
 }
 
 /* Collapsible Drawer Container */
 .node-form-advanced {
-  background: #f8fafc;
-  border: 1.5px solid #cbd5e1;
+  background: var(--theme-surface-warm, #f8fafc);
+  border: 1.5px solid var(--theme-border, #cbd5e1);
   border-radius: 12px;
   padding: 1.75rem;
   margin-bottom: 2rem;
@@ -372,7 +373,7 @@
   color: var(--kaliyattam-primary);
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--theme-border, #e2e8f0);
 }
 
 .node-form-advanced .form-item {
@@ -387,7 +388,7 @@
   align-items: center;
   gap: 1rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--theme-border, #e2e8f0);
   margin-top: 1rem;
 }
 
@@ -418,17 +419,17 @@
 
 .node-form--styled .form-actions input[type="submit"]#edit-preview {
   background: transparent;
-  border: 1.5px solid #cbd5e1;
-  color: #475569;
+  border: 1.5px solid var(--theme-border, #cbd5e1);
+  color: var(--theme-text-secondary, #475569);
   border-radius: 9999px;
   padding: 0.7rem 1.5rem;
   font-weight: 600;
 }
 
 .node-form--styled .form-actions input[type="submit"]#edit-preview:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
-  color: #1e293b;
+  background: var(--theme-surface-alt, #f1f5f9);
+  border-color: var(--theme-border-hover, #94a3b8);
+  color: var(--theme-text, #1e293b);
   transform: none;
 }
 
@@ -447,3 +448,151 @@
   font-weight: 700 !important;
   box-shadow: 0 4px 14px rgba(137, 0, 0, 0.3) !important;
 }
+
+/* ==========================================================================
+   Dark Mode Specific Overrides for Node Forms
+   ========================================================================== */
+:root[data-theme="dark"] .node-form--styled,
+html.dark .node-form--styled {
+  background: var(--theme-surface, #1f2937);
+  border-color: var(--theme-border, #374151);
+  box-shadow: var(--theme-card-shadow, 0 4px 20px rgba(0, 0, 0, 0.4));
+}
+
+:root[data-theme="dark"] .node-form--styled label,
+:root[data-theme="dark"] .node-form--styled .form-item > label,
+html.dark .node-form--styled label,
+html.dark .node-form--styled .form-item > label {
+  color: var(--theme-text, #f3f4f6);
+}
+
+:root[data-theme="dark"] .node-form--styled input.form-text,
+:root[data-theme="dark"] .node-form--styled input.form-tel,
+:root[data-theme="dark"] .node-form--styled input.form-number,
+:root[data-theme="dark"] .node-form--styled input.form-email,
+:root[data-theme="dark"] .node-form--styled select.form-select,
+:root[data-theme="dark"] .node-form--styled textarea.form-textarea,
+html.dark .node-form--styled input.form-text,
+html.dark .node-form--styled input.form-tel,
+html.dark .node-form--styled input.form-number,
+html.dark .node-form--styled input.form-email,
+html.dark .node-form--styled select.form-select,
+html.dark .node-form--styled textarea.form-textarea {
+  background-color: var(--theme-input-bg, #111827);
+  color: var(--theme-text, #f3f4f6);
+  border-color: var(--theme-input-border, #374151);
+}
+
+:root[data-theme="dark"] .node-form--styled input.form-text:focus,
+:root[data-theme="dark"] .node-form--styled input.form-tel:focus,
+:root[data-theme="dark"] .node-form--styled input.form-number:focus,
+:root[data-theme="dark"] .node-form--styled select.form-select:focus,
+:root[data-theme="dark"] .node-form--styled textarea.form-textarea:focus,
+html.dark .node-form--styled input.form-text:focus,
+html.dark .node-form--styled input.form-tel:focus,
+html.dark .node-form--styled input.form-number:focus,
+html.dark .node-form--styled select.form-select:focus,
+html.dark .node-form--styled textarea.form-textarea:focus {
+  border-color: #f87171;
+  box-shadow: 0 0 0 3.5px rgba(248, 113, 113, 0.25);
+  background-color: var(--theme-input-bg, #111827);
+}
+
+:root[data-theme="dark"] .node-form--styled .ck-editor__top .ck-sticky-panel .ck-toolbar,
+html.dark .node-form--styled .ck-editor__top .ck-sticky-panel .ck-toolbar {
+  background: var(--theme-surface-alt, #17202e) !important;
+  border-color: var(--theme-border, #374151) !important;
+}
+
+:root[data-theme="dark"] .node-form--styled .ck-editor__top .ck-button,
+html.dark .node-form--styled .ck-editor__top .ck-button {
+  color: #e5e7eb !important;
+}
+
+:root[data-theme="dark"] .node-form--styled .ck-editor__top .ck-button:hover,
+html.dark .node-form--styled .ck-editor__top .ck-button:hover {
+  background: #374151 !important;
+}
+
+:root[data-theme="dark"] .node-form--styled .ck-content,
+html.dark .node-form--styled .ck-content {
+  background: var(--theme-input-bg, #111827) !important;
+  color: var(--theme-text, #f3f4f6) !important;
+}
+
+:root[data-theme="dark"] .node-form--styled .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
+html.dark .node-form--styled .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+  border-color: var(--theme-border, #374151) !important;
+}
+
+/* Vertical Tabs & Details in Dark Mode */
+:root[data-theme="dark"] .vertical-tabs,
+html.dark .vertical-tabs {
+  background: var(--theme-surface, #1f2937) !important;
+  border-color: var(--theme-border, #374151) !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__menu,
+html.dark .vertical-tabs__menu {
+  background: var(--theme-input-bg, #111827) !important;
+  border-color: var(--theme-border, #374151) !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__menu-item,
+html.dark .vertical-tabs__menu-item {
+  background: var(--theme-input-bg, #111827) !important;
+  border-color: var(--theme-border, #374151) !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__menu-item a,
+html.dark .vertical-tabs__menu-item a {
+  background: transparent !important;
+  color: #e5e7eb !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__menu-item a:hover,
+html.dark .vertical-tabs__menu-item a:hover {
+  background: var(--theme-surface, #1f2937) !important;
+  color: #fbbf24 !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__menu-item.is-selected,
+html.dark .vertical-tabs__menu-item.is-selected {
+  background: var(--theme-surface, #1f2937) !important;
+  border-right-color: transparent !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__menu-item.is-selected a,
+html.dark .vertical-tabs__menu-item.is-selected a {
+  background: var(--theme-surface, #1f2937) !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__menu-item-summary,
+html.dark .vertical-tabs__menu-item-summary {
+  color: #9ca3af !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__panes,
+html.dark .vertical-tabs__panes {
+  background: var(--theme-surface, #1f2937) !important;
+  border-color: var(--theme-border, #374151) !important;
+}
+
+:root[data-theme="dark"] .vertical-tabs__pane,
+html.dark .vertical-tabs__pane {
+  background: var(--theme-surface, #1f2937) !important;
+  color: var(--theme-text, #f3f4f6) !important;
+}
+
+:root[data-theme="dark"] details.form-wrapper,
+html.dark details.form-wrapper {
+  background: var(--theme-surface, #1f2937) !important;
+  border-color: var(--theme-border, #374151) !important;
+}
+
+:root[data-theme="dark"] details.form-wrapper > summary,
+html.dark details.form-wrapper > summary {
+  color: var(--theme-text, #f3f4f6) !important;
+}
+

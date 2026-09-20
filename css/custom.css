@@ -17,21 +17,31 @@
 
 .container .region-content {
   padding: 1.5rem;
-  background-color: var(--kaliyattam-light);
+  background-color: var(--theme-surface, var(--kaliyattam-light));
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--kaliyattam-border);
+  box-shadow: var(--theme-card-shadow, var(--shadow-sm));
+  border: 1px solid var(--theme-border, var(--kaliyattam-border));
+  color: var(--theme-text, var(--kaliyattam-text));
+  transition: background-color var(--transition-normal, 0.25s ease), border-color var(--transition-normal, 0.25s ease), color var(--transition-normal, 0.25s ease);
 }
 
 /* Card wrappers in views */
-.card-wrapper {
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+.card-wrapper,
+.kaliyattam-card,
+.card {
+  background-color: var(--theme-surface, var(--kaliyattam-light));
+  border: 1px solid var(--theme-border, var(--kaliyattam-border));
+  border-radius: var(--radius-md);
+  color: var(--theme-text, var(--kaliyattam-text));
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), background-color var(--transition-normal);
   height: 100%;
 }
 
-.card-wrapper:hover {
+.card-wrapper:hover,
+.kaliyattam-card:hover,
+.card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-crimson);
+  box-shadow: var(--theme-card-shadow-hover, var(--shadow-crimson));
 }
 
 /* Theyyam cover image styling */

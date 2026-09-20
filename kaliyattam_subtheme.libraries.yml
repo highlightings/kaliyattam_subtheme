@@ -18,6 +18,7 @@ navigation:
       css/navigation.css: {}
   js:
     js/navigation.js: {}
+    js/theme-toggle.js: {}
   dependencies:
     - core/drupal
 

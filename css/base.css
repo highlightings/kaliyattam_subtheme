@@ -23,8 +23,8 @@ html {
 body {
   font-family: var(--font-sans-body);
   font-size: var(--text-base);
-  color: var(--kaliyattam-text);
-  background-color: var(--kaliyattam-surface);
+  color: var(--theme-text, var(--kaliyattam-text));
+  background-color: var(--theme-bg, var(--kaliyattam-surface));
   background-image: var(--kaliyattam-gradient-subtle);
   background-repeat: no-repeat;
   background-size: 100% 400px;
@@ -33,7 +33,14 @@ body {
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-normal, 0.25s ease), color var(--transition-normal, 0.25s ease);
 }
+
+:root[data-theme="dark"] body,
+html.dark body {
+  background-image: none;
+}
+
 
 /* Accessibility: Skip to Content link */
 .visually-hidden,
@@ -222,11 +229,11 @@ textarea {
   padding: 0.7rem 0.95rem;
   font-family: var(--font-sans-body);
   font-size: var(--text-base);
-  color: var(--kaliyattam-text);
-  background-color: var(--kaliyattam-light);
-  border: 1px solid var(--kaliyattam-border);
+  color: var(--theme-text, var(--kaliyattam-text));
+  background-color: var(--theme-input-bg, var(--kaliyattam-light));
+  border: 1px solid var(--theme-input-border, var(--kaliyattam-border));
   border-radius: var(--radius-sm);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
 input[type="text"]:hover,
@@ -375,4 +382,66 @@ hr {
   background-color: #f1f5f9 !important;
   color: var(--kaliyattam-primary, #890000) !important;
 }
+
+/* ==========================================================================
+   Dark Mode Overrides for Base Elements
+   ========================================================================== */
+:root[data-theme="dark"],
+html.dark {
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4,
+:root[data-theme="dark"] h5,
+:root[data-theme="dark"] h6,
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #f3f4f6;
+}
+
+:root[data-theme="dark"] h2,
+html.dark h2 {
+  color: #fca5a5;
+}
+
+:root[data-theme="dark"] p,
+html.dark p {
+  color: #9ca3af;
+}
+
+:root[data-theme="dark"] a,
+html.dark a {
+  color: #f87171;
+}
+
+:root[data-theme="dark"] a:hover,
+html.dark a:hover {
+  color: #fbbf24;
+}
+
+:root[data-theme="dark"] .contextual.open ul.contextual-links,
+html.dark .contextual.open ul.contextual-links {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+:root[data-theme="dark"] .contextual.open ul.contextual-links li a,
+html.dark .contextual.open ul.contextual-links li a {
+  color: #e5e7eb !important;
+}
+
+:root[data-theme="dark"] .contextual.open ul.contextual-links li a:hover,
+html.dark .contextual.open ul.contextual-links li a:hover {
+  background-color: #374151 !important;
+  color: #fbbf24 !important;
+}
+
 

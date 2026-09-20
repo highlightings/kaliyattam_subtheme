@@ -59,7 +59,7 @@
 }
 
 .site-breadcrumb a {
-  color: var(--kaliyattam-text-secondary);
+  color: var(--theme-text-secondary, var(--kaliyattam-text-secondary));
 }
 
 .site-breadcrumb a:hover {
@@ -93,10 +93,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.35rem 0.85rem;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--theme-surface-alt, #f8fafc);
+  border: 1px solid var(--theme-border, #e2e8f0);
   border-radius: 9999px;
-  color: #475569;
+  color: var(--theme-text-secondary, #475569);
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
@@ -111,15 +111,15 @@
 }
 
 .local-tasks-summary:hover {
-  background: #ffffff;
+  background: var(--theme-surface, #ffffff);
   color: var(--kaliyattam-primary, #890000);
-  border-color: #cbd5e1;
+  border-color: var(--theme-border-hover, #cbd5e1);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .local-tasks-collapsible[open] > .local-tasks-summary {
-  background: #ffffff;
-  border-color: #cbd5e1;
+  background: var(--theme-surface, #ffffff);
+  border-color: var(--theme-border-hover, #cbd5e1);
   color: var(--kaliyattam-primary, #890000);
   box-shadow: 0 2px 8px rgba(137, 0, 0, 0.08);
 }
@@ -127,7 +127,7 @@
 .local-tasks-summary-icon {
   display: inline-flex;
   align-items: center;
-  color: #64748b;
+  color: var(--theme-text-muted, #64748b);
   transition: color 0.2s ease;
 }
 
@@ -161,7 +161,7 @@
 .local-tasks-chevron {
   display: inline-flex;
   align-items: center;
-  color: #94a3b8;
+  color: var(--theme-text-muted, #94a3b8);
   transition: transform 0.2s ease;
 }
 
@@ -172,11 +172,11 @@
 /* Local Tasks Drawer */
 .local-tasks-drawer {
   margin-top: 0.5rem;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #e2e8f0);
   border-radius: var(--radius-md, 10px);
   padding: 0.3rem 0.35rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--theme-card-shadow, 0 4px 16px rgba(0, 0, 0, 0.06));
   animation: localTasksFadeIn 0.2s ease-out;
   display: inline-block;
   max-width: 100%;
@@ -558,4 +558,77 @@ ul.tabs {
 
 .site-footer p {
   color: var(--kaliyattam-text-light-muted);
+}
+
+/* ==========================================================================
+   Dark Mode Overrides for Layout Components
+   ========================================================================== */
+:root[data-theme="dark"] .site-footer,
+html.dark .site-footer {
+  background: #0d111a;
+  border-top-color: #d97706;
+}
+
+:root[data-theme="dark"] .local-tasks-summary,
+html.dark .local-tasks-summary {
+  background: var(--theme-surface, #1f2937);
+  border-color: var(--theme-border, #374151);
+  color: var(--theme-text, #f3f4f6);
+}
+
+:root[data-theme="dark"] .local-tasks-summary:hover,
+:root[data-theme="dark"] .local-tasks-collapsible[open] > .local-tasks-summary,
+html.dark .local-tasks-summary:hover,
+html.dark .local-tasks-collapsible[open] > .local-tasks-summary {
+  background: var(--theme-surface-warm, #1a2332);
+  border-color: #4b5563;
+  color: #fbbf24;
+}
+
+:root[data-theme="dark"] .local-tasks-active-badge,
+html.dark .local-tasks-active-badge {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+:root[data-theme="dark"] .local-tasks-drawer,
+html.dark .local-tasks-drawer {
+  background: var(--theme-surface, #1f2937);
+  border-color: var(--theme-border, #374151);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .local-tasks-drawer li a,
+html.dark .local-tasks-drawer li a {
+  color: #9ca3af !important;
+}
+
+:root[data-theme="dark"] .local-tasks-drawer li a:hover,
+html.dark .local-tasks-drawer li a:hover {
+  background: #374151 !important;
+  color: #fbbf24 !important;
+  border-color: #4b5563 !important;
+}
+
+:root[data-theme="dark"] .local-tasks-drawer li a.is-active,
+html.dark .local-tasks-drawer li a.is-active {
+  background: linear-gradient(135deg, #420000, #1e293b) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+:root[data-theme="dark"] .pager__item a,
+:root[data-theme="dark"] .pager__item span,
+html.dark .pager__item a,
+html.dark .pager__item span {
+  background: var(--theme-surface, #1f2937);
+  border-color: var(--theme-border, #374151);
+  color: var(--theme-text, #f3f4f6);
+}
+
+:root[data-theme="dark"] .pager__item a:hover,
+html.dark .pager__item a:hover {
+  background: #374151;
+  color: #fbbf24;
+  border-color: #4b5563;
 }
