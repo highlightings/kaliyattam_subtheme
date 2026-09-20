@@ -9,8 +9,8 @@ dependencies:
     - kaliyattam_subtheme
 id: kaliyattam_subtheme_account_menu
 theme: kaliyattam_subtheme
-region: nav_additional
-weight: -7
+region: header
+weight: -5
 provider: null
 plugin: 'system_menu_block:account'
 settings:

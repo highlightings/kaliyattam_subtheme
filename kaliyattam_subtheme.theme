@@ -320,3 +320,38 @@ function kaliyattam_subtheme_alter_content_node_form(array &$form, \Drupal\Core\
   }
 }
 
+/**
+ * Implements hook_preprocess_menu_local_tasks().
+ */
+function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): void {
+  $active_tab_title = '';
+  $is_admin_action = FALSE;
+
+  $current_route = \Drupal::routeMatch()->getRouteName();
+  $is_canonical_view = in_array($current_route, [
+    'entity.node.canonical',
+    'entity.taxonomy_term.canonical',
+    'entity.user.canonical',
+  ], TRUE);
+
+  if (!empty($variables['primary'])) {
+    foreach (\Drupal\Core\Render\Element::children($variables['primary']) as $key) {
+      $item = $variables['primary'][$key];
+      if (!empty($item['#active'])) {
+        $title = !empty($item['#link']['title']) ? (string) $item['#link']['title'] : '';
+        $active_tab_title = $title;
+        $title_lower = mb_strtolower(trim($title));
+        // Keep collapsed on standard public "View" tab, open on admin actions.
+        $is_view_tab = in_array($title_lower, ['view', 'കാഴ്ച', 'കാണുക', 'വിവരങ്ങൾ'], TRUE);
+        if (!$is_canonical_view && !$is_view_tab) {
+          $is_admin_action = TRUE;
+        }
+        break;
+      }
+    }
+  }
+
+  $variables['active_tab_title'] = $active_tab_title;
+  $variables['tasks_open'] = $is_admin_action;
+}
+

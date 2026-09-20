@@ -14,11 +14,12 @@
   transition: all var(--transition-normal);
 }
 
-/* Header Top Region (Language switcher, etc.) */
+/* Header Top Region (Account menu, Language switcher, etc.) */
 .site-header-top {
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   padding: 0.35rem 0;
   font-size: var(--text-xs);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .site-header-top .container {
@@ -27,26 +28,134 @@
   align-items: center;
 }
 
-.site-header-top ul:not(.contextual-links) {
+.site-header-top .region-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* User Account Menu in Header Top */
+.site-header-top .block-account,
+.site-header-top [id*="account-menu"],
+.site-header-top nav[aria-labelledby*="account-menu"] {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.site-header-top [id*="account-menu"] ul {
   list-style: none;
   display: inline-flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.85rem;
   margin: 0;
   padding: 0;
 }
 
-.site-header-top li:not(.contextual-links li) {
+.site-header-top [id*="account-menu"] li {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
 }
 
-.site-header-top a:not(.contextual-links a) {
+.site-header-top [id*="account-menu"] a {
   color: rgba(255, 255, 255, 0.85);
+  font-size: 0.775rem;
   font-weight: 500;
+  text-decoration: none;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
-.site-header-top a:not(.contextual-links a):hover {
-  color: var(--kaliyattam-light);
+.site-header-top [id*="account-menu"] a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
+
+/* Subtle vertical divider between Account Menu and Language Selector */
+.site-header-top [id*="languageselector"] {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.site-header-top [id*="languageselector"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ==========================================================================
+   Advanced Language Selector - Prominent Active State
+   ========================================================================== */
+.advanced-language-selector {
+  display: inline-flex;
+  align-items: center;
+}
+
+.advanced-language-selector ul,
+.advanced-language-selector .nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.advanced-language-selector li,
+.advanced-language-selector .nav-item {
+  margin: 0;
+  list-style: none;
+}
+
+.advanced-language-selector .nav-link,
+.advanced-language-selector a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.85rem;
+  font-size: 0.775rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration: none;
+  border-radius: 9999px;
+  transition: all var(--transition-fast, 0.2s ease);
+  border: none;
+  line-height: 1.4;
+}
+
+.advanced-language-selector .nav-link:hover,
+.advanced-language-selector a:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ACTIVE LANGUAGE PILL - High Contrast, Distinct, Prominent */
+.advanced-language-selector .nav-link.active,
+.advanced-language-selector .nav-link.is-active,
+.advanced-language-selector a.active,
+.advanced-language-selector a.is-active {
+  background: #ffffff !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
+  cursor: default;
+}
+
 
 /* Visually hide redundant block titles in header and footer */
 .site-header .block-title,
@@ -252,6 +361,81 @@
   color: var(--kaliyattam-light);
 }
 
+/* ==========================================================================
+   Additional Nav Region (Search Form) - Clean, Uncluttered Inline Form
+   ========================================================================== */
+.region-nav-additional {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+.region-nav-additional .block-search,
+.region-nav-additional [id*="search-form"] {
+  margin: 0;
+}
+
+.region-nav-additional .search-block-form {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.region-nav-additional .search-block-form .form-item-keys {
+  margin: 0;
+}
+
+.region-nav-additional .search-block-form input[type="search"] {
+  height: 36px;
+  width: 170px;
+  border-radius: 20px 0 0 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: none;
+  padding: 0 0.85rem;
+  font-size: 0.8125rem;
+  color: #ffffff;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.region-nav-additional .search-block-form input[type="search"]::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.region-nav-additional .search-block-form input[type="search"]:focus {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #ffffff;
+  outline: none;
+  width: 200px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+}
+
+.region-nav-additional .search-block-form .form-actions {
+  margin: 0;
+}
+
+.region-nav-additional .search-block-form input[type="submit"] {
+  height: 36px;
+  border-radius: 0 20px 20px 0;
+  background: var(--kaliyattam-gold, #c5a059);
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 0.775rem;
+  padding: 0 0.95rem;
+  border: 1px solid var(--kaliyattam-gold, #c5a059);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+  margin: 0;
+  box-shadow: none;
+}
+
+.region-nav-additional .search-block-form input[type="submit"]:hover {
+  background: #dfbc77;
+  border-color: #dfbc77;
+  color: #0f172a;
+}
+
 /* Dropdown menus */
 .nav-menu .has-dropdown {
   position: relative;
@@ -368,4 +552,24 @@
     color: var(--kaliyattam-gold-light);
     background: transparent;
   }
+
+  .region-nav-additional {
+    margin: 0.75rem 0 0 0;
+    width: 100%;
+  }
+
+  .region-nav-additional .search-block-form {
+    width: 100%;
+    display: flex;
+  }
+
+  .region-nav-additional .search-block-form .form-item-keys {
+    flex: 1;
+    margin: 0;
+  }
+
+  .region-nav-additional .search-block-form input[type="search"] {
+    width: 100%;
+  }
 }
+

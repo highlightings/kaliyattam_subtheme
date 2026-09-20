@@ -1,0 +1,51 @@
+{#
+/**
+ * @file
+ * Kaliyattam Subtheme implementation for subtle and collapsible local tasks.
+ *
+ * Available variables:
+ * - primary: HTML list items representing primary tasks.
+ * - secondary: HTML list items representing secondary tasks.
+ * - active_tab_title: The title of the currently active tab.
+ * - tasks_open: Boolean indicating if details should be open by default.
+ */
+#}
+{% if primary %}
+  <div class="local-tasks-container">
+    <details class="local-tasks-collapsible" {% if tasks_open %}open{% endif %}>
+      <summary class="local-tasks-summary" title="{{ 'Toggle page management options'|t }}">
+        <span class="local-tasks-summary-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </span>
+        <span class="local-tasks-summary-text">
+          <span class="local-tasks-label">{{ 'Page actions'|t }}</span>
+          {% if active_tab_title %}
+            <span class="local-tasks-active-badge">{{ active_tab_title }}</span>
+          {% endif %}
+        </span>
+        <span class="local-tasks-chevron" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </summary>
+      <div class="local-tasks-drawer">
+        <h2 class="visually-hidden">{{ 'Primary tabs'|t }}</h2>
+        <ul class="tabs tabs--primary">
+          {{ primary }}
+        </ul>
+      </div>
+    </details>
+  </div>
+{% endif %}
+{% if secondary %}
+  <div class="local-tasks-secondary-container">
+    <h2 class="visually-hidden">{{ 'Secondary tabs'|t }}</h2>
+    <ul class="tabs tabs--secondary">
+      {{ secondary }}
+    </ul>
+  </div>
+{% endif %}
