@@ -3,12 +3,45 @@
  * Custom Views and Page Layout overrides for Kaliyattam Arts Theme.
  */
 
+.views-element-container > div > header,
+.views-element-container header,
+.view > header,
+.view-header {
+  margin-top: 0.5rem;
+  margin-bottom: 2rem !important;
+  display: block;
+  clear: both;
+}
+
+.views-element-container header .button,
+.views-element-container header .btn,
+.view > header .button,
+.view > header .btn,
 .view-header .btn-primary,
 .view-header .button {
-  color: var(--kaliyattam-light) !important;
-  background-color: var(--kaliyattam-primary) !important;
-  border-color: var(--kaliyattam-primary) !important;
-  margin-bottom: 2rem;
+  color: #ffffff !important;
+  background-color: var(--kaliyattam-primary, #890000) !important;
+  border-color: var(--kaliyattam-primary, #890000) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-md, 8px);
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.views-element-container header .button:hover,
+.views-element-container header .btn:hover,
+.view > header .button:hover,
+.view > header .btn:hover,
+.view-header .btn-primary:hover,
+.view-header .button:hover {
+  background-color: #6b0000 !important;
+  border-color: #6b0000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .views-row {

@@ -36,6 +36,50 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
   $node = $variables['node'];
   $variables['attributes']['class'][] = 'node--type-' . Html::cleanCssIdentifier($node->bundle());
   $variables['attributes']['class'][] = 'node--view-mode-' . Html::cleanCssIdentifier($variables['view_mode']);
+
+  // Remove contextual links from card and teaser view modes to prevent clashing with card links.
+  if (in_array($variables['view_mode'], ['card', 'teaser', 'minicard', 'miniteaser'], TRUE)) {
+    unset($variables['title_suffix']['contextual_links']);
+    if (!empty($variables['attributes']['class']) && is_array($variables['attributes']['class'])) {
+      $variables['attributes']['class'] = array_values(array_diff($variables['attributes']['class'], ['contextual-region']));
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_media().
+ */
+function kaliyattam_subtheme_preprocess_media(array &$variables): void {
+  // Suppress contextual links and contextual-region on media displayed in cards, teasers, and grids.
+  $card_media_modes = ['16_9_medium', '4_3_medium', 'hero', 'card', 'teaser', 'thumbnail', '3_4_225x300_focal_point_webp'];
+  if (empty($variables['view_mode']) || in_array($variables['view_mode'], $card_media_modes, TRUE)) {
+    unset($variables['title_suffix']['contextual_links']);
+    if (!empty($variables['attributes']['class'])) {
+      if (is_array($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = array_values(array_diff($variables['attributes']['class'], ['contextual-region']));
+      }
+      elseif (is_string($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = trim(str_replace('contextual-region', '', $variables['attributes']['class']));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function kaliyattam_subtheme_entity_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display): void {
+  if ($entity->getEntityTypeId() === 'media') {
+    $card_media_modes = ['16_9_medium', '4_3_medium', 'hero', 'card', 'teaser', 'thumbnail', '3_4_225x300_focal_point_webp'];
+    if (in_array($display->getMode(), $card_media_modes, TRUE)) {
+      unset($build['#contextual_links']);
+    }
+  }
+  elseif ($entity->getEntityTypeId() === 'node') {
+    if (in_array($display->getMode(), ['card', 'teaser', 'minicard', 'miniteaser'], TRUE)) {
+      unset($build['#contextual_links']);
+    }
+  }
 }
 
 /**

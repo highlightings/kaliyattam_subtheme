@@ -346,30 +346,42 @@ html.dark .theme-toggle-icon--sun {
 /* Mobile Nav Toggle (Hamburger Button) */
 .nav-toggle {
   display: none;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem 0.65rem;
-  color: var(--kaliyattam-light);
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-md, 8px);
+  min-width: 48px;
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+  color: #ffffff;
   cursor: pointer;
-  box-shadow: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   align-items: center;
   justify-content: center;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .nav-toggle:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--kaliyattam-light);
-  transform: none;
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.75);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--kaliyattam-gold, #c5a059);
+  outline-offset: 2px;
 }
 
 .nav-toggle-icon {
   display: block;
-  width: 22px;
-  height: 2px;
-  background-color: var(--kaliyattam-light);
+  width: 24px;
+  height: 3px;
+  background-color: #ffffff;
   position: relative;
-  transition: background-color var(--transition-fast);
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: background-color var(--transition-fast, 0.2s ease);
 }
 
 .nav-toggle-icon::before,
@@ -377,25 +389,33 @@ html.dark .theme-toggle-icon--sun {
   content: "";
   position: absolute;
   left: 0;
-  width: 22px;
-  height: 2px;
-  background-color: var(--kaliyattam-light);
-  transition: transform var(--transition-fast);
+  width: 24px;
+  height: 3px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: transform var(--transition-fast, 0.2s ease), background-color var(--transition-fast, 0.2s ease);
 }
 
-.nav-toggle-icon::before { top: -6px; }
-.nav-toggle-icon::after { bottom: -6px; }
+.nav-toggle-icon::before { top: -8px; }
+.nav-toggle-icon::after { bottom: -8px; }
+
+.nav-toggle[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.32);
+  border-color: rgba(255, 255, 255, 0.8);
+}
 
 .nav-toggle[aria-expanded="true"] .nav-toggle-icon {
   background-color: transparent;
+  box-shadow: none;
 }
 
 .nav-toggle[aria-expanded="true"] .nav-toggle-icon::before {
-  transform: translateY(6px) rotate(45deg);
+  transform: translateY(8px) rotate(45deg);
 }
 
 .nav-toggle[aria-expanded="true"] .nav-toggle-icon::after {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* Nav Menu Container */
@@ -689,6 +709,89 @@ html.dark .theme-toggle-icon--sun {
 
   .region-nav-additional .search-block-form input[type="search"] {
     width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Dark Mode Hamburger Navigation & Mobile Drawer
+   ========================================================================== */
+:root[data-theme="dark"] .nav-toggle,
+html.dark .nav-toggle {
+  background: #1e293b !important;
+  border: 2px solid #94a3b8 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+:root[data-theme="dark"] .nav-toggle:hover,
+html.dark .nav-toggle:hover {
+  background: #283548 !important;
+  border-color: #f87171 !important;
+  box-shadow: 0 4px 14px rgba(248, 113, 113, 0.4) !important;
+}
+
+:root[data-theme="dark"] .nav-toggle:focus-visible,
+html.dark .nav-toggle:focus-visible {
+  outline: 2px solid #f87171 !important;
+  outline-offset: 2px;
+}
+
+:root[data-theme="dark"] .nav-toggle-icon,
+:root[data-theme="dark"] .nav-toggle-icon::before,
+:root[data-theme="dark"] .nav-toggle-icon::after,
+html.dark .nav-toggle-icon,
+html.dark .nav-toggle-icon::before,
+html.dark .nav-toggle-icon::after {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+}
+
+:root[data-theme="dark"] .nav-toggle:hover .nav-toggle-icon,
+:root[data-theme="dark"] .nav-toggle:hover .nav-toggle-icon::before,
+:root[data-theme="dark"] .nav-toggle:hover .nav-toggle-icon::after,
+html.dark .nav-toggle:hover .nav-toggle-icon,
+html.dark .nav-toggle:hover .nav-toggle-icon::before,
+html.dark .nav-toggle:hover .nav-toggle-icon::after {
+  background-color: #f87171 !important;
+}
+
+:root[data-theme="dark"] .nav-toggle[aria-expanded="true"],
+html.dark .nav-toggle[aria-expanded="true"] {
+  background: #283548 !important;
+  border-color: #f87171 !important;
+}
+
+:root[data-theme="dark"] .nav-toggle[aria-expanded="true"] .nav-toggle-icon {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 991.98px) {
+  :root[data-theme="dark"] .nav-container,
+  html.dark .nav-container {
+    background: #111827 !important;
+    border-top: 1px solid #374151 !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7) !important;
+  }
+
+  :root[data-theme="dark"] .nav-menu a,
+  :root[data-theme="dark"] .nav-container a:not(.contextual-links a),
+  html.dark .nav-menu a,
+  html.dark .nav-container a:not(.contextual-links a) {
+    color: #f3f4f6 !important;
+  }
+
+  :root[data-theme="dark"] .nav-menu a:hover,
+  :root[data-theme="dark"] .nav-container a:hover,
+  html.dark .nav-menu a:hover,
+  html.dark .nav-container a:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #f87171 !important;
+  }
+
+  :root[data-theme="dark"] .nav-menu .dropdown-menu,
+  html.dark .nav-menu .dropdown-menu {
+    background: #1f2937 !important;
+    border-left: 2px solid #f87171 !important;
   }
 }
 

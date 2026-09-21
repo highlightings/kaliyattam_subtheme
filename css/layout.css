@@ -820,3 +820,14 @@ html.dark .pager__item--ellipsis {
   z-index: 1 !important;
 }
 
+/* Views Header Spacing (Add bundle button & actions) */
+.views-element-container > div > header,
+.views-element-container header,
+.view > header,
+.view-header {
+  margin-top: 0.5rem;
+  margin-bottom: 2rem !important;
+  display: block;
+  clear: both;
+}
+
