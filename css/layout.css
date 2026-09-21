@@ -617,20 +617,159 @@ html.dark .local-tasks-drawer li a.is-active {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
 }
 
+/* ==========================================================================
+   Views Pagination Theming (Full Pager & Mini Pager)
+   ========================================================================== */
+.pager {
+  margin: 3rem 0 2rem 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  clear: both !important;
+  width: 100% !important;
+}
+
+/* Ensure pager sits below attachment content if view has attachments */
+.views-element-container > div[class*="js-view-dom-id-"] {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.views-element-container > div[class*="js-view-dom-id-"] > .pager {
+  order: 99 !important;
+}
+
+.pager__items {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 0.35rem !important;
+  padding: 0.4rem 0.6rem !important;
+  margin: 0 !important;
+  list-style: none !important;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #e2e8f0);
+  border-radius: 9999px;
+  box-shadow: var(--theme-card-shadow, var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08)));
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.pager__item {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.pager__item a,
+.pager__item span,
+.pager__link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 38px !important;
+  height: 38px !important;
+  padding: 0 0.75rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  text-decoration: none !important;
+  color: var(--theme-text-secondary, #475569) !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.pager__item a:hover,
+.pager__link:hover {
+  color: var(--kaliyattam-primary, #890000) !important;
+  background: var(--theme-surface-alt, #fef2f2) !important;
+  border-color: var(--kaliyattam-border-hover, #fecaca) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(137, 0, 0, 0.12) !important;
+}
+
+/* Active Page */
+.pager__item.is-active a,
+.pager__item.is-active span,
+.pager__item--active span,
+.pager__item--active a,
+.pager__item [aria-current="page"] {
+  background: linear-gradient(135deg, #890000 0%, #b91c1c 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-color: #890000 !important;
+  box-shadow: 0 2px 8px rgba(137, 0, 0, 0.35) !important;
+  cursor: default !important;
+}
+
+/* Ellipsis */
+.pager__item--ellipsis {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 28px !important;
+  height: 38px !important;
+  padding: 0 0.25rem !important;
+  color: var(--theme-text-muted, #94a3b8) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Control Arrows (Previous / Next / First / Last) */
+.pager__item--control a,
+.pager__item--previous a,
+.pager__item--next a,
+.pager__item--first a,
+.pager__item--last a {
+  font-weight: 600 !important;
+  gap: 0.25rem !important;
+}
+
+/* Dark Mode Overrides for Views Pager */
+:root[data-theme="dark"] .pager__items,
+html.dark .pager__items {
+  background: var(--theme-surface, #1f2937);
+  border-color: var(--theme-border, #374151);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
 :root[data-theme="dark"] .pager__item a,
 :root[data-theme="dark"] .pager__item span,
 html.dark .pager__item a,
 html.dark .pager__item span {
-  background: var(--theme-surface, #1f2937);
-  border-color: var(--theme-border, #374151);
-  color: var(--theme-text, #f3f4f6);
+  color: #9ca3af !important;
 }
 
 :root[data-theme="dark"] .pager__item a:hover,
 html.dark .pager__item a:hover {
-  background: #374151;
-  color: #fbbf24;
-  border-color: #4b5563;
+  color: #f87171 !important;
+  background: rgba(248, 113, 113, 0.14) !important;
+  border-color: rgba(248, 113, 113, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(248, 113, 113, 0.2) !important;
+}
+
+:root[data-theme="dark"] .pager__item.is-active a,
+:root[data-theme="dark"] .pager__item.is-active span,
+:root[data-theme="dark"] .pager__item--active span,
+:root[data-theme="dark"] .pager__item--active a,
+:root[data-theme="dark"] .pager__item [aria-current="page"],
+html.dark .pager__item.is-active a,
+html.dark .pager__item.is-active span,
+html.dark .pager__item--active span,
+html.dark .pager__item--active a,
+html.dark .pager__item [aria-current="page"] {
+  background: #f87171 !important;
+  color: #111827 !important;
+  border-color: #f87171 !important;
+  box-shadow: 0 2px 10px rgba(248, 113, 113, 0.35) !important;
+}
+
+:root[data-theme="dark"] .pager__item--ellipsis,
+html.dark .pager__item--ellipsis {
+  color: #64748b !important;
 }
 
 /* ==========================================================================
