@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Timeline Compact template for Kaliyattam feeds and sidebar blocks.
+ */
+#}
+{%
+  set classes = [
+    'timeline-compact-item',
+    'timeline-compact-item--' ~ node.bundle|clean_class,
+  ]
+%}
+{% set author = node.getOwner() %}
+{% set bundle_icons = {
+  'theyyam': '🎭',
+  'location': '🛕',
+  'event': '📅',
+  'post': '💬'
+} %}
+
+<div{{ attributes.addClass(classes) }}>
+  <span class="compact-icon" aria-hidden="true">{{ bundle_icons[node.bundle()]|default('📜') }}</span>
+  <div class="compact-content">
+    <a href="{{ url }}" class="compact-title">{{ label }}</a>
+    {% if content.field_when is not empty %}
+      <div class="compact-meta">{{ content.field_when }}</div>
+    {% elseif content.field_theyyam is not empty %}
+      <div class="compact-meta">{{ content.field_theyyam }}</div>
+    {% endif %}
+  </div>
+  {% if content.flag_favorite_node is not empty %}
+    <div class="compact-flag">
+      {{ content.flag_favorite_node }}
+    </div>
+  {% endif %}
+</div>

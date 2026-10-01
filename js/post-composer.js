@@ -154,10 +154,14 @@
           });
         }
 
-        // 4. Tag Action: scroll/focus tagify input and expand advanced if needed
+        // 4. Tag Action: toggle tag drawer and scroll/focus tagify input
         if (tagBtn) {
           tagBtn.addEventListener('click', function (e) {
             e.preventDefault();
+            const tagDrawer = form.querySelector('.post-composer-tag-details');
+            if (tagDrawer) {
+              tagDrawer.open = !tagDrawer.open;
+            }
             if (advancedDrawer && advancedDrawer.classList.contains('is-collapsed')) {
               advancedDrawer.classList.remove('is-collapsed');
               if (advancedBtn) {
@@ -165,7 +169,7 @@
                 advancedBtn.setAttribute('aria-expanded', 'true');
               }
             }
-            const tagWrapper = form.querySelector('.field--name-field-tags');
+            const tagWrapper = form.querySelector('.field--name-field-tags, .field--name-field-theyyam');
             if (tagWrapper) {
               const tagInput = tagWrapper.querySelector('.tagify__input') || tagWrapper.querySelector('input');
               if (tagInput) {

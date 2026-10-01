@@ -27,6 +27,23 @@ function kaliyattam_subtheme_preprocess_html(array &$variables): void {
 function kaliyattam_subtheme_preprocess_page(array &$variables): void {
   // Attach navigation library to all pages for responsive menu functionality.
   $variables['#attached']['library'][] = 'kaliyattam_subtheme/navigation';
+
+  // Support /node/{node}/timeline for Location nodes by embedding timeline_location view.
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() === 'view.timeline_theyyam.page_timeline') {
+    $node = $route_match->getParameter('node');
+    if (is_string($node) || is_numeric($node)) {
+      $node = \Drupal\node\Entity\Node::load($node);
+    }
+    if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'location') {
+      if (isset($variables['page']['content']['kaliyattam_subtheme_content'])) {
+        $variables['page']['content']['kaliyattam_subtheme_content'] = views_embed_view('timeline_location', 'page_timeline', $node->id());
+      }
+      elseif (isset($variables['page']['content']['system_main'])) {
+        $variables['page']['content']['system_main'] = views_embed_view('timeline_location', 'page_timeline', $node->id());
+      }
+    }
+  }
 }
 
 /**
@@ -197,6 +214,31 @@ function kaliyattam_subtheme_alter_post_form(array &$form, \Drupal\Core\Form\For
     ',
     '#weight' => 2.5,
   ];
+
+  // Group references and visibility into "Tag this post" collapsible details.
+  $form['tag_this_post'] = [
+    '#type' => 'details',
+    '#title' => t('Tag this post'),
+    '#open' => FALSE,
+    '#weight' => 2.8,
+    '#attributes' => [
+      'class' => ['post-composer-tag-details'],
+      'id' => 'post-composer-tag-drawer',
+    ],
+  ];
+
+  if (isset($form['field_theyyam'])) {
+    $form['tag_this_post']['field_theyyam'] = $form['field_theyyam'];
+    unset($form['field_theyyam']);
+  }
+  if (isset($form['field_where'])) {
+    $form['tag_this_post']['field_where'] = $form['field_where'];
+    unset($form['field_where']);
+  }
+  if (isset($form['field_visibility'])) {
+    $form['tag_this_post']['field_visibility'] = $form['field_visibility'];
+    unset($form['field_visibility']);
+  }
 
   // Group auxiliary fields into an Advanced container.
   $form['advanced_settings'] = [
@@ -398,4 +440,46 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
   $variables['active_tab_title'] = $active_tab_title;
   $variables['tasks_open'] = $is_admin_action;
 }
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Ensures no duplicate items appear in timeline feeds when personal flag
+ * relationships or multilingual content are present, and supports reverse
+ * referencing for both Theyyam and Location nodes.
+ */
+function kaliyattam_subtheme_views_pre_render(\Drupal\views\ViewExecutable $view): void {
+  if (str_starts_with($view->id(), 'timeline_') || $view->id() === 'block_my_favorites') {
+    $seen = [];
+    $unique_results = [];
+    foreach ($view->result as $row) {
+      $id = $row->nid ?? ($row->_entity?->id() ?? null);
+      if ($id !== null) {
+        if (!isset($seen[$id])) {
+          $seen[$id] = true;
+          $unique_results[] = $row;
+        }
+      }
+      else {
+        $unique_results[] = $row;
+      }
+    }
+    $view->result = $unique_results;
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
+  $view = $variables['view'];
+  if ($view->id() === 'timeline_events' && $view->current_display === 'page_events') {
+    $variables['header']['near_me'] = [
+      '#type' => 'inline_template',
+      '#template' => '<div class="events-timeline-header-nav"><a href="/timeline/events" class="event-nav-btn is-active">List Feed</a><a href="/events-calendar" class="event-nav-btn">Calendar</a><div id="near-me-toggle-wrapper" class="near-me-wrapper"><button type="button" id="btn-near-me" class="btn-near-me" aria-label="Find events near me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg> Near Me</button><span id="near-me-status" class="near-me-status"></span></div></div>',
+      '#weight' => -10,
+    ];
+  }
+}
+
 
