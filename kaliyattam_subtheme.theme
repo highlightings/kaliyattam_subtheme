@@ -473,13 +473,189 @@ function kaliyattam_subtheme_views_pre_render(\Drupal\views\ViewExecutable $view
  */
 function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $view = $variables['view'];
-  if ($view->id() === 'timeline_events' && $view->current_display === 'page_events') {
-    $variables['header']['near_me'] = [
-      '#type' => 'inline_template',
-      '#template' => '<div class="events-timeline-header-nav"><a href="/timeline/events" class="event-nav-btn is-active">List Feed</a><a href="/events-calendar" class="event-nav-btn">Calendar</a><div id="near-me-toggle-wrapper" class="near-me-wrapper"><button type="button" id="btn-near-me" class="btn-near-me" aria-label="Find events near me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg> Near Me</button><span id="near-me-status" class="near-me-status"></span></div></div>',
-      '#weight' => -10,
-    ];
+  $view_id = $view->id();
+  $display_id = $view->current_display;
+
+  // Process timeline feeds.
+  if (str_starts_with($view_id, 'timeline_')) {
+    // Skip attachment displays (e.g., attachment_pinned) to prevent duplicate headers.
+    if ($view->display_handler && $view->display_handler->getPluginId() === 'attachment') {
+      return;
+    }
+
+    $request = \Drupal::request();
+    $params = $request->query->all();
+
+    // 1. Events Timeline: tabs [New], [Top], [Upcoming], [Past], [Calendar], [Search], [Joined], [Following]
+    if ($view_id === 'timeline_events' && $display_id === 'page_events') {
+      $when = $params['when'] ?? '';
+      $sort_newest = $params['sort_newest'] ?? '';
+      $sort_by = $params['sort_by'] ?? '';
+      $sort_bef_combine = $params['sort_bef_combine'] ?? '';
+      $favorites = $params['favorites'] ?? '';
+      $place = $params['place'] ?? '';
+      $search = $params['search'] ?? '';
+
+      $active_tab = 'upcoming';
+      if (!empty($sort_newest) || str_contains($sort_by, 'newest') || str_starts_with($sort_bef_combine, 'created_DESC')) {
+        $active_tab = 'new';
+      }
+      elseif ($when == '3' && !empty($favorites)) {
+        $active_tab = 'top';
+      }
+      elseif ($when == '2') {
+        $active_tab = 'past';
+      }
+      elseif ($when == '1') {
+        $active_tab = 'upcoming';
+      }
+      elseif (!empty($favorites)) {
+        $active_tab = 'joined';
+      }
+      elseif (!empty($place) || !empty($search)) {
+        $active_tab = 'search';
+      }
+
+      $tabs_html = '
+        <div class="timeline-tabs-bar-wrapper">
+          <div class="timeline-tabs-bar">
+            <nav class="timeline-nav-tabs" aria-label="' . t('Events Timeline Navigation') . '">
+              <a href="/timeline/events?when=3&sort_newest=DESC" class="timeline-nav-tab' . ($active_tab === 'new' ? ' is-active' : '') . '" data-tab="new">
+                <span class="tab-label">' . t('New') . '</span>
+              </a>
+              <a href="/timeline/events?when=3&favorites=1" class="timeline-nav-tab' . ($active_tab === 'top' ? ' is-active' : '') . '" data-tab="top">
+                <span class="tab-label">' . t('Top') . '</span>
+              </a>
+              <a href="/timeline/events?when=1" class="timeline-nav-tab' . ($active_tab === 'upcoming' ? ' is-active' : '') . '" data-tab="upcoming">
+                <span class="tab-label">' . t('Upcoming') . '</span>
+              </a>
+              <a href="/timeline/events?when=2" class="timeline-nav-tab' . ($active_tab === 'past' ? ' is-active' : '') . '" data-tab="past">
+                <span class="tab-label">' . t('Past') . '</span>
+              </a>
+              <a href="/events-calendar" class="timeline-nav-tab" data-tab="calendar">
+                <span class="tab-label">' . t('Calendar') . '</span>
+              </a>
+              <button type="button" class="timeline-nav-tab timeline-nav-tab--search' . ($active_tab === 'search' ? ' is-active' : '') . '" data-tab="search" aria-label="' . t('Toggle search filters') . '" aria-expanded="' . ($active_tab === 'search' ? 'true' : 'false') . '">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span class="tab-label">' . t('Search') . '</span>
+              </button>
+              <a href="/timeline/events?favorites=1" class="timeline-nav-tab' . ($active_tab === 'joined' ? ' is-active' : '') . '" data-tab="joined">
+                <span class="tab-label">' . t('Joined') . '</span>
+              </a>
+              <a href="/timeline/events?favorites=1" class="timeline-nav-tab' . ($active_tab === 'following' ? ' is-active' : '') . '" data-tab="following">
+                <span class="tab-label">' . t('Following') . '</span>
+              </a>
+            </nav>
+            <div class="timeline-tabs-actions">
+              <div id="near-me-toggle-wrapper" class="near-me-wrapper">
+                <button type="button" id="btn-near-me" class="btn-near-me" aria-label="' . t('Find events near me') . '">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg>
+                  <span>' . t('Near Me') . '</span>
+                </button>
+                <span id="near-me-status" class="near-me-status"></span>
+              </div>
+              <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
+                <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  <span class="switcher-text">' . t('Grid') . '</span>
+                </button>
+                <button type="button" class="view-switch-btn" data-layout="list" title="' . t('List view') . '" aria-label="' . t('List view') . '" aria-pressed="false">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                  <span class="switcher-text">' . t('List') . '</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ';
+
+      $variables['header']['events_nav'] = [
+        '#type' => 'inline_template',
+        '#template' => $tabs_html,
+        '#weight' => -10,
+      ];
+    }
+    // 2. Sitewide Timeline (/timeline): tabs [Latest], [Popular], [Search] + Grid/List Switcher
+    elseif ($view_id === 'timeline_site') {
+      $sort_bef = $params['sort_bef_combine'] ?? '';
+      $search = $params['search'] ?? '';
+      $type = $params['type'] ?? '';
+
+      $active_tab = 'latest';
+      if ($sort_bef === 'count_DESC') {
+        $active_tab = 'popular';
+      }
+      elseif (!empty($search) || (!empty($type) && $type !== 'All')) {
+        $active_tab = 'search';
+      }
+
+      $tabs_html = '
+        <div class="timeline-tabs-bar-wrapper">
+          <div class="timeline-tabs-bar">
+            <nav class="timeline-nav-tabs" aria-label="' . t('Timeline Navigation') . '">
+              <a href="/timeline" class="timeline-nav-tab' . ($active_tab === 'latest' ? ' is-active' : '') . '" data-tab="latest">
+                <span class="tab-label">' . t('Latest') . '</span>
+              </a>
+              <a href="/timeline?sort_bef_combine=count_DESC" class="timeline-nav-tab' . ($active_tab === 'popular' ? ' is-active' : '') . '" data-tab="popular">
+                <span class="tab-label">' . t('Popular') . '</span>
+              </a>
+              <button type="button" class="timeline-nav-tab timeline-nav-tab--search' . ($active_tab === 'search' ? ' is-active' : '') . '" data-tab="search" aria-label="' . t('Toggle search filters') . '" aria-expanded="' . ($active_tab === 'search' ? 'true' : 'false') . '">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span class="tab-label">' . t('Search') . '</span>
+              </button>
+            </nav>
+            <div class="timeline-tabs-actions">
+              <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
+                <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  <span class="switcher-text">' . t('Grid') . '</span>
+                </button>
+                <button type="button" class="view-switch-btn" data-layout="list" title="' . t('List view') . '" aria-label="' . t('List view') . '" aria-pressed="false">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                  <span class="switcher-text">' . t('List') . '</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ';
+
+      $variables['header']['timeline_site_nav'] = [
+        '#type' => 'inline_template',
+        '#template' => $tabs_html,
+        '#weight' => -10,
+      ];
+    }
+    // 3. Other timelines: Theyyam, Location, User, Type, Locations
+    else {
+      $tabs_html = '
+        <div class="timeline-tabs-bar-wrapper timeline-tabs-bar-wrapper--compact">
+          <div class="timeline-tabs-bar">
+            <div class="timeline-tabs-spacer"></div>
+            <div class="timeline-tabs-actions">
+              <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
+                <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  <span class="switcher-text">' . t('Grid') . '</span>
+                </button>
+                <button type="button" class="view-switch-btn" data-layout="list" title="' . t('List view') . '" aria-label="' . t('List view') . '" aria-pressed="false">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                  <span class="switcher-text">' . t('List') . '</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ';
+
+      $variables['header']['timeline_generic_nav'] = [
+        '#type' => 'inline_template',
+        '#template' => $tabs_html,
+        '#weight' => -10,
+      ];
+    }
   }
 }
+
 
 

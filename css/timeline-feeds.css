@@ -205,15 +205,14 @@
   margin-bottom: 0;
 }
 
-/* Media Grid Container */
+/* Media Grid Container - Social Media / Album Style */
 .timeline-card-media-wrapper {
   margin: 0.75rem 0 1rem 0;
   border-radius: var(--radius-sm, 8px);
   overflow: hidden;
 }
 
-.timeline-card-featured-img img,
-.timeline-card-media-grid img {
+.timeline-card-featured-img img {
   width: 100%;
   height: auto;
   max-height: 480px;
@@ -223,33 +222,68 @@
 }
 
 .timeline-card-media-grid {
-  display: grid;
-  gap: 6px;
   margin-top: 6px;
 }
 
+.timeline-card-media-grid,
+.timeline-card-media-grid .field__items,
+.timeline-card-media-grid > .field > div {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
 /* 1 Image */
-.timeline-card-media-grid:has(> :only-child) {
+.timeline-card-media-grid:has(> :only-child),
+.timeline-card-media-grid .field__items:has(> :only-child) {
   grid-template-columns: 1fr;
 }
 
 /* 2 Images */
-.timeline-card-media-grid:has(> :nth-child(2):last-child) {
+.timeline-card-media-grid:has(> :nth-child(2):last-child),
+.timeline-card-media-grid .field__items:has(> :nth-child(2):last-child) {
   grid-template-columns: 1fr 1fr;
 }
 
 /* 3 Images */
-.timeline-card-media-grid:has(> :nth-child(3):last-child) {
-  grid-template-columns: 1fr 1fr;
-}
-.timeline-card-media-grid:has(> :nth-child(3):last-child) > :first-child {
-  grid-column: 1 / -1;
+.timeline-card-media-grid:has(> :nth-child(3):last-child),
+.timeline-card-media-grid .field__items:has(> :nth-child(3):last-child) {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 /* 4+ Images */
-.timeline-card-media-grid:has(> :nth-child(4)) {
-  grid-template-columns: 1fr 1fr;
+.timeline-card-media-grid:has(> :nth-child(4)),
+.timeline-card-media-grid .field__items:has(> :nth-child(4)) {
+  grid-template-columns: repeat(2, 1fr);
 }
+
+.timeline-card-media-grid .field__item,
+.timeline-card-media-grid .media,
+.timeline-card-media-grid article {
+  border-radius: var(--radius-sm, 8px);
+  overflow: hidden;
+  position: relative;
+  background-color: var(--kaliyattam-surface-muted, #f1f5f9);
+  aspect-ratio: 4 / 3;
+}
+
+.timeline-card-media-grid .field__item img,
+.timeline-card-media-grid .media img,
+.timeline-card-media-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-sm, 8px);
+  transition: transform 0.25s ease, filter 0.25s ease;
+  display: block;
+}
+
+.timeline-card-media-grid .field__item:hover img,
+.timeline-card-media-grid .media:hover img,
+.timeline-card-media-grid a:hover img {
+  transform: scale(1.03);
+}
+
 
 /* Click-to-Play Video Embed */
 .timeline-video-card {
@@ -641,4 +675,201 @@ html, body {
   padding: 0;
   overflow: hidden;
 }
+
+/* ==========================================================================
+   Timeline Tabs & Navigation Bar (Released.in Style)
+   ========================================================================== */
+
+.timeline-tabs-bar-wrapper {
+  margin-bottom: 1.5rem;
+  background-color: var(--kaliyattam-light, #ffffff);
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-md, 12px);
+  padding: 0.5rem 0.875rem;
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.05));
+}
+
+.timeline-tabs-bar-wrapper--compact {
+  padding: 0.35rem 0.75rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin-bottom: 1rem;
+}
+
+.timeline-tabs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.timeline-tabs-spacer {
+  flex: 1 1 auto;
+}
+
+.timeline-nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+
+.timeline-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline-nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: #1f2937;
+  text-decoration: none;
+  border-radius: var(--radius-sm, 8px);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.timeline-nav-tab:hover {
+  color: var(--kaliyattam-primary, #890000);
+  background-color: var(--kaliyattam-surface-warm, #f8fafc);
+}
+
+.timeline-nav-tab.is-active {
+  color: var(--kaliyattam-primary, #890000);
+  background-color: rgba(137, 0, 0, 0.08);
+  font-weight: 700;
+}
+
+.timeline-tabs-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   View Switcher (Grid vs List)
+   ========================================================================== */
+
+.timeline-view-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: var(--kaliyattam-surface-warm, #f1f5f9);
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-sm, 8px);
+  padding: 2px;
+  gap: 2px;
+}
+
+.view-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #1f2937;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.view-switch-btn:hover {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.view-switch-btn.is-active {
+  background: var(--kaliyattam-light, #ffffff);
+  color: var(--kaliyattam-primary, #890000);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   Timeline Feeds: Grid & List Layouts
+   ========================================================================== */
+
+/* Grid Layout */
+.timeline-feed--grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+  gap: 1.25rem !important;
+  align-items: stretch !important;
+}
+
+.timeline-feed--grid > .timeline-feed-item {
+  margin-bottom: 0 !important;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-feed--grid .timeline-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-feed--grid .timeline-card-body {
+  flex: 1 1 auto;
+}
+
+.timeline-feed--grid .timeline-card-actions {
+  margin-top: auto;
+}
+
+/* List Layout (Single column centered feed) */
+.timeline-feed--list,
+.view-timeline-site .view-content:not(.timeline-feed--grid),
+.view-timeline-events .view-content:not(.timeline-feed--grid),
+.view-timeline-theyyam .view-content:not(.timeline-feed--grid),
+.view-timeline-location .view-content:not(.timeline-feed--grid) {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   Exposed Search Drawer / Accordion
+   ========================================================================== */
+
+.views-exposed-form {
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin 0.2s ease;
+}
+
+.views-exposed-form:not(.is-open) {
+  max-height: 0;
+  opacity: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.views-exposed-form.is-open {
+  max-height: 400px;
+  opacity: 1;
+  margin-bottom: 1.5rem !important;
+  padding: 1rem 1.25rem !important;
+  background: var(--kaliyattam-surface-warm, #f8fafc);
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-md, 12px);
+  visibility: visible;
+}
+
 

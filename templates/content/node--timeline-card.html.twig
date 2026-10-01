@@ -90,10 +90,6 @@
       <h3 class="timeline-card-title">
         <a href="{{ url }}">{{ label }}</a>
       </h3>
-    {% elseif label and node.bundle() == 'post' and label != 'Untitled' and label != node.title.value %}
-      <h3 class="timeline-card-title">
-        <a href="{{ url }}">{{ label }}</a>
-      </h3>
     {% endif %}
 
     <div class="timeline-card-text">

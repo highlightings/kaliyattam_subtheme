@@ -21,7 +21,11 @@
 <div{{ attributes.addClass(classes) }}>
   <span class="compact-icon" aria-hidden="true">{{ bundle_icons[node.bundle()]|default('📜') }}</span>
   <div class="compact-content">
-    <a href="{{ url }}" class="compact-title">{{ label }}</a>
+    {% if node.bundle() == 'post' %}
+      <a href="{{ url }}" class="compact-title">{{ content.field_content|render|striptags|default(content.body|render|striptags)|trim|slice(0, 50) ~ '...' }}</a>
+    {% else %}
+      <a href="{{ url }}" class="compact-title">{{ label }}</a>
+    {% endif %}
     {% if content.field_when is not empty %}
       <div class="compact-meta">{{ content.field_when }}</div>
     {% elseif content.field_theyyam is not empty %}
