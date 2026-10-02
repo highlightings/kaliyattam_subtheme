@@ -744,6 +744,35 @@ body[data-feed-layout="list"] .timeline-card-media-wrapper iframe {
   color: var(--kaliyattam-text, #1c1917);
 }
 
+/* More / Details Action Link */
+.timeline-card-actions .action-more {
+  margin-left: auto;
+}
+
+.timeline-card-actions .more-action-link {
+  color: var(--kaliyattam-primary, #890000);
+  background: rgba(137, 0, 0, 0.05);
+  border: 1px solid rgba(137, 0, 0, 0.2);
+  font-weight: 600;
+  gap: 0.35rem;
+}
+
+.timeline-card-actions .more-action-link:hover {
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+  border-color: var(--kaliyattam-primary, #890000);
+}
+
+.timeline-card-actions .more-action-link .action-icon {
+  font-size: 1.15em;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.timeline-card-actions .more-action-link:hover .action-icon {
+  transform: translateX(2px);
+}
+
 /* Toast Notification for Copy Link */
 .timeline-toast {
   position: fixed;

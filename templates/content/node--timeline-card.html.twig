@@ -224,5 +224,15 @@
         {{ pin_sitewide_rendered|raw }}
       </div>
     {% endif %}
+
+    {# More / Read More Action #}
+    {% if url %}
+      <div class="timeline-action-item action-more">
+        <a href="{{ url }}" class="timeline-action-link more-action-link" title="{{ 'View details for'|t }} {{ label }}">
+          <span class="action-label">{{ 'More'|t }}</span>
+          <span class="action-icon" aria-hidden="true">&raquo;</span>
+        </a>
+      </div>
+    {% endif %}
   </footer>
 </article>

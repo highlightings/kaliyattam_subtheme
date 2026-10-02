@@ -16,5 +16,14 @@
     {% block content %}
       {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'url') }}
     {% endblock %}
+    {% block footer %}
+      {% if url %}
+        <div class="card-footer-action">
+          <a href="{{ url }}" class="card-action-btn" title="{{ 'View details for'|t }} {{ label }}">
+            <span>{{ 'More'|t }} &raquo;</span>
+          </a>
+        </div>
+      {% endif %}
+    {% endblock %}
   {% endembed %}
 </div>

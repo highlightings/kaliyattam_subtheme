@@ -66,15 +66,44 @@
         {% endembed %}
       {% endif %}
 
-      {# Render related Theyyam cards in responsive grid #}
+      {# Render related Theyyam in simple list mode #}
       {% if node.field_theyyam is not empty %}
         <div class="theyyam-related mt-5 mb-5">
           <h2 class="mb-4">{{ 'Theyyam at this location'|trans }}</h2>
-          <div class="grid-cards">
+          <div class="theyyam-simple-list">
             {% for theyyam_item in node.field_theyyam %}
-              <div class="theyyam-related-item">
-                {{ drupal_entity('node', theyyam_item.target_id, 'card') }}
-              </div>
+              {% set theyyam_node = theyyam_item.entity %}
+              {% if theyyam_node %}
+                {% set theyyam_url = path('entity.node.canonical', {'node': theyyam_node.id}) %}
+                <article class="theyyam-list-row">
+                  <div class="theyyam-list-media">
+                    {% if theyyam_node.field_featured_image is not empty and theyyam_node.field_featured_image.entity %}
+                      <a href="{{ theyyam_url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
+                        {{ drupal_entity('media', theyyam_node.field_featured_image.target_id, 'thumbnail') }}
+                      </a>
+                    {% else %}
+                      <a href="{{ theyyam_url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
+                        <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
+                      </a>
+                    {% endif %}
+                  </div>
+                  <div class="theyyam-list-body">
+                    <h3 class="theyyam-list-title">
+                      <a href="{{ theyyam_url }}">{{ theyyam_node.label }}</a>
+                    </h3>
+                    {% if theyyam_node.body.value is not empty %}
+                      <div class="theyyam-list-snippet">
+                        {{ theyyam_node.body.value|striptags|trim|slice(0, 140) ~ '…' }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="theyyam-list-action">
+                    <a href="{{ theyyam_url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam_node.label }}">
+                      <span>{{ 'More'|t }} &raquo;</span>
+                    </a>
+                  </div>
+                </article>
+              {% endif %}
             {% endfor %}
           </div>
         </div>

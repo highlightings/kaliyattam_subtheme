@@ -41,60 +41,229 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23890000'%3E%3Cpath fill-rule='evenodd' d='M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8'/%3E%3C/svg%3E");
 }
 
-/* Bookmark Flag System */
+/* ==========================================================================
+   Inline Links & Flag Action System (Single Line, No Bullets, Distinct Icons)
+   ========================================================================== */
+
+/* 1. Layout: Place all inline links in a clean row without bullets */
+ul.links.inline,
+ul.links {
+  list-style: none !important;
+  list-style-type: none !important;
+  padding: 0 !important;
+  margin: 1.5rem 0 1rem !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+}
+
+ul.links.inline li,
+ul.links li {
+  list-style: none !important;
+  list-style-type: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* 2. Hide empty list items and empty flag containers */
+ul.links.inline li:empty,
+ul.links.inline li:not(:has(a)),
+ul.links li:empty,
+ul.links li:not(:has(a)),
 .action-flag:empty,
 .action-unflag:empty,
 .action-flag:not(:has(a)),
-.action-unflag:not(:has(a)) {
+.action-unflag:not(:has(a)),
+ul.links.inline li > .action-flag > span:only-child:empty {
   display: none !important;
   border: none !important;
   padding: 0 !important;
   background: transparent !important;
 }
 
+/* 3. Base Action Badge / Pill Styling */
 .action-flag,
-.action-unflag {
-  border: 1px solid var(--kaliyattam-border);
-  border-radius: var(--radius-sm);
-  display: inline-block;
-  padding: 0.25em 0.6em;
-  background: var(--kaliyattam-light);
-  transition: all var(--transition-fast);
+.action-unflag,
+ul.links.inline li.comment-forbidden,
+ul.links.inline li.comment-comments,
+ul.links.inline li.comment-add {
+  border: 1px solid var(--kaliyattam-border, #e5e7eb);
+  border-radius: var(--radius-sm, 6px);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  background: var(--kaliyattam-light, #f8f9fa);
+  transition: all var(--transition-fast, 0.2s ease);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--kaliyattam-text, #262626);
 }
 
 .action-flag:hover,
-.action-unflag:hover {
-  border-color: var(--kaliyattam-primary);
+.action-unflag:hover,
+ul.links.inline li.comment-forbidden:hover,
+ul.links.inline li.comment-comments:hover,
+ul.links.inline li.comment-add:hover {
+  border-color: var(--kaliyattam-primary, #890000);
   background: rgba(137, 0, 0, 0.04);
 }
 
 .action-flag a,
-.action-unflag a {
+.action-unflag a,
+ul.links.inline li.comment-forbidden a,
+ul.links.inline li.comment-comments a,
+ul.links.inline li.comment-add a {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  color: var(--kaliyattam-text);
+  gap: 0.45rem;
+  color: var(--kaliyattam-text, #262626);
   text-decoration: none;
-  font-size: var(--text-sm);
+  font-size: var(--text-sm, 0.875rem);
   font-weight: 500;
+  transition: color 0.15s ease;
 }
 
-.action-flag a::before {
-  content: "";
-  display: inline-block;
-  width: 1.25em;
-  height: 1.25em;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23890000'%3E%3Cpath d='M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z'/%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5V6H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V7H6a.5.5 0 0 1 0-1h1.5V4.5A.5.5 0 0 1 8 4'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-size: contain;
+.action-flag a:hover,
+.action-unflag a:hover,
+ul.links.inline li.comment-forbidden a:hover,
+ul.links.inline li.comment-comments a:hover,
+ul.links.inline li.comment-add a:hover {
+  color: var(--kaliyattam-primary, #890000);
 }
 
-.action-unflag a::before {
+ul.links.inline li.comment-forbidden a {
+  font-weight: 600;
+  text-decoration: underline;
+  margin-right: 0.25rem;
+}
+
+/* 4. Common Icon Rules */
+.action-flag a::before,
+.action-unflag a::before,
+ul.links.inline li.comment-forbidden::before,
+ul.links.inline li.comment-comments a::before,
+ul.links.inline li.comment-add a::before {
   content: "";
   display: inline-block;
-  width: 1.25em;
-  height: 1.25em;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23890000'%3E%3Cpath d='M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2'/%3E%3C/svg%3E");
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.15em;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
+  flex-shrink: 0;
+}
+
+/* 5. Specific Flag Icons */
+
+/* Bookmark Flag (Ribbon) */
+.flag-bookmark a::before,
+.flag-bookmark.action-flag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+}
+.flag-bookmark.action-unflag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23890000' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+}
+
+/* Favorite Node Flag (Heart) */
+.flag-favorite-node a::before,
+.flag-favorite-node.action-flag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E");
+}
+.flag-favorite-node.action-unflag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23890000' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E");
+}
+
+/* Pin / Sticky Flag */
+.flag-sticky-timeline a::before,
+.flag-sticky-user-timeline a::before,
+.flag-sticky-timeline.action-flag a::before,
+.flag-sticky-user-timeline.action-flag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='17' x2='12' y2='22'/%3E%3Cpath d='M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z'/%3E%3C/svg%3E");
+}
+.flag-sticky-timeline.action-unflag a::before,
+.flag-sticky-user-timeline.action-unflag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23890000' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='17' x2='12' y2='22'/%3E%3Cpath d='M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z'/%3E%3C/svg%3E");
+}
+
+/* Subscribe Flag (Bell) */
+.flag-subscribe-node a::before,
+.flag-subscribe-node.action-flag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h24s-3-2-3-9'/%3E%3Cpath d='M13.73 21a2 2 0 0 1-3.46 0'/%3E%3C/svg%3E");
+}
+.flag-subscribe-node.action-unflag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23890000' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h24s-3-2-3-9'/%3E%3Cpath d='M13.73 21a2 2 0 0 1-3.46 0'/%3E%3C/svg%3E");
+}
+
+/* Like Flag (Thumbs Up) */
+.flag-like-node a::before,
+.flag-like-node.action-flag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'/%3E%3C/svg%3E");
+}
+.flag-like-node.action-unflag a::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23890000' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'/%3E%3C/svg%3E");
+}
+
+/* Comment Link (Speech Bubble) */
+ul.links.inline li.comment-forbidden::before,
+ul.links.inline li.comment-comments a::before,
+ul.links.inline li.comment-add a::before,
+ul.links.inline li:has(a[href*="login"]):not(:has(.action-flag))::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+}
+
+ul.links.inline li:has(a[href*="login"]):not(:has(.action-flag)) {
+  border: 1px solid var(--kaliyattam-border, #e5e7eb);
+  border-radius: var(--radius-sm, 6px);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--kaliyattam-light, #f8f9fa);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--kaliyattam-text, #262626);
+}
+
+ul.links.inline li:has(a[href*="login"]):not(:has(.action-flag)) a {
+  color: var(--kaliyattam-primary, #890000);
+  font-weight: 600;
+  text-decoration: underline;
+  margin-right: 0.25rem;
+}
+
+/* 6. Dark Mode Adjustments */
+:root[data-theme="dark"] .action-flag,
+:root[data-theme="dark"] .action-unflag,
+:root[data-theme="dark"] ul.links.inline li.comment-forbidden,
+:root[data-theme="dark"] ul.links.inline li.comment-comments,
+:root[data-theme="dark"] ul.links.inline li.comment-add,
+:root[data-theme="dark"] ul.links.inline li:has(a[href*="login"]):not(:has(.action-flag)),
+html.dark .action-flag,
+html.dark .action-unflag,
+html.dark ul.links.inline li.comment-forbidden,
+html.dark ul.links.inline li.comment-comments,
+html.dark ul.links.inline li.comment-add,
+html.dark ul.links.inline li:has(a[href*="login"]):not(:has(.action-flag)) {
+  background: var(--kaliyattam-surface-dark, #18181b);
+  border-color: var(--kaliyattam-border-dark, #27272a);
+  color: #e4e4e7;
+}
+
+:root[data-theme="dark"] .action-flag a,
+:root[data-theme="dark"] .action-unflag a,
+:root[data-theme="dark"] ul.links.inline li.comment-forbidden a,
+:root[data-theme="dark"] ul.links.inline li.comment-comments a,
+:root[data-theme="dark"] ul.links.inline li.comment-add a,
+html.dark .action-flag a,
+html.dark .action-unflag a,
+html.dark ul.links.inline li.comment-forbidden a,
+html.dark ul.links.inline li.comment-comments a,
+html.dark ul.links.inline li.comment-add a {
+  color: #e4e4e7;
 }
