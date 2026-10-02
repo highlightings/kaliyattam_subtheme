@@ -802,6 +802,34 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
     return;
   }
 
+  // Format breadcrumbs for timeline type feeds: Home > Timeline > [Type].
+  $route_name = $route_match->getRouteName();
+  if ($route_name && str_starts_with($route_name, 'view.timeline_type.')) {
+    $type_labels = [
+      'view.timeline_type.theyyam_page' => t('Theyyam'),
+      'view.timeline_type.post_page' => t('Posts'),
+      'view.timeline_type.location_page' => t('Places'),
+      'view.timeline_type.event_page' => t('Events'),
+    ];
+    if (isset($type_labels[$route_name])) {
+      $variables['breadcrumb'] = [
+        [
+          'text' => t('Home'),
+          'url' => '/',
+        ],
+        [
+          'text' => t('Timeline'),
+          'url' => '/timeline',
+        ],
+        [
+          'text' => $type_labels[$route_name],
+          'url' => '',
+        ],
+      ];
+      return;
+    }
+  }
+
   // For any other page, ensure long titles at the end of the breadcrumb are trimmed to a reasonable length.
   $last_index = count($variables['breadcrumb']) - 1;
   if ($last_index >= 0 && isset($variables['breadcrumb'][$last_index]['text'])) {

@@ -77,6 +77,15 @@
       const nearMeButtons = once('timeline-near-me', '#btn-near-me', context);
       nearMeButtons.forEach(function (button) {
         const statusSpan = document.getElementById('near-me-status');
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('near') === '1' || (urlParams.has('lat') && urlParams.has('lon'))) {
+          button.classList.add('is-active');
+          if (statusSpan) {
+            statusSpan.textContent = Drupal.t('Location set!');
+            statusSpan.style.display = 'inline-block';
+          }
+        }
+
         button.addEventListener('click', function (e) {
           e.preventDefault();
 
