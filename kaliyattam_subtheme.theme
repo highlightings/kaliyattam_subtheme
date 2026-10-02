@@ -61,6 +61,35 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
       $variables['attributes']['class'] = array_values(array_diff($variables['attributes']['class'], ['contextual-region']));
     }
   }
+
+  // Accurately determine if node is pinned (sticky flag or personal user sticky).
+  $is_pinned = FALSE;
+  if ($node->isSticky()) {
+    $is_pinned = TRUE;
+  }
+  elseif (\Drupal::hasService('flag')) {
+    try {
+      /** @var \Drupal\flag\FlagServiceInterface $flag_service */
+      $flag_service = \Drupal::service('flag');
+      $sticky_flag = $flag_service->getFlagById('sticky_timeline');
+      if ($sticky_flag && $sticky_flag->isFlagged($node)) {
+        $is_pinned = TRUE;
+      }
+      else {
+        $user_sticky_flag = $flag_service->getFlagById('sticky_user_timeline');
+        if ($user_sticky_flag && $user_sticky_flag->isFlagged($node, $node->getOwner())) {
+          $is_pinned = TRUE;
+        }
+      }
+    }
+    catch (\Exception $e) {
+      // Fallback
+    }
+  }
+  $variables['is_pinned'] = $is_pinned;
+  if ($is_pinned && !empty($variables['attributes']['class'])) {
+    $variables['attributes']['class'][] = 'timeline-card--sticky';
+  }
 }
 
 /**
@@ -490,6 +519,12 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $view_id = $view->id();
   $display_id = $view->current_display;
 
+  // Add standard Drupal view CSS classes to attributes.
+  $variables['attributes']['class'][] = 'view';
+  $variables['attributes']['class'][] = 'view-' . \Drupal\Component\Utility\Html::cleanCssIdentifier($view_id);
+  $variables['attributes']['class'][] = 'view-id-' . $view_id;
+  $variables['attributes']['class'][] = 'view-display-id-' . $display_id;
+
   // Process timeline feeds.
   if (str_starts_with($view_id, 'timeline_')) {
     // Skip attachment displays (e.g., attachment_pinned) to prevent duplicate headers.
@@ -640,7 +675,53 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
         '#weight' => -10,
       ];
     }
-    // 3. Other timelines: Theyyam, Location, User, Type, Locations
+    // 3. Locations Timeline (/timeline/locations): tabs [Map View], [List View] + Near Me + Grid/List Switcher
+    elseif ($view_id === 'timeline_locations') {
+      unset($variables['header']['area']);
+
+      $tabs_html = '
+        <div class="timeline-tabs-bar-wrapper">
+          <div class="timeline-tabs-bar">
+            <nav class="timeline-nav-tabs" aria-label="' . t('Locations Timeline Navigation') . '">
+              <a href="/temples" class="timeline-nav-tab" data-tab="map">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                <span class="tab-label">' . t('Map View') . '</span>
+              </a>
+              <a href="/timeline/locations" class="timeline-nav-tab is-active" data-tab="list">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                <span class="tab-label">' . t('List View') . '</span>
+              </a>
+            </nav>
+            <div class="timeline-tabs-actions">
+              <div id="near-me-toggle-wrapper" class="near-me-wrapper">
+                <button type="button" id="btn-near-me" class="btn-near-me" aria-label="' . t('Find temples near me') . '">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg>
+                  <span>' . t('Near Me') . '</span>
+                </button>
+                <span id="near-me-status" class="near-me-status"></span>
+              </div>
+              <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
+                <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  <span class="switcher-text">' . t('Grid') . '</span>
+                </button>
+                <button type="button" class="view-switch-btn" data-layout="list" title="' . t('List view') . '" aria-label="' . t('List view') . '" aria-pressed="false">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                  <span class="switcher-text">' . t('List') . '</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ';
+
+      $variables['header']['locations_nav'] = [
+        '#type' => 'inline_template',
+        '#template' => $tabs_html,
+        '#weight' => -10,
+      ];
+    }
+    // 4. Other timelines: Theyyam, Location, User, Type
     else {
       $tabs_html = '
         <div class="timeline-tabs-bar-wrapper timeline-tabs-bar-wrapper--compact">

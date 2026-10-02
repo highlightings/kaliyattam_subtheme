@@ -149,7 +149,7 @@
 
       function applyTimelineLayout(layout) {
         const feedWrappers = document.querySelectorAll(
-          '.timeline-feed .view-content, .views-infinite-scroll-content-wrapper, .view-content, [class*="js-view-dom-id"] .view-content'
+          '.timeline-feed .view-content, .views-infinite-scroll-content-wrapper, .view-content, [class*="js-view-dom-id"] .view-content, .view-timeline-site .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"], .view-display-id-attachment_pinned, .view-display-id-attachment_pinned .view-content'
         );
         feedWrappers.forEach(function (wrapper) {
           if (layout === 'grid') {
@@ -158,6 +158,18 @@
           } else {
             wrapper.classList.remove('timeline-feed--grid');
             wrapper.classList.add('timeline-feed--list');
+          }
+        });
+
+        // Set state class on the view containers so CSS can consistently style pinned attachments and list mode
+        const timelineViews = document.querySelectorAll('.view-timeline-site, .view-timeline-events, .view-timeline-theyyam, .view-timeline-location, .view-timeline-locations');
+        timelineViews.forEach(function (view) {
+          if (layout === 'grid') {
+            view.classList.add('is-grid-layout');
+            view.classList.remove('is-list-layout');
+          } else {
+            view.classList.remove('is-grid-layout');
+            view.classList.add('is-list-layout');
           }
         });
 

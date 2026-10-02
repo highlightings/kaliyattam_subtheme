@@ -186,6 +186,9 @@
 
 .timeline-card-body {
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 
 .timeline-card-title {
@@ -212,6 +215,7 @@
   color: var(--kaliyattam-text, #1c1917);
   margin-bottom: 0.875rem;
   word-break: break-word;
+  flex: 1 1 auto;
 }
 
 .timeline-card-text p {
@@ -221,6 +225,19 @@
 
 .timeline-card-text p:last-child {
   margin-bottom: 0;
+}
+
+.timeline-card-text a {
+  color: var(--kaliyattam-primary, #890000);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  transition: color 0.15s ease;
+  word-break: break-all;
+}
+
+.timeline-card-text a:hover {
+  color: var(--kaliyattam-primary-dark, #4a0000);
 }
 
 /* Media Grid Container - Social Media / Album Style */
@@ -351,7 +368,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem 0.6rem;
-  margin-top: 0.75rem;
+  margin-top: auto !important;
+  padding-top: 0.75rem;
 }
 
 .timeline-card-chips:empty {
@@ -395,19 +413,28 @@
   font-weight: 600;
 }
 
-/* Theyyam Chip: Clean inline comma-separated list */
+/* Theyyam Chip: Clean inline comma-separated list with truncation */
+.timeline-chip--theyyam {
+  max-width: 100%;
+}
+
 .timeline-chip--theyyam > div,
 .timeline-chip--theyyam .field__items {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.25rem;
   align-items: center;
+  max-width: 100%;
 }
 
 .timeline-chip--theyyam div > div,
 .timeline-chip--theyyam .field__item {
   display: inline-flex;
   align-items: center;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .timeline-chip--theyyam div > div:not(:last-child)::after,
@@ -417,13 +444,23 @@
   color: var(--kaliyattam-text-muted, #71717a);
 }
 
-/* Address Chip: Clean compact inline format */
+/* Address Chip: Clean compact inline format with truncation */
 .timeline-chip--address {
-  line-height: 1.3;
+  line-height: 1.35;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .timeline-chip--address svg {
   flex-shrink: 0;
+  display: inline-block;
+  vertical-align: -0.15em;
+  margin-right: 0.25rem;
 }
 
 .timeline-chip--address p,
@@ -977,43 +1014,78 @@ html, body {
    ========================================================================== */
 
 /* Grid Layout */
-.timeline-feed--grid {
+.timeline-feed--grid,
+.is-grid-layout .view-display-id-attachment_pinned,
+.is-grid-layout .view-display-id-attachment_pinned .view-content,
+.view-timeline-site.is-grid-layout .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"],
+.view-timeline-site:not(.is-list-layout) .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"] {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
   gap: 1.25rem !important;
   align-items: stretch !important;
+  width: 100% !important;
+  margin-bottom: 1.25rem !important;
 }
 
-.timeline-feed--grid > .timeline-feed-item {
+.timeline-feed--grid > .timeline-feed-item,
+.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"] > .timeline-feed-item,
+.is-grid-layout .view-display-id-attachment_pinned .timeline-feed-item {
   margin-bottom: 0 !important;
   height: 100% !important;
   display: flex;
   flex-direction: column;
 }
 
-.timeline-feed--grid .timeline-card {
+.timeline-feed--grid .timeline-card,
+.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) .timeline-card,
+.is-grid-layout .view-display-id-attachment_pinned .timeline-card {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.timeline-feed--grid .timeline-card-body {
+.timeline-feed--grid .timeline-card-body,
+.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) .timeline-card-body {
   flex: 1 1 auto;
 }
 
-.timeline-feed--grid .timeline-card-actions {
+.timeline-feed--grid .timeline-card-actions,
+.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) .timeline-card-actions {
   margin-top: auto;
 }
 
-/* List Layout (Single column centered feed) */
+/* List Layout (Expanded width single column centered feed) */
 .timeline-feed--list,
+.is-list-layout .timeline-feed--list,
+.is-list-layout .views-infinite-scroll-content-wrapper,
+.is-list-layout .view-content,
+.is-list-layout .view-display-id-attachment_pinned,
+.is-list-layout .view-display-id-attachment_pinned .view-content,
+.view-timeline-site.is-list-layout .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"],
 .view-timeline-site .view-content:not(.timeline-feed--grid),
 .view-timeline-events .view-content:not(.timeline-feed--grid),
 .view-timeline-theyyam .view-content:not(.timeline-feed--grid),
-.view-timeline-location .view-content:not(.timeline-feed--grid) {
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
+.view-timeline-location .view-content:not(.timeline-feed--grid),
+.view-timeline-locations .view-content:not(.timeline-feed--grid) {
+  display: block !important;
+  max-width: min(880px, 100%) !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.timeline-feed--list > .timeline-feed-item,
+.is-list-layout .timeline-feed-item,
+.view-timeline-site.is-list-layout .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"] > .timeline-feed-item {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.timeline-feed--list .timeline-card,
+.is-list-layout .timeline-card {
+  width: 100% !important;
+  padding: 1.5rem 1.75rem !important;
 }
 
 /* ==========================================================================
