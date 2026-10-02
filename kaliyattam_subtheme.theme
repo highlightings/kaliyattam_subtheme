@@ -788,12 +788,13 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $variables['attributes']['class'][] = 'view-id-' . $view_id;
   $variables['attributes']['class'][] = 'view-display-id-' . $display_id;
 
-  // Event Date Archives & Hub navigation toolbar: unified across /events, /events/YYYY, /events/YYYY/MM, /events/YYYY/MM/DD.
-  if ($view_id === 'events' && in_array($display_id, ['page_1', 'page_year', 'page_month', 'page_day'], TRUE)) {
+  // Event Date Archives & Hub navigation toolbar: unified across /events, /events/past, /events/YYYY, /events/YYYY/MM, /events/YYYY/MM/DD.
+  if ($view_id === 'events' && in_array($display_id, ['page_1', 'page_2', 'page_year', 'page_month', 'page_day'], TRUE)) {
     $args = $view->args;
     $is_upcoming = ($display_id === 'page_1');
+    $is_past = ($display_id === 'page_2');
     $year = (int) ($args[0] ?? date('Y'));
-    $active_month = $is_upcoming ? -1 : (int) ($args[1] ?? 0);
+    $active_month = ($is_upcoming || $is_past) ? -1 : (int) ($args[1] ?? 0);
     $active_day = (int) ($args[2] ?? 0);
 
     $months = [
@@ -833,8 +834,8 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
               <a href="/events-calendar" class="btn btn-sm btn-outline-primary">
                 <i class="bi bi-calendar-week me-1"></i>{{ "Calendar View"|t }}
               </a>
-              <a href="/events/past" class="btn btn-sm btn-outline-secondary">
-                {{ "Archive"|t }}
+              <a href="/events/past" class="btn btn-sm' . ($is_past ? ' btn-primary text-white' : ' btn-outline-secondary') . '">
+                <i class="bi bi-archive me-1"></i>{{ "Archive"|t }}
               </a>
             </div>
           </div>

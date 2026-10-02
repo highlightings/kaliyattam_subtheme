@@ -368,8 +368,9 @@ body.node--type-event .block-page-title-block {
   padding: 0.35rem 0.75rem;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--kaliyattam-text-muted, #4b5563);
-  background: rgba(0, 0, 0, 0.04);
+  color: #27272a;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 20px;
   text-decoration: none;
   transition: all 0.15s ease;
@@ -379,11 +380,13 @@ body.node--type-event .block-page-title-block {
 .events-date-pill-num {
   font-weight: 700;
   letter-spacing: -0.01em;
+  color: #18181b;
 }
 
 .events-date-pill-name {
   font-size: 0.76rem;
-  opacity: 0.85;
+  font-weight: 600;
+  color: #27272a;
   margin-left: 2px;
 }
 
@@ -396,6 +399,11 @@ body.node--type-event .block-page-title-block {
   background: var(--kaliyattam-primary, #b33927) !important;
   color: #ffffff !important;
   box-shadow: 0 2px 6px rgba(179, 57, 39, 0.35);
+}
+
+.events-date-pill.is-active .events-date-pill-num,
+.events-date-pill.is-active .events-date-pill-name {
+  color: #ffffff !important;
 }
 
 /* ==========================================================================
