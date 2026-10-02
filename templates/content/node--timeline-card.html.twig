@@ -54,9 +54,12 @@
           </span>
         </div>
         <div class="timeline-card-time-line">
-          <time datetime="{{ node.getCreatedTime()|date('c') }}" class="timeline-card-time">
-            {{ node.getCreatedTime()|format_date('medium') }}
-          </time>
+          {% set card_url = url ?: path('entity.node.canonical', {'node': node.id()}) %}
+          <a href="{{ card_url }}" class="timeline-card-time-link" rel="bookmark" title="{{ node.bundle() == 'post' ? 'View full post'|t : 'View details'|t }}">
+            <time datetime="{{ node.getCreatedTime()|date('c') }}" class="timeline-card-time">
+              {{ node.getCreatedTime()|format_date('medium') }}
+            </time>
+          </a>
           {% if node.bundle() == 'post' and node.field_visibility.value %}
             <span class="timeline-visibility-pill timeline-visibility--{{ node.field_visibility.value }}">
               {% if node.field_visibility.value == 'public' %}

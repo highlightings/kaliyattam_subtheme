@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Kaliyattam Subtheme implementation for breadcrumb trail.
+ *
+ * Available variables:
+ * - breadcrumb: Breadcrumb trail items.
+ */
+#}
+{% if breadcrumb %}
+  <nav aria-labelledby="system-breadcrumb" class="site-breadcrumb-nav">
+    <h2 id="system-breadcrumb" class="visually-hidden">{{ 'Breadcrumb'|t }}</h2>
+    <ol class="site-breadcrumb-list">
+    {% for item in breadcrumb %}
+      <li class="site-breadcrumb-item">
+        {% if item.url %}
+          <a href="{{ item.url }}" class="site-breadcrumb-link">{{ item.text }}</a>
+        {% else %}
+          <span class="site-breadcrumb-current">{{ item.text }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ol>
+  </nav>
+{% endif %}

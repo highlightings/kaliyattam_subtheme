@@ -103,6 +103,24 @@
   color: var(--kaliyattam-text-muted, #71717a);
 }
 
+.timeline-card-time-link {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+
+.timeline-card-time-link:hover,
+.timeline-card-time-link:focus-visible {
+  color: var(--kaliyattam-primary, #890000);
+  text-decoration: underline;
+}
+
+.timeline-card-time-link .timeline-card-time {
+  cursor: pointer;
+}
+
 /* Bundle Badge */
 .timeline-badge {
   display: inline-flex;

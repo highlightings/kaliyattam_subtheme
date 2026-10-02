@@ -423,6 +423,20 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
   if (!empty($variables['primary'])) {
     foreach (\Drupal\Core\Render\Element::children($variables['primary']) as $key) {
       $item = $variables['primary'][$key];
+      // Consolidate timeline tabs: omit redundant location-timeline tab in favor of unified /node/{id}/timeline.
+      if (!empty($item['#link']['url'])) {
+        try {
+          $url_str = $item['#link']['url']->toString();
+          if (str_contains($url_str, 'location-timeline')) {
+            unset($variables['primary'][$key]);
+            continue;
+          }
+        }
+        catch (\Exception $e) {
+          // Fall through.
+        }
+      }
+
       if (!empty($item['#active'])) {
         $title = !empty($item['#link']['title']) ? (string) $item['#link']['title'] : '';
         $active_tab_title = $title;
@@ -657,5 +671,62 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   }
 }
 
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
+  if (empty($variables['breadcrumb'])) {
+    return;
+  }
 
+  $route_match = \Drupal::routeMatch();
+  $node = $route_match->getParameter('node');
+  if (is_string($node) || is_numeric($node)) {
+    $node = \Drupal\node\Entity\Node::load($node);
+  }
 
+  // Format breadcrumbs for posts: home > post > YYYY-MM > [alice posted].
+  if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'post') {
+    $created_time = (int) $node->getCreatedTime();
+    $year_month = date('Y-m', $created_time);
+
+    // Clean and trim the post title for breadcrumbs.
+    $raw_title = (string) $node->getTitle();
+    // Remove auto-generated timer prefix like "0 seconds : " or "[0 seconds : " if present.
+    $cleaned_title = preg_replace('/^\s*\[?\s*\d+\s*(?:seconds?|minutes?|hours?|days?|weeks?|months?|years?)\s*:\s*/i', '', $raw_title);
+    $cleaned_title = trim(rtrim($cleaned_title ?: $raw_title, ']'));
+    // Trim to reasonable size (e.g. max 35 characters with ellipsis).
+    if (mb_strlen($cleaned_title) > 35) {
+      $cleaned_title = mb_substr($cleaned_title, 0, 32) . '…';
+    }
+
+    $variables['breadcrumb'] = [
+      [
+        'text' => t('Home'),
+        'url' => '/',
+      ],
+      [
+        'text' => 'post',
+        'url' => '/timeline/post',
+      ],
+      [
+        'text' => $year_month,
+        'url' => '',
+      ],
+      [
+        'text' => $cleaned_title,
+        'url' => '',
+      ],
+    ];
+    return;
+  }
+
+  // For any other page, ensure long titles at the end of the breadcrumb are trimmed to a reasonable length.
+  $last_index = count($variables['breadcrumb']) - 1;
+  if ($last_index >= 0 && isset($variables['breadcrumb'][$last_index]['text'])) {
+    $title_text = (string) $variables['breadcrumb'][$last_index]['text'];
+    if (mb_strlen($title_text) > 40) {
+      $variables['breadcrumb'][$last_index]['text'] = mb_substr($title_text, 0, 37) . '…';
+    }
+  }
+}
