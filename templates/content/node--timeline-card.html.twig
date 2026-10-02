@@ -116,53 +116,76 @@
     {% endif %}
 
     {# Related Chips Row #}
-    <div class="timeline-card-chips">
-      {% if content.field_when is not empty %}
-        <span class="timeline-chip timeline-chip--date" title="{{ 'Event Time'|t }}">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          {{ content.field_when }}
-        </span>
-      {% endif %}
+    {% set when_rendered = content.field_when|render %}
+    {% set theyyam_rendered = content.field_theyyam|render %}
+    {% set where_rendered = content.field_where|render %}
+    {% set address_rendered = content.field_location_address|render %}
+    {% set tags_rendered = content.field_tags|render %}
 
-      {% if content.field_theyyam is not empty %}
-        <div class="timeline-chip timeline-chip--theyyam" title="{{ 'Related Theyyam'|t }}">
-          <span class="chip-label" aria-hidden="true">🎭</span>
-          {{ content.field_theyyam }}
-        </div>
-      {% endif %}
+    {% set has_when = when_rendered|striptags|trim is not empty %}
+    {% set has_theyyam = theyyam_rendered|striptags|trim is not empty %}
+    {% set has_where = where_rendered|striptags|trim is not empty %}
+    {% set has_address = address_rendered|striptags|trim is not empty %}
+    {% set has_tags = tags_rendered|striptags|trim is not empty %}
 
-      {% if content.field_where is not empty %}
-        <div class="timeline-chip timeline-chip--place" title="{{ 'Performance Place'|t }}">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          {{ content.field_where }}
-        </div>
-      {% endif %}
+    {% if has_when or has_theyyam or has_where or has_address or has_tags %}
+      <div class="timeline-card-chips">
+        {% if has_when %}
+          <span class="timeline-chip timeline-chip--date" title="{{ 'Event Time'|t }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            {{ when_rendered|raw }}
+          </span>
+        {% endif %}
 
-      {% if content.field_location_address is not empty %}
-        <div class="timeline-chip timeline-chip--address">
-          {{ content.field_location_address }}
-        </div>
-      {% endif %}
+        {% if has_theyyam %}
+          <div class="timeline-chip timeline-chip--theyyam" title="{{ 'Related Theyyam'|t }}">
+            <span class="chip-label" aria-hidden="true">🎭</span>
+            {{ theyyam_rendered|raw }}
+          </div>
+        {% endif %}
 
-      {% if content.field_tags is not empty %}
-        <div class="timeline-chip timeline-chip--tags">
-          {{ content.field_tags }}
-        </div>
-      {% endif %}
-    </div>
+        {% if has_where %}
+          <div class="timeline-chip timeline-chip--place" title="{{ 'Performance Place'|t }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ where_rendered|raw }}
+          </div>
+        {% endif %}
+
+        {% if has_address %}
+          <div class="timeline-chip timeline-chip--address" title="{{ 'Location Address'|t }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ address_rendered|raw }}
+          </div>
+        {% endif %}
+
+        {% if has_tags %}
+          <div class="timeline-chip timeline-chip--tags" title="{{ 'Tags'|t }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            {{ tags_rendered|raw }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
 
   {# Card Action Bar #}
+  {% set fav_rendered = content.flag_favorite_node|render %}
+  {% set like_rendered = content.flag_like_node is not empty ? content.flag_like_node|render : '' %}
+  {% set pin_personal_rendered = content.flag_sticky_user_timeline is not empty ? content.flag_sticky_user_timeline|render : '' %}
+  {% set pin_sitewide_rendered = content.flag_sticky_timeline is not empty ? content.flag_sticky_timeline|render : '' %}
+
   <footer class="timeline-card-actions">
     {# Favorite Node Action #}
-    <div class="timeline-action-item action-favorite">
-      {{ content.flag_favorite_node }}
-    </div>
+    {% if '<a' in fav_rendered %}
+      <div class="timeline-action-item action-favorite">
+        {{ fav_rendered|raw }}
+      </div>
+    {% endif %}
 
     {# Like Node Action (Posts) #}
-    {% if content.flag_like_node is not empty %}
+    {% if '<a' in like_rendered %}
       <div class="timeline-action-item action-like">
-        {{ content.flag_like_node }}
+        {{ like_rendered|raw }}
       </div>
     {% endif %}
 
@@ -188,14 +211,14 @@
     </div>
 
     {# Pin Actions for Permitted Users #}
-    {% if content.flag_sticky_user_timeline is not empty %}
+    {% if '<a' in pin_personal_rendered %}
       <div class="timeline-action-item action-pin-personal">
-        {{ content.flag_sticky_user_timeline }}
+        {{ pin_personal_rendered|raw }}
       </div>
     {% endif %}
-    {% if content.flag_sticky_timeline is not empty %}
+    {% if '<a' in pin_sitewide_rendered %}
       <div class="timeline-action-item action-pin-sitewide">
-        {{ content.flag_sticky_timeline }}
+        {{ pin_sitewide_rendered|raw }}
       </div>
     {% endif %}
   </footer>

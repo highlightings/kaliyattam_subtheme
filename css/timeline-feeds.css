@@ -331,20 +331,32 @@
 .timeline-card-chips {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.4rem 0.6rem;
   margin-top: 0.75rem;
+}
+
+.timeline-card-chips:empty {
+  display: none !important;
 }
 
 .timeline-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.65rem;
   background-color: var(--kaliyattam-surface-warm, #f4efe8);
   border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
   border-radius: 16px;
   font-size: var(--text-xs, 0.75rem);
   color: var(--kaliyattam-text-secondary, #52525b);
+}
+
+/* Hide empty chips or chips that only have an icon and no content text */
+.timeline-chip:empty,
+.timeline-chip:has(> .chip-label:only-child),
+.timeline-chip:has(> svg:only-child) {
+  display: none !important;
 }
 
 .timeline-chip a {
@@ -363,6 +375,74 @@
   border-color: #bbf7d0;
   color: #166534;
   font-weight: 600;
+}
+
+/* Theyyam Chip: Clean inline comma-separated list */
+.timeline-chip--theyyam > div,
+.timeline-chip--theyyam .field__items {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.timeline-chip--theyyam div > div,
+.timeline-chip--theyyam .field__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.timeline-chip--theyyam div > div:not(:last-child)::after,
+.timeline-chip--theyyam .field__item:not(:last-child)::after {
+  content: ",";
+  margin-right: 0.2rem;
+  color: var(--kaliyattam-text-muted, #71717a);
+}
+
+/* Address Chip: Clean compact inline format */
+.timeline-chip--address {
+  line-height: 1.3;
+}
+
+.timeline-chip--address svg {
+  flex-shrink: 0;
+}
+
+.timeline-chip--address p,
+.timeline-chip--address .address {
+  margin: 0;
+  display: inline;
+}
+
+.timeline-chip--address br {
+  display: none;
+}
+
+.timeline-chip--address span:not(:last-child)::after {
+  content: ", ";
+  color: var(--kaliyattam-text-muted, #71717a);
+}
+
+/* Tags Chip: Clean inline comma-separated list */
+.timeline-chip--tags > div,
+.timeline-chip--tags .field__items {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.timeline-chip--tags div > div,
+.timeline-chip--tags .field__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.timeline-chip--tags div > div:not(:last-child)::after,
+.timeline-chip--tags .field__item:not(:last-child)::after {
+  content: ",";
+  margin-right: 0.2rem;
+  color: var(--kaliyattam-text-muted, #71717a);
 }
 
 /* ==========================================================================
@@ -384,15 +464,35 @@
   align-items: center;
 }
 
+/* Hide empty action wrappers */
+.timeline-action-item:empty,
+.timeline-action-item:not(:has(a, button)),
+.timeline-card-actions .action-flag:not(:has(a)),
+.timeline-card-actions .action-unflag:not(:has(a)) {
+  display: none !important;
+}
+
+/* Neutralize generic .action-flag / .action-unflag border/padding in card actions */
+.timeline-card-actions .action-flag,
+.timeline-card-actions .action-unflag {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+}
+
 /* Flag links & Action buttons */
 .timeline-card-actions a,
 .timeline-card-actions button,
 .timeline-action-btn,
-.timeline-action-link {
+.timeline-action-link,
+.timeline-card-actions .action-flag a,
+.timeline-card-actions .action-unflag a {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 44px;
+  min-height: 40px;
   padding: 0.4rem 0.75rem;
   border-radius: var(--radius-sm, 6px);
   background: transparent;
@@ -408,9 +508,64 @@
 .timeline-card-actions a:hover,
 .timeline-card-actions button:hover,
 .timeline-action-btn:hover,
-.timeline-action-link:hover {
+.timeline-action-link:hover,
+.timeline-card-actions .action-flag a:hover,
+.timeline-card-actions .action-unflag a:hover {
   background-color: var(--kaliyattam-surface-warm, #f4efe8);
   color: var(--kaliyattam-primary, #890000);
+}
+
+/* Favorite Icon (Heart) */
+.timeline-card-actions .flag-favorite-node a::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23890000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+
+.timeline-card-actions .flag-favorite-node.action-unflag a::before,
+.timeline-card-actions .flag-favorite-node a[aria-pressed="true"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dc2626' stroke='%23dc2626' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E");
+}
+
+/* Sticky Pin Icon */
+.timeline-card-actions .flag-sticky-timeline a::before,
+.timeline-card-actions .flag-sticky-user-timeline a::before {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+
+.timeline-card-actions .flag-sticky-timeline.action-unflag a::before,
+.timeline-card-actions .flag-sticky-user-timeline.action-unflag a::before,
+.timeline-card-actions .flag-sticky-timeline a[aria-pressed="true"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b45309' stroke='%23b45309' stroke-width='1'%3E%3Cpath d='M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z'/%3E%3C/svg%3E");
+}
+
+/* Like Icon (Thumbs Up) */
+.timeline-card-actions .flag-like-node a::before {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+
+.timeline-card-actions .flag-like-node.action-unflag a::before,
+.timeline-card-actions .flag-like-node a[aria-pressed="true"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb' stroke='%232563eb' stroke-width='1'%3E%3Cpath d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'/%3E%3C/svg%3E");
 }
 
 /* Active / Flagged states */

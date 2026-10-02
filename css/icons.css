@@ -42,6 +42,16 @@
 }
 
 /* Bookmark Flag System */
+.action-flag:empty,
+.action-unflag:empty,
+.action-flag:not(:has(a)),
+.action-unflag:not(:has(a)) {
+  display: none !important;
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
 .action-flag,
 .action-unflag {
   border: 1px solid var(--kaliyattam-border);
