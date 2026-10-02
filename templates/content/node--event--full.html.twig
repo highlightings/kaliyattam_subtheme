@@ -52,22 +52,84 @@
               </div>
             </div>
 
-            {% if content.field_event_date is not empty %}
+            {# Event Schedule & Location #}
+            {% if content.field_when is not empty %}
+              <div class="event-date mb-3 text-primary fw-semibold">
+                <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
+                {{ content.field_when }}
+              </div>
+            {% elseif content.field_event_date is not empty %}
               <div class="event-date mb-3 text-primary fw-semibold">
                 <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
                 {{ content.field_event_date }}
               </div>
             {% endif %}
 
-            {% if content.field_event_location is not empty %}
+            {% if content.field_where is not empty %}
+              <div class="event-location mb-3 text-muted">
+                <i class="icon icon-location bi-geo-alt me-1" aria-hidden="true"></i>
+                {{ content.field_where }}
+              </div>
+            {% elseif content.field_event_location is not empty %}
               <div class="event-location mb-3 text-muted">
                 <i class="icon icon-location bi-geo-alt me-1" aria-hidden="true"></i>
                 {{ content.field_event_location }}
               </div>
             {% endif %}
 
-            <div class="event-body mt-4">
-              {{ content|without('field_featured_image', 'field_media', 'field_event_date', 'field_event_location', 'field_comments', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
+            {# Event Month Mini Calendar #}
+            {% if event_calendar is not empty %}
+              <div class="event-mini-calendar-widget my-3" data-event-year="{{ event_calendar.year }}" data-event-month="{{ event_calendar.month }}">
+                <div class="event-calendar-card">
+                  <div class="event-calendar-header">
+                    <div class="event-calendar-title-group">
+                      <i class="icon icon-calendar bi-calendar3 event-calendar-icon" aria-hidden="true"></i>
+                      <a href="{{ event_calendar.month_url }}" class="event-calendar-title" title="{{ 'View all events in ' ~ event_calendar.month_year_label }}">
+                        {{ event_calendar.month_year_label }}
+                      </a>
+                    </div>
+                    <a href="{{ event_calendar.year_url }}" class="event-calendar-year-badge" title="{{ 'View all ' ~ event_calendar.year ~ ' events' }}">
+                      {{ event_calendar.year }}
+                    </a>
+                  </div>
+                  <div class="event-calendar-grid">
+                    <div class="event-calendar-weekdays" role="row">
+                      {% for wd in event_calendar.weekdays %}
+                        <span class="event-calendar-weekday" role="columnheader">{{ wd }}</span>
+                      {% endfor %}
+                    </div>
+                    <div class="event-calendar-days" role="grid">
+                      {% if event_calendar.leading_empty > 0 %}
+                        {% for i in 1..event_calendar.leading_empty %}
+                          <span class="event-calendar-day event-calendar-day--empty" aria-hidden="true"></span>
+                        {% endfor %}
+                      {% endif %}
+                      {% for d in event_calendar.days %}
+                        {% if d.is_event %}
+                          <a href="{{ d.url }}" class="event-calendar-day event-calendar-day--active" title="{{ 'Event Date: ' ~ d.label }}" aria-label="{{ d.label }}" aria-current="date">
+                            <span class="event-calendar-day-number">{{ d.day }}</span>
+                            <span class="event-calendar-day-indicator" aria-hidden="true"></span>
+                          </a>
+                        {% else %}
+                          <span class="event-calendar-day event-calendar-day--normal">
+                            <span class="event-calendar-day-number">{{ d.day }}</span>
+                          </span>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="event-calendar-footer">
+                    <a href="{{ event_calendar.month_url }}" class="event-calendar-footer-link">
+                      <span>{{ 'All @month Events'|t({'@month': event_calendar.month_name}) }}</span>
+                      <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="event-body mt-3">
+              {{ content|without('field_featured_image', 'field_media', 'field_when', 'field_where', 'field_event_date', 'field_event_location', 'field_comments', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
             </div>
 
             {# Flag Action Links #}

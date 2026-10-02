@@ -40,7 +40,7 @@ function kaliyattam_subtheme_preprocess_page(array &$variables): void {
       $timeline_path = '/node/' . $current_node->id() . '/timeline';
       $timeline_alias = $node_alias . '/timeline';
       $existing_alias = $alias_manager->getAliasByPath($timeline_path);
-      if ($existing_alias === $timeline_path) {
+      if ($existing_alias !== $timeline_alias) {
         \Drupal::entityTypeManager()->getStorage('path_alias')->create([
           'path' => $timeline_path,
           'alias' => $timeline_alias,
@@ -140,6 +140,57 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
     }
     catch (\Exception $e) {
       $variables['flag_follow_user'] = [];
+    }
+  }
+
+  // Build mini-calendar widget for Event full view mode.
+  if ($node->bundle() === 'event') {
+    $date_field = $node->hasField('field_when') && !$node->get('field_when')->isEmpty()
+      ? $node->get('field_when')
+      : ($node->hasField('field_event__date') && !$node->get('field_event__date')->isEmpty() ? $node->get('field_event__date') : NULL);
+
+    if ($date_field) {
+      $start_ts = (int) $date_field->value;
+      $end_ts = (int) ($date_field->end_value ?? $start_ts);
+
+      $year = (int) date('Y', $start_ts);
+      $month = (int) date('n', $start_ts);
+      $month_name = date('F', $start_ts);
+      $month_padded = sprintf('%02d', $month);
+
+      $first_day_ts = mktime(0, 0, 0, $month, 1, $year);
+      $total_days = (int) date('t', $first_day_ts);
+      $start_weekday = (int) date('w', $first_day_ts); // 0 (Sun) to 6 (Sat)
+
+      $days_data = [];
+      for ($d = 1; $d <= $total_days; $d++) {
+        $day_start = mktime(0, 0, 0, $month, $d, $year);
+        $day_end = mktime(23, 59, 59, $month, $d, $year);
+        $is_event_date = ($start_ts <= $day_end && $end_ts >= $day_start);
+        $day_padded = sprintf('%02d', $d);
+
+        $days_data[] = [
+          'day' => $d,
+          'day_padded' => $day_padded,
+          'is_event' => $is_event_date,
+          'url' => "/events/{$year}/{$month_padded}/{$day_padded}",
+          'label' => date('F j, Y', $day_start),
+        ];
+      }
+
+      $variables['event_calendar'] = [
+        'year' => $year,
+        'month' => $month,
+        'month_padded' => $month_padded,
+        'month_name' => $month_name,
+        'month_year_label' => $month_name . ' ' . $year,
+        'year_url' => "/events/{$year}",
+        'month_url' => "/events/{$year}/{$month_padded}",
+        'weekdays' => ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        'leading_empty' => $start_weekday,
+        'days' => $days_data,
+        'total_days' => $total_days,
+      ];
     }
   }
 }
@@ -537,6 +588,49 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
 }
 
 /**
+ * Implements hook_views_query_alter().
+ */
+function kaliyattam_subtheme_views_query_alter(\Drupal\views\ViewExecutable $view, \Drupal\views\Plugin\views\query\QueryPluginBase $query): void {
+  if ($view->id() === 'events' && in_array($view->current_display, ['page_year', 'page_month', 'page_day'], TRUE)) {
+    $args = $view->args;
+    $year = isset($args[0]) && is_numeric($args[0]) ? (int) $args[0] : 0;
+    if ($year < 1970 || $year > 2100) {
+      return;
+    }
+
+    $start = 0;
+    $end = 0;
+
+    if ($view->current_display === 'page_year') {
+      $start = strtotime(sprintf('%04d-01-01 00:00:00', $year));
+      $end = strtotime(sprintf('%04d-12-31 23:59:59', $year));
+    }
+    elseif ($view->current_display === 'page_month') {
+      $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
+      if ($month >= 1 && $month <= 12) {
+        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $start = strtotime(sprintf('%04d-%02d-01 00:00:00', $year, $month));
+        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $days_in_month));
+      }
+    }
+    elseif ($view->current_display === 'page_day') {
+      $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
+      $day = isset($args[2]) && is_numeric($args[2]) ? (int) $args[2] : 0;
+      if ($month >= 1 && $month <= 12 && $day >= 1 && $day <= 31) {
+        $start = strtotime(sprintf('%04d-%02d-%02d 00:00:00', $year, $month, $day));
+        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $day));
+      }
+    }
+
+    if ($start > 0 && $end > 0) {
+      $alias = $query->ensureTable('node__field_when');
+      $query->addWhere(1, "$alias.field_when_value", $end, '<=');
+      $query->addWhere(1, "$alias.field_when_end_value", $start, '>=');
+    }
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  *
  * Ensures no duplicate items appear in timeline feeds when personal flag
@@ -544,6 +638,56 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
  * referencing for both Theyyam and Location nodes.
  */
 function kaliyattam_subtheme_views_pre_render(\Drupal\views\ViewExecutable $view): void {
+  if ($view->id() === 'events' && in_array($view->current_display, ['page_year', 'page_month', 'page_day'], TRUE)) {
+    $args = $view->args;
+    $year = isset($args[0]) && is_numeric($args[0]) ? (int) $args[0] : 0;
+    $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
+    $day = isset($args[2]) && is_numeric($args[2]) ? (int) $args[2] : 0;
+
+    $start = 0;
+    $end = 0;
+
+    if ($view->current_display === 'page_year' && $year > 0) {
+      $view->setTitle(t('Events in @year', ['@year' => $year]));
+      $start = strtotime(sprintf('%04d-01-01 00:00:00', $year));
+      $end = strtotime(sprintf('%04d-12-31 23:59:59', $year));
+    }
+    elseif ($view->current_display === 'page_month' && $year > 0 && $month >= 1 && $month <= 12) {
+      $month_name = date('F', mktime(0, 0, 0, $month, 1, 2000));
+      $view->setTitle(t('Events in @month @year', ['@month' => t($month_name), '@year' => $year]));
+      $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+      $start = strtotime(sprintf('%04d-%02d-01 00:00:00', $year, $month));
+      $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $days_in_month));
+    }
+    elseif ($view->current_display === 'page_day' && $year > 0 && $month >= 1 && $month <= 12 && $day >= 1 && $day <= 31) {
+      $month_name = date('F', mktime(0, 0, 0, $month, 1, 2000));
+      $view->setTitle(t('Events on @month @day, @year', ['@month' => t($month_name), '@day' => $day, '@year' => $year]));
+      $start = strtotime(sprintf('%04d-%02d-%02d 00:00:00', $year, $month, $day));
+      $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $day));
+    }
+
+    if ($start > 0 && $end > 0) {
+      $filtered_results = [];
+      foreach ($view->result as $row) {
+        $node = $row->_entity ?? \Drupal\node\Entity\Node::load($row->nid);
+        if ($node instanceof \Drupal\node\NodeInterface) {
+          $date_field = $node->hasField('field_when') && !$node->get('field_when')->isEmpty()
+            ? $node->get('field_when')
+            : ($node->hasField('field_event__date') && !$node->get('field_event__date')->isEmpty() ? $node->get('field_event__date') : NULL);
+          if ($date_field) {
+            $val = (int) $date_field->value;
+            $end_val = (int) ($date_field->end_value ?? $val);
+            if ($val <= $end && $end_val >= $start) {
+              $filtered_results[] = $row;
+            }
+          }
+        }
+      }
+      $view->result = $filtered_results;
+      $view->total_rows = count($filtered_results);
+    }
+  }
+
   if (str_starts_with($view->id(), 'timeline_') || $view->id() === 'block_my_favorites') {
     $seen = [];
     $unique_results = [];
@@ -576,6 +720,68 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $variables['attributes']['class'][] = 'view-' . \Drupal\Component\Utility\Html::cleanCssIdentifier($view_id);
   $variables['attributes']['class'][] = 'view-id-' . $view_id;
   $variables['attributes']['class'][] = 'view-display-id-' . $display_id;
+
+  // Event Date Archives navigation toolbar.
+  if ($view_id === 'events' && in_array($display_id, ['page_year', 'page_month', 'page_day'], TRUE)) {
+    $args = $view->args;
+    $year = (int) ($args[0] ?? date('Y'));
+    $active_month = (int) ($args[1] ?? 0);
+    $active_day = (int) ($args[2] ?? 0);
+
+    $months = [
+      1 => t('Jan'), 2 => t('Feb'), 3 => t('Mar'), 4 => t('Apr'),
+      5 => t('May'), 6 => t('Jun'), 7 => t('Jul'), 8 => t('Aug'),
+      9 => t('Sep'), 10 => t('Oct'), 11 => t('Nov'), 12 => t('Dec'),
+    ];
+
+    $month_pills = '';
+    foreach ($months as $m_num => $m_label) {
+      $m_pad = sprintf('%02d', $m_num);
+      $is_active = ($active_month === $m_num);
+      $month_pills .= '<a href="/events/' . $year . '/' . $m_pad . '" class="events-date-pill' . ($is_active ? ' is-active' : '') . '" title="' . $m_pad . ' (' . $m_label . ')"><span class="events-date-pill-num">' . $m_pad . '</span> <span class="events-date-pill-name">' . $m_label . '</span></a>';
+    }
+
+    $day_badge = '';
+    if ($active_day > 0) {
+      $day_pad = sprintf('%02d', $active_day);
+      $day_badge = '<span class="events-date-day-badge ms-2"><i class="bi bi-calendar-check me-1"></i>' . t('Day @day', ['@day' => $day_pad]) . '</span>';
+    }
+
+    $variables['header']['event_date_nav'] = [
+      '#type' => 'inline_template',
+      '#template' => '
+        <div class="events-archive-header mb-4">
+          <div class="events-archive-toolbar d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div class="events-archive-title-group d-flex align-items-center gap-2">
+              <a href="/events" class="btn btn-sm btn-outline-secondary events-back-btn">
+                <i class="bi bi-arrow-left me-1"></i>{{ "Upcoming Events"|t }}
+              </a>
+              <a href="/events/{{ year }}" class="events-year-link fw-bold fs-5 text-decoration-none">
+                <i class="bi bi-calendar3 me-1 text-primary"></i>{{ year }}
+              </a>
+              {{ day_badge|raw }}
+            </div>
+            <div class="events-archive-quick-links d-flex align-items-center gap-2">
+              <a href="/events-calendar" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-calendar-week me-1"></i>{{ "Calendar View"|t }}
+              </a>
+              <a href="/events/past" class="btn btn-sm btn-outline-secondary">
+                {{ "Archive"|t }}
+              </a>
+            </div>
+          </div>
+          <nav class="events-months-nav d-flex flex-wrap gap-1" aria-label="{{ "Filter by month in " ~ year }}">
+            <a href="/events/{{ year }}" class="events-date-pill events-date-pill--all' . ($active_month === 0 ? ' is-active' : '') . '">{{ "All Year"|t }}</a>
+            ' . $month_pills . '
+          </nav>
+        </div>',
+      '#context' => [
+        'year' => $year,
+        'day_badge' => $day_badge,
+      ],
+      '#weight' => -10,
+    ];
+  }
 
   // Process timeline feeds.
   if (str_starts_with($view_id, 'timeline_')) {
@@ -857,8 +1063,152 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
     return;
   }
 
-  // Format breadcrumbs for timeline type feeds: Home > Timeline > [Type].
+  // Format breadcrumbs for events: Home > Events (/events) > YYYY (/events/YYYY) > MM (/events/YYYY/MM) > DD (/events/YYYY/MM/DD) > [cleaned title].
+  if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'event') {
+    $date_field = $node->hasField('field_when') && !$node->get('field_when')->isEmpty()
+      ? $node->get('field_when')
+      : ($node->hasField('field_event__date') && !$node->get('field_event__date')->isEmpty() ? $node->get('field_event__date') : NULL);
+
+    if ($date_field) {
+      $start_ts = (int) $date_field->value;
+      $year = date('Y', $start_ts);
+      $month_num = (int) date('n', $start_ts);
+      $month_padded = sprintf('%02d', $month_num);
+      $month_name = date('F', $start_ts);
+      $day_num = (int) date('j', $start_ts);
+      $day_padded = sprintf('%02d', $day_num);
+
+      $raw_title = (string) $node->getTitle();
+      $cleaned_title = trim($raw_title);
+      if (mb_strlen($cleaned_title) > 35) {
+        $cleaned_title = mb_substr($cleaned_title, 0, 32) . '…';
+      }
+
+      $variables['breadcrumb'] = [
+        [
+          'text' => t('Home'),
+          'url' => '/',
+        ],
+        [
+          'text' => t('Events'),
+          'url' => '/events',
+        ],
+        [
+          'text' => $year,
+          'url' => '/events/' . $year,
+        ],
+        [
+          'text' => $month_padded,
+          'url' => '/events/' . $year . '/' . $month_padded,
+        ],
+        [
+          'text' => $day_padded,
+          'url' => '/events/' . $year . '/' . $month_padded . '/' . $day_padded,
+        ],
+        [
+          'text' => $cleaned_title,
+          'url' => '',
+        ],
+      ];
+      return;
+    }
+  }
+
   $route_name = $route_match->getRouteName();
+
+  // Format breadcrumbs for event date archive views:
+  // /events/YYYY -> Home > Events > YYYY
+  // /events/YYYY/MM -> Home > Events > YYYY > MM
+  // /events/YYYY/MM/DD -> Home > Events > YYYY > MM > DD
+  if ($route_name === 'view.events.page_year') {
+    $year = $route_match->getParameter('arg_0') ?? '';
+    $variables['breadcrumb'] = [
+      [
+        'text' => t('Home'),
+        'url' => '/',
+      ],
+      [
+        'text' => t('Events'),
+        'url' => '/events',
+      ],
+      [
+        'text' => (string) $year,
+        'url' => '',
+      ],
+    ];
+    return;
+  }
+  if ($route_name === 'view.events.page_month') {
+    $year = $route_match->getParameter('arg_0') ?? '';
+    $month = (int) ($route_match->getParameter('arg_1') ?? 0);
+    $month_padded = sprintf('%02d', $month);
+    $variables['breadcrumb'] = [
+      [
+        'text' => t('Home'),
+        'url' => '/',
+      ],
+      [
+        'text' => t('Events'),
+        'url' => '/events',
+      ],
+      [
+        'text' => (string) $year,
+        'url' => '/events/' . $year,
+      ],
+      [
+        'text' => $month_padded,
+        'url' => '',
+      ],
+    ];
+    return;
+  }
+  if ($route_name === 'view.events.page_day') {
+    $year = $route_match->getParameter('arg_0') ?? '';
+    $month = (int) ($route_match->getParameter('arg_1') ?? 0);
+    $day = (int) ($route_match->getParameter('arg_2') ?? 0);
+    $month_padded = sprintf('%02d', $month);
+    $day_padded = sprintf('%02d', $day);
+    $variables['breadcrumb'] = [
+      [
+        'text' => t('Home'),
+        'url' => '/',
+      ],
+      [
+        'text' => t('Events'),
+        'url' => '/events',
+      ],
+      [
+        'text' => (string) $year,
+        'url' => '/events/' . $year,
+      ],
+      [
+        'text' => $month_padded,
+        'url' => '/events/' . $year . '/' . $month_padded,
+      ],
+      [
+        'text' => $day_padded,
+        'url' => '',
+      ],
+    ];
+    return;
+  }
+  if ($route_name === 'view.events_calendar.page_1') {
+    $variables['breadcrumb'] = [
+      [
+        'text' => t('Home'),
+        'url' => '/',
+      ],
+      [
+        'text' => t('Events'),
+        'url' => '/events',
+      ],
+      [
+        'text' => t('Calendar'),
+        'url' => '',
+      ],
+    ];
+    return;
+  }
   if ($route_name && str_starts_with($route_name, 'view.timeline_type.')) {
     $type_labels = [
       'view.timeline_type.theyyam_page' => t('Theyyam'),
