@@ -233,7 +233,8 @@
   text-underline-offset: 2px;
   font-weight: 500;
   transition: color 0.15s ease;
-  word-break: break-all;
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .timeline-card-text a:hover {
@@ -245,6 +246,76 @@
   margin: 0.75rem 0 1rem 0;
   border-radius: var(--radius-sm, 8px);
   overflow: hidden;
+  max-height: 240px;
+}
+
+.timeline-feed--list .timeline-card-media-wrapper,
+.is-list-layout .timeline-card-media-wrapper,
+body[data-feed-layout="list"] .timeline-card-media-wrapper {
+  max-height: 480px;
+}
+
+/* Responsive Video Embeds and Klaro Consent Placeholders */
+.timeline-card-media-wrapper [data-type="placeholder"],
+.timeline-card-media-wrapper .media-oembed-content,
+.timeline-card-media-wrapper iframe,
+.timeline-card-media-wrapper .media--type-remote-video {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 240px !important;
+  aspect-ratio: 16 / 9 !important;
+  border-radius: var(--radius-sm, 8px);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.timeline-feed--list .timeline-card-media-wrapper [data-type="placeholder"],
+.is-list-layout .timeline-card-media-wrapper [data-type="placeholder"],
+body[data-feed-layout="list"] .timeline-card-media-wrapper [data-type="placeholder"],
+.timeline-feed--list .timeline-card-media-wrapper iframe,
+.is-list-layout .timeline-card-media-wrapper iframe,
+body[data-feed-layout="list"] .timeline-card-media-wrapper iframe {
+  max-height: 480px !important;
+}
+
+.timeline-card-media-wrapper [data-type="placeholder"] {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  padding: 1rem !important;
+  background: var(--kaliyattam-surface-warm, #f4efe8) !important;
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08)) !important;
+}
+
+.timeline-card-media-wrapper [data-type="placeholder"] .context-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.timeline-card-media-wrapper [data-type="placeholder"] p {
+  margin: 0 !important;
+  font-size: var(--text-sm, 0.875rem);
+  line-height: 1.35;
+}
+
+.timeline-card-media-wrapper [data-type="placeholder"] .cm-buttons {
+  margin-top: 0.35rem !important;
+}
+
+.timeline-card-media-wrapper [data-type="placeholder"] .cm-btn {
+  padding: 0.35rem 0.85rem !important;
+  font-size: var(--text-xs, 0.75rem) !important;
+  border-radius: 16px !important;
+}
+
+.timeline-card-media-wrapper [data-type="placeholder"] .cm-dialog-link {
+  font-size: var(--text-xs, 0.75rem);
+  opacity: 0.8;
 }
 
 .timeline-card-featured-img img {
@@ -411,6 +482,36 @@
   border-color: #bbf7d0;
   color: #166534;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Place Chip: Clean compact inline presentation with truncation */
+.timeline-chip--place {
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timeline-chip--place svg {
+  flex-shrink: 0;
+}
+
+.timeline-chip--place a,
+.timeline-chip--place span,
+.timeline-chip--place .field__item,
+.timeline-chip--place div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* Theyyam Chip: Clean inline comma-separated list with truncation */
@@ -1086,6 +1187,57 @@ html, body {
 .is-list-layout .timeline-card {
   width: 100% !important;
   padding: 1.5rem 1.75rem !important;
+}
+
+/* List Mode: date and place chips stacked one over the other */
+.timeline-feed--list .timeline-card-chips,
+.is-list-layout .timeline-card-chips,
+body[data-feed-layout="list"] .timeline-card-chips {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0.45rem !important;
+  width: 100% !important;
+}
+
+.timeline-feed--list .timeline-chip--date,
+.is-list-layout .timeline-chip--date,
+body[data-feed-layout="list"] .timeline-chip--date {
+  width: fit-content !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.timeline-feed--list .timeline-chip--place,
+.is-list-layout .timeline-chip--place,
+body[data-feed-layout="list"] .timeline-chip--place {
+  width: fit-content !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.timeline-feed--list .timeline-chip--place a,
+.is-list-layout .timeline-chip--place a,
+body[data-feed-layout="list"] .timeline-chip--place a,
+.timeline-feed--list .timeline-chip--place span,
+.is-list-layout .timeline-chip--place span,
+body[data-feed-layout="list"] .timeline-chip--place span,
+.timeline-feed--list .timeline-chip--place .field__item,
+.is-list-layout .timeline-chip--place .field__item,
+body[data-feed-layout="list"] .timeline-chip--place .field__item,
+.timeline-feed--list .timeline-chip--place div,
+.is-list-layout .timeline-chip--place div,
+body[data-feed-layout="list"] .timeline-chip--place div {
+  max-width: min(720px, calc(100vw - 120px)) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
 }
 
 /* ==========================================================================
