@@ -28,19 +28,54 @@ function kaliyattam_subtheme_preprocess_page(array &$variables): void {
   // Attach navigation library to all pages for responsive menu functionality.
   $variables['#attached']['library'][] = 'kaliyattam_subtheme/navigation';
 
-  // Support /node/{node}/timeline for Location nodes by embedding timeline_location view.
+  // Ensure /timeline alias exists for location, theyyam, and event nodes.
+  $current_node = \Drupal::routeMatch()->getParameter('node');
+  if (is_string($current_node) || is_numeric($current_node)) {
+    $current_node = \Drupal\node\Entity\Node::load($current_node);
+  }
+  if ($current_node instanceof \Drupal\node\NodeInterface && in_array($current_node->bundle(), ['location', 'theyyam', 'event'], TRUE)) {
+    $alias_manager = \Drupal::service('path_alias.manager');
+    $node_alias = $alias_manager->getAliasByPath('/node/' . $current_node->id());
+    if ($node_alias !== '/node/' . $current_node->id()) {
+      $timeline_path = '/node/' . $current_node->id() . '/timeline';
+      $timeline_alias = $node_alias . '/timeline';
+      $existing_alias = $alias_manager->getAliasByPath($timeline_path);
+      if ($existing_alias === $timeline_path) {
+        \Drupal::entityTypeManager()->getStorage('path_alias')->create([
+          'path' => $timeline_path,
+          'alias' => $timeline_alias,
+        ])->save();
+      }
+    }
+  }
+
+  // Support /node/{node}/timeline for Location and Event nodes by embedding appropriate view.
   $route_match = \Drupal::routeMatch();
   if ($route_match->getRouteName() === 'view.timeline_theyyam.page_timeline') {
     $node = $route_match->getParameter('node');
     if (is_string($node) || is_numeric($node)) {
       $node = \Drupal\node\Entity\Node::load($node);
     }
-    if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'location') {
-      if (isset($variables['page']['content']['kaliyattam_subtheme_content'])) {
-        $variables['page']['content']['kaliyattam_subtheme_content'] = views_embed_view('timeline_location', 'page_timeline', $node->id());
+    if ($node instanceof \Drupal\node\NodeInterface) {
+      $view_content = NULL;
+      if ($node->bundle() === 'location') {
+        $view_content = views_embed_view('timeline_location', 'page_timeline', $node->id());
       }
-      elseif (isset($variables['page']['content']['system_main'])) {
-        $variables['page']['content']['system_main'] = views_embed_view('timeline_location', 'page_timeline', $node->id());
+      elseif ($node->bundle() === 'event') {
+        if ($node->hasField('field_where') && !$node->get('field_where')->isEmpty()) {
+          $view_content = views_embed_view('timeline_location', 'page_timeline', $node->get('field_where')->target_id);
+        }
+        elseif ($node->hasField('field_theyyam') && !$node->get('field_theyyam')->isEmpty()) {
+          $view_content = views_embed_view('timeline_theyyam', 'page_timeline', $node->get('field_theyyam')->target_id);
+        }
+      }
+      if ($view_content) {
+        if (isset($variables['page']['content']['kaliyattam_subtheme_content'])) {
+          $variables['page']['content']['kaliyattam_subtheme_content'] = $view_content;
+        }
+        elseif (isset($variables['page']['content']['system_main'])) {
+          $variables['page']['content']['system_main'] = $view_content;
+        }
       }
     }
   }
@@ -89,6 +124,23 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
   $variables['is_pinned'] = $is_pinned;
   if ($is_pinned && !empty($variables['attributes']['class'])) {
     $variables['attributes']['class'][] = 'timeline-card--sticky';
+  }
+
+  // Provide author metadata, user timeline link, and user follow flag for node templates.
+  $author = $node->getOwner();
+  $author_name = $author ? $author->getDisplayName() : 'Kaliyattam Artist';
+  $author_uid = $author ? $author->id() : 1;
+  $variables['author_name'] = $author_name;
+  $variables['author_uid'] = $author_uid;
+  $variables['author_initial'] = mb_strtoupper(mb_substr($author_name, 0, 1));
+  $variables['author_url'] = '/user/' . $author_uid . '/timeline?page=1';
+  if ($author && \Drupal::hasService('flag.link_builder')) {
+    try {
+      $variables['flag_follow_user'] = \Drupal::service('flag.link_builder')->build('user', $author_uid, 'favorite_user');
+    }
+    catch (\Exception $e) {
+      $variables['flag_follow_user'] = [];
+    }
   }
 }
 
@@ -766,10 +818,13 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
     $node = \Drupal\node\Entity\Node::load($node);
   }
 
-  // Format breadcrumbs for posts: home > post > YYYY-MM > [alice posted].
+  // Format breadcrumbs for posts: home > author (/user/[uid]/timeline?page=1) > YYYY-MM-DD > [cleaned title].
   if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'post') {
     $created_time = (int) $node->getCreatedTime();
-    $year_month = date('Y-m', $created_time);
+    $date_formatted = date('Y-m-d', $created_time);
+    $author = $node->getOwner();
+    $author_name = $author ? $author->getDisplayName() : 'User';
+    $author_uid = $author ? $author->id() : 1;
 
     // Clean and trim the post title for breadcrumbs.
     $raw_title = (string) $node->getTitle();
@@ -787,11 +842,11 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
         'url' => '/',
       ],
       [
-        'text' => 'post',
-        'url' => '/timeline/post',
+        'text' => $author_name,
+        'url' => '/user/' . $author_uid . '/timeline?page=1',
       ],
       [
-        'text' => $year_month,
+        'text' => $date_formatted,
         'url' => '',
       ],
       [

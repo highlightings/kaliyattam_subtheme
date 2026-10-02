@@ -42,12 +42,12 @@
   {# Card Header: Author, Meta, and Badges #}
   <header class="timeline-card-header">
     <div class="timeline-card-author-group">
-      <a href="/user/{{ author.id() }}/timeline" class="timeline-card-avatar" aria-hidden="true" tabindex="-1">
+      <a href="/user/{{ author.id() }}/timeline?page=1" class="timeline-card-avatar" aria-hidden="true" tabindex="-1">
         <span class="avatar-initial">{{ author_initial }}</span>
       </a>
       <div class="timeline-card-meta">
         <div class="timeline-card-author-line">
-          <a href="/user/{{ author.id() }}/timeline" class="timeline-card-author-name">{{ author_name }}</a>
+          <a href="/user/{{ author.id() }}/timeline?page=1" class="timeline-card-author-name">{{ author_name }}</a>
           <span class="timeline-badge timeline-badge--{{ node.bundle() }}">
             <span class="badge-icon" aria-hidden="true">{{ bundle_icons[node.bundle()]|default('📜') }}</span>
             <span class="badge-text">{{ bundle_labels[node.bundle()]|default(node.bundle()) }}</span>

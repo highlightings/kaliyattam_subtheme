@@ -1,0 +1,155 @@
+{#
+/**
+ * @file
+ * Theme override to display a Post node in full view mode.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-post',
+    'node--view-mode-full',
+    'post-full-view',
+    node.isSticky() ? 'node--sticky' : '',
+  ]
+%}
+
+{% set author = node.getOwner() %}
+{% set author_name = author_name|default(author.getDisplayName()|default('Kaliyattam Artist')) %}
+{% set author_initial = author_initial|default(author_name|slice(0, 1)|upper) %}
+{% set author_url = author_url|default('/user/' ~ author.id() ~ '/timeline?page=1') %}
+
+<article{{ attributes.addClass(classes) }}>
+  <div class="container">
+    {{ title_prefix }}
+    {% if not page %}
+      <h1{{ title_attributes.addClass('post-title', 'mb-3') }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h1>
+    {% else %}
+      <h1{{ title_attributes.addClass('post-title', 'mb-3') }}>
+        {{ label }}
+      </h1>
+    {% endif %}
+    {{ title_suffix }}
+
+    {# Author & Date Metadata Bar with Icons #}
+    <div class="node-meta-bar">
+      <div class="node-author-group">
+        <a href="{{ author_url }}" class="node-author-avatar" aria-hidden="true" tabindex="-1">
+          <span class="avatar-initial">{{ author_initial }}</span>
+        </a>
+        <div class="node-meta-info">
+          <div class="node-meta-author">
+            <a href="{{ author_url }}" class="node-author-link">
+              <i class="icon icon-user bi-person me-1" aria-hidden="true"></i>
+              <span>{{ author_name }}</span>
+            </a>
+            {% if flag_follow_user is not empty %}
+              <span class="node-follow-wrapper ms-2">
+                {{ flag_follow_user }}
+              </span>
+            {% endif %}
+          </div>
+          <div class="node-meta-date">
+            <time datetime="{{ node.getCreatedTime()|date('c') }}">
+              <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
+              <span>{{ node.getCreatedTime()|format_date('medium') }}</span>
+            </time>
+          </div>
+        </div>
+      </div>
+
+      {# Associated Entity Chips (Theyyam / Location) #}
+      <div class="node-meta-chips">
+        {% if node.field_theyyam is not empty and node.field_theyyam.entity %}
+          {% set theyyam = node.field_theyyam.entity %}
+          {% set theyyam_url = path('entity.node.canonical', {'node': theyyam.id()}) %}
+          <a href="{{ theyyam_url }}" class="timeline-chip timeline-chip--theyyam">
+            <span class="chip-icon" aria-hidden="true">🎭</span>
+            <span class="chip-text">{{ theyyam.label() }}</span>
+          </a>
+        {% endif %}
+        {% if node.field_where is not empty and node.field_where.entity %}
+          {% set place = node.field_where.entity %}
+          {% set place_url = path('entity.node.canonical', {'node': place.id()}) %}
+          <a href="{{ place_url }}" class="timeline-chip timeline-chip--place">
+            <span class="chip-icon" aria-hidden="true">🛕</span>
+            <span class="chip-text">{{ place.label() }}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div{{ content_attributes.addClass('node__content') }}>
+      {# Media Carousel / Gallery #}
+      {% if node.field_media is not empty %}
+        <div class="post-media-gallery mb-4">
+          {% embed 'kaliyattam_subtheme:media-carousel' with { id: 'post-carousel-' ~ node.id() } %}
+            {% block slides %}
+              {% for media_item in node.field_media %}
+                {% if media_item.entity %}
+                  {% set media_bundle = media_item.entity.bundle %}
+                  {% if media_bundle == 'image' %}
+                    {% set img_uri = media_item.entity.field_media_image.entity.fileuri ?: media_item.entity.thumbnail.entity.fileuri %}
+                    {% set img_alt = media_item.entity.field_media_image.alt|default(media_item.entity.label) %}
+                    {% if img_uri is not empty %}
+                      <div class="carousel-slide carousel-slide--image">
+                        <img src="{{ img_uri | image_style('3_2_300x200_focal_point_webp') }}" alt="{{ img_alt }}" loading="lazy">
+                      </div>
+                    {% endif %}
+                  {% elseif media_bundle == 'remote_video' %}
+                    <div class="carousel-slide carousel-slide--video">
+                      {{ drupal_entity('media', media_item.target_id, 'default') }}
+                    </div>
+                  {% else %}
+                    <div class="carousel-slide">
+                      {{ drupal_entity('media', media_item.target_id) }}
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% endblock %}
+          {% endembed %}
+        </div>
+      {% endif %}
+
+      {# Post Body Content #}
+      {% if content.field_content is not empty %}
+        <div class="post-body-content mb-4 lead">
+          {{ content.field_content }}
+        </div>
+      {% endif %}
+
+      {# Tags #}
+      {% if content.field_tags is not empty %}
+        <div class="post-tags mb-4">
+          {{ content.field_tags }}
+        </div>
+      {% endif %}
+
+      {# Flag Action Links (Inline) #}
+      {% if content.links is not empty %}
+        <div class="node-flag-actions mb-4">
+          {{ content.links }}
+        </div>
+      {% endif %}
+
+      {# Remaining fields #}
+      <div class="node-main-fields">
+        {{ content|without('field_content', 'field_media', 'field_theyyam', 'field_where', 'field_comments_without_title', 'field_comments', 'field_tags', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title', 'content_moderation_control') }}
+      </div>
+
+      {# Comments #}
+      {% if content.field_comments_without_title is not empty %}
+        <div class="node-comments-section mt-5">
+          {{ content.field_comments_without_title }}
+        </div>
+      {% elseif content.field_comments is not empty %}
+        <div class="node-comments-section mt-5">
+          {{ content.field_comments }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</article>

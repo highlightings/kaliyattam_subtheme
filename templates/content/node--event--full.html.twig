@@ -24,6 +24,34 @@
             </h1>
             {{ title_suffix }}
 
+            {# Author & Date Metadata Bar with Icons #}
+            <div class="node-meta-bar mb-3">
+              <div class="node-author-group">
+                <a href="{{ author_url }}" class="node-author-avatar" aria-hidden="true" tabindex="-1">
+                  <span class="avatar-initial">{{ author_initial }}</span>
+                </a>
+                <div class="node-meta-info">
+                  <div class="node-meta-author">
+                    <a href="{{ author_url }}" class="node-author-link">
+                      <i class="icon icon-user bi-person me-1" aria-hidden="true"></i>
+                      <span>{{ author_name }}</span>
+                    </a>
+                    {% if flag_follow_user is not empty %}
+                      <span class="node-follow-wrapper ms-2">
+                        {{ flag_follow_user }}
+                      </span>
+                    {% endif %}
+                  </div>
+                  <div class="node-meta-date">
+                    <time datetime="{{ node.getCreatedTime()|date('c') }}">
+                      <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
+                      <span>{{ node.getCreatedTime()|format_date('medium') }}</span>
+                    </time>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {% if content.field_event_date is not empty %}
               <div class="event-date mb-3 text-primary fw-semibold">
                 <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
@@ -39,8 +67,15 @@
             {% endif %}
 
             <div class="event-body mt-4">
-              {{ content|without('field_featured_image', 'field_media', 'field_event_date', 'field_event_location', 'field_comments') }}
+              {{ content|without('field_featured_image', 'field_media', 'field_event_date', 'field_event_location', 'field_comments', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
             </div>
+
+            {# Flag Action Links #}
+            {% if content.links is not empty %}
+              <div class="node-flag-actions mt-4 mb-2">
+                {{ content.links }}
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>

@@ -14,6 +14,34 @@
     {% endif %}
     {{ title_suffix }}
 
+    {# Node Author & Date Metadata Bar with Icons #}
+    <div class="node-meta-bar mb-4">
+      <div class="node-author-group">
+        <a href="{{ author_url }}" class="node-author-avatar" aria-hidden="true" tabindex="-1">
+          <span class="avatar-initial">{{ author_initial }}</span>
+        </a>
+        <div class="node-meta-info">
+          <div class="node-meta-author">
+            <a href="{{ author_url }}" class="node-author-link">
+              <i class="icon icon-user bi-person me-1" aria-hidden="true"></i>
+              <span>{{ author_name }}</span>
+            </a>
+            {% if flag_follow_user is not empty %}
+              <span class="node-follow-wrapper ms-2">
+                {{ flag_follow_user }}
+              </span>
+            {% endif %}
+          </div>
+          <div class="node-meta-date">
+            <time datetime="{{ node.getCreatedTime()|date('c') }}">
+              <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
+              <span>{{ node.getCreatedTime()|format_date('medium') }}</span>
+            </time>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div{{ content_attributes.addClass('node__content') }}>
       {% if content.field_featured_image is not empty %}
         <div class="theyyam-cover-image">
@@ -51,9 +79,16 @@
         {% endembed %}
       {% endif %}
 
+      {# Flag Action Links #}
+      {% if content.links is not empty %}
+        <div class="node-flag-actions mb-4">
+          {{ content.links }}
+        </div>
+      {% endif %}
+
       {# Main node fields #}
       <div class="node-main-fields">
-        {{ content|without('field_media', 'field_comments', 'field_featured_image') }}
+        {{ content|without('field_media', 'field_comments', 'field_featured_image', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
       </div>
 
       {% if content.field_comments is not empty %}
