@@ -872,4 +872,190 @@ html, body {
   visibility: visible;
 }
 
+/* ==========================================================================
+   Multi-Image Slider (Flickity Style matching Released.in)
+   ========================================================================== */
+
+.timeline-card-media-grid:has(.timeline-media-slider) {
+  display: block;
+  margin-top: 0;
+}
+
+.timeline-media-slider.flickity-enabled {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-sm, 8px);
+  outline: none;
+  background-color: var(--kaliyattam-surface-muted, #1e293b);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.timeline-media-slider:focus-visible {
+  box-shadow: 0 0 0 3px var(--kaliyattam-gold-primary, #b45309);
+}
+
+.timeline-media-slider .flickity-viewport {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+}
+
+.timeline-feed--grid .timeline-media-slider .flickity-viewport {
+  height: 200px;
+}
+
+@media (max-width: 640px) {
+  .timeline-media-slider .flickity-viewport,
+  .timeline-feed--grid .timeline-media-slider .flickity-viewport {
+    height: 220px;
+  }
+}
+
+.timeline-media-slider .flickity-slider {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.timeline-media-slider .flickity-cell {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #0f172a;
+}
+
+.timeline-media-slider .flickity-cell > div,
+.timeline-media-slider .flickity-cell .media,
+.timeline-media-slider .flickity-cell .field,
+.timeline-media-slider .flickity-cell .field__items,
+.timeline-media-slider .flickity-cell .field__item,
+.timeline-media-slider .flickity-cell a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.timeline-media-slider .flickity-cell picture {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.timeline-media-slider .flickity-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+/* Prev/Next Buttons matching Released.in */
+.timeline-media-slider .flickity-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #1e293b;
+  cursor: pointer;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  opacity: 0.88;
+}
+
+.timeline-media-slider:hover .flickity-button {
+  opacity: 1;
+}
+
+.timeline-media-slider .flickity-button:hover {
+  background: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+}
+
+.timeline-media-slider .flickity-button:focus-visible {
+  outline: 2px solid var(--kaliyattam-gold-primary, #b45309);
+  outline-offset: 2px;
+}
+
+.timeline-media-slider .flickity-prev-next-button.previous {
+  left: 10px;
+}
+
+.timeline-media-slider .flickity-prev-next-button.next {
+  right: 10px;
+}
+
+.timeline-media-slider .flickity-button-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Page Dots */
+.timeline-media-slider .flickity-page-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.timeline-media-slider .flickity-page-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+.timeline-media-slider .flickity-page-dot:hover {
+  background: rgba(255, 255, 255, 0.88);
+  transform: scale(1.2);
+}
+
+.timeline-media-slider .flickity-page-dot.is-selected {
+  background: #ffffff;
+  transform: scale(1.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
 

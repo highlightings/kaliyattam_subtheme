@@ -221,6 +221,181 @@
           }
         });
       });
+
+      // 7. Multi-image Slider (Flickity style matching released.in)
+      const mediaGrids = once('timeline-media-slider', '.timeline-card-media-grid', context);
+      mediaGrids.forEach(function (grid) {
+        let items = [];
+        if (grid.children.length > 1) {
+          items = Array.from(grid.children);
+        } else if (grid.children.length === 1 && grid.firstElementChild.children.length > 1) {
+          items = Array.from(grid.firstElementChild.children);
+        } else {
+          const directFieldItems = grid.querySelectorAll(':scope > .field__item, :scope > .media, :scope > article, :scope > a');
+          if (directFieldItems.length > 1) {
+            items = Array.from(directFieldItems);
+          } else {
+            const allFieldItems = grid.querySelectorAll('.field__item');
+            if (allFieldItems.length > 1) {
+              items = Array.from(allFieldItems);
+            }
+          }
+        }
+
+        if (items.length <= 1) {
+          return; // Single image: keep as static image
+        }
+
+        const slider = document.createElement('div');
+        slider.className = 'timeline-media-slider flickity-enabled is-draggable';
+        slider.setAttribute('tabindex', '0');
+        slider.setAttribute('role', 'region');
+        slider.setAttribute('aria-label', Drupal.t('Image slider'));
+
+        const viewport = document.createElement('div');
+        viewport.className = 'flickity-viewport';
+
+        const track = document.createElement('div');
+        track.className = 'flickity-slider';
+
+        const cells = [];
+        items.forEach(function (item, index) {
+          const cell = document.createElement('div');
+          cell.className = 'flickity-cell' + (index === 0 ? ' is-selected' : '');
+          cell.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
+          cell.appendChild(item);
+          track.appendChild(cell);
+          cells.push(cell);
+        });
+
+        viewport.appendChild(track);
+        slider.appendChild(viewport);
+
+        // Previous button (matching released.in)
+        const prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
+        prevBtn.className = 'flickity-button flickity-prev-next-button previous';
+        prevBtn.setAttribute('aria-label', Drupal.t('Previous slide'));
+        prevBtn.innerHTML = '<svg class="flickity-button-icon" viewBox="0 0 100 100" aria-hidden="true"><title>Previous</title><path d="M 10,50 L 60,100 L 70,90 L 30,50 L 70,10 L 60,0 Z" class="arrow"></path></svg>';
+        slider.appendChild(prevBtn);
+
+        // Next button (matching released.in)
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'flickity-button flickity-prev-next-button next';
+        nextBtn.setAttribute('aria-label', Drupal.t('Next slide'));
+        nextBtn.innerHTML = '<svg class="flickity-button-icon" viewBox="0 0 100 100" aria-hidden="true"><title>Next</title><path d="M 10,50 L 60,100 L 70,90 L 30,50 L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180)"></path></svg>';
+        slider.appendChild(nextBtn);
+
+        // Page dots
+        const dotsList = document.createElement('ol');
+        dotsList.className = 'flickity-page-dots';
+        dotsList.setAttribute('role', 'tablist');
+
+        const dots = [];
+        cells.forEach(function (c, idx) {
+          const dot = document.createElement('li');
+          dot.className = 'flickity-page-dot' + (idx === 0 ? ' is-selected' : '');
+          dot.setAttribute('role', 'tab');
+          dot.setAttribute('aria-label', Drupal.t('Slide @num of @total', { '@num': idx + 1, '@total': cells.length }));
+          dot.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+          dotsList.appendChild(dot);
+          dots.push(dot);
+
+          dot.addEventListener('click', function (e) {
+            e.preventDefault();
+            goToSlide(idx);
+          });
+        });
+        slider.appendChild(dotsList);
+
+        // Replace grid content with slider
+        grid.innerHTML = '';
+        grid.appendChild(slider);
+
+        let currentIndex = 0;
+        const total = cells.length;
+
+        function goToSlide(idx) {
+          if (idx < 0) {
+            currentIndex = total - 1;
+          } else if (idx >= total) {
+            currentIndex = 0;
+          } else {
+            currentIndex = idx;
+          }
+
+          track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+
+          cells.forEach(function (cell, i) {
+            const isCur = i === currentIndex;
+            cell.classList.toggle('is-selected', isCur);
+            cell.setAttribute('aria-hidden', isCur ? 'false' : 'true');
+          });
+
+          dots.forEach(function (dot, i) {
+            const isCur = i === currentIndex;
+            dot.classList.toggle('is-selected', isCur);
+            dot.setAttribute('aria-selected', isCur ? 'true' : 'false');
+          });
+        }
+
+        prevBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          goToSlide(currentIndex - 1);
+        });
+
+        nextBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          goToSlide(currentIndex + 1);
+        });
+
+        // Pointer / touch swipe support
+        let startX = 0;
+        let isPointerDown = false;
+        let hasMoved = false;
+
+        viewport.addEventListener('pointerdown', function (e) {
+          startX = e.clientX;
+          isPointerDown = true;
+          hasMoved = false;
+        });
+
+        viewport.addEventListener('pointermove', function (e) {
+          if (isPointerDown && Math.abs(e.clientX - startX) > 5) {
+            hasMoved = true;
+          }
+        });
+
+        viewport.addEventListener('pointerup', function (e) {
+          if (!isPointerDown) return;
+          isPointerDown = false;
+          const diff = e.clientX - startX;
+          if (diff > 40) {
+            goToSlide(currentIndex - 1);
+          } else if (diff < -40) {
+            goToSlide(currentIndex + 1);
+          }
+        });
+
+        viewport.addEventListener('click', function (e) {
+          if (hasMoved) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        // Keyboard arrow navigation
+        slider.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowLeft') {
+            goToSlide(currentIndex - 1);
+          } else if (e.key === 'ArrowRight') {
+            goToSlide(currentIndex + 1);
+          }
+        });
+      });
     }
   };
 })(Drupal, once);
