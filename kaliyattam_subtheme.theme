@@ -57,6 +57,14 @@ function kaliyattam_subtheme_preprocess_page(array &$variables): void {
       $node = \Drupal\node\Entity\Node::load($node);
     }
     if ($node instanceof \Drupal\node\NodeInterface) {
+      // Individual posts are atomic updates: redirect /node/{id}/timeline to canonical post URL.
+      if ($node->bundle() === 'post') {
+        $canonical_url = $node->toUrl('canonical')->toString();
+        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($canonical_url, 301);
+        $response->send();
+        exit;
+      }
+
       $view_content = NULL;
       if ($node->bundle() === 'location') {
         $view_content = views_embed_view('timeline_location', 'page_timeline', $node->id());
@@ -539,6 +547,29 @@ function kaliyattam_subtheme_alter_content_node_form(array &$form, \Drupal\Core\
 }
 
 /**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function kaliyattam_subtheme_preprocess_menu_local_task(array &$variables): void {
+  $route_match = \Drupal::routeMatch();
+  $node = $route_match->getParameter('node');
+  if (is_string($node) || is_numeric($node)) {
+    $node = \Drupal\node\Entity\Node::load($node);
+  }
+  // Suppress timeline tab on Post nodes (posts are atomic updates, not timeline containers).
+  if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'post') {
+    if (!empty($variables['link']['#url'])) {
+      try {
+        $url_str = $variables['link']['#url']->toString();
+        if (str_contains($url_str, '/timeline')) {
+          $variables['hide_tab'] = TRUE;
+        }
+      }
+      catch (\Exception $e) {}
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_menu_local_tasks().
  */
 function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): void {
@@ -552,9 +583,29 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
     'entity.user.canonical',
   ], TRUE);
 
+  $current_node = \Drupal::routeMatch()->getParameter('node');
+  if (is_string($current_node) || is_numeric($current_node)) {
+    $current_node = \Drupal\node\Entity\Node::load($current_node);
+  }
+
   if (!empty($variables['primary'])) {
     foreach (\Drupal\Core\Render\Element::children($variables['primary']) as $key) {
       $item = $variables['primary'][$key];
+
+      // Omit timeline tab on Post nodes (posts are atomic updates, not timeline containers).
+      if ($current_node instanceof \Drupal\node\NodeInterface && $current_node->bundle() === 'post') {
+        if (!empty($item['#link']['url'])) {
+          try {
+            $url_str = $item['#link']['url']->toString();
+            if (str_contains($url_str, '/timeline')) {
+              unset($variables['primary'][$key]);
+              continue;
+            }
+          }
+          catch (\Exception $e) {}
+        }
+      }
+
       // Consolidate timeline tabs: omit redundant location-timeline tab in favor of unified /node/{id}/timeline.
       if (!empty($item['#link']['url'])) {
         try {
@@ -578,13 +629,29 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
         if (!$is_canonical_view && !$is_view_tab) {
           $is_admin_action = TRUE;
         }
-        break;
+      }
+    }
+  }
+
+  // Open tabs drawer by default when a public Timeline tab is present.
+  $has_timeline_tab = FALSE;
+  if (!empty($variables['primary'])) {
+    foreach (\Drupal\Core\Render\Element::children($variables['primary']) as $key) {
+      $item = $variables['primary'][$key];
+      if (!empty($item['#link']['url'])) {
+        try {
+          if (str_contains($item['#link']['url']->toString(), '/timeline')) {
+            $has_timeline_tab = TRUE;
+            break;
+          }
+        }
+        catch (\Exception $e) {}
       }
     }
   }
 
   $variables['active_tab_title'] = $active_tab_title;
-  $variables['tasks_open'] = $is_admin_action;
+  $variables['tasks_open'] = $is_admin_action || $has_timeline_tab;
 }
 
 /**
@@ -721,11 +788,12 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $variables['attributes']['class'][] = 'view-id-' . $view_id;
   $variables['attributes']['class'][] = 'view-display-id-' . $display_id;
 
-  // Event Date Archives navigation toolbar.
-  if ($view_id === 'events' && in_array($display_id, ['page_year', 'page_month', 'page_day'], TRUE)) {
+  // Event Date Archives & Hub navigation toolbar: unified across /events, /events/YYYY, /events/YYYY/MM, /events/YYYY/MM/DD.
+  if ($view_id === 'events' && in_array($display_id, ['page_1', 'page_year', 'page_month', 'page_day'], TRUE)) {
     $args = $view->args;
+    $is_upcoming = ($display_id === 'page_1');
     $year = (int) ($args[0] ?? date('Y'));
-    $active_month = (int) ($args[1] ?? 0);
+    $active_month = $is_upcoming ? -1 : (int) ($args[1] ?? 0);
     $active_day = (int) ($args[2] ?? 0);
 
     $months = [
@@ -753,10 +821,10 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
         <div class="events-archive-header mb-4">
           <div class="events-archive-toolbar d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
             <div class="events-archive-title-group d-flex align-items-center gap-2">
-              <a href="/events" class="btn btn-sm btn-outline-secondary events-back-btn">
-                <i class="bi bi-arrow-left me-1"></i>{{ "Upcoming Events"|t }}
+              <a href="/events" class="btn btn-sm events-back-btn' . ($is_upcoming ? ' btn-primary text-white' : ' btn-outline-secondary') . '">
+                <i class="bi bi-clock-history me-1"></i>{{ "Upcoming Events"|t }}
               </a>
-              <a href="/events/{{ year }}" class="events-year-link fw-bold fs-5 text-decoration-none">
+              <a href="/events/{{ year }}" class="events-year-link fw-bold fs-5 text-decoration-none' . ($display_id === 'page_year' ? ' text-primary' : '') . '">
                 <i class="bi bi-calendar3 me-1 text-primary"></i>{{ year }}
               </a>
               {{ day_badge|raw }}
@@ -1192,6 +1260,47 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
     ];
     return;
   }
+  if ($route_name === 'view.timeline_theyyam.page_timeline') {
+    $node = $route_match->getParameter('node');
+    if (is_string($node) || is_numeric($node)) {
+      $node = \Drupal\node\Entity\Node::load($node);
+    }
+    if ($node instanceof \Drupal\node\NodeInterface) {
+      $bundle = $node->bundle();
+      $node_title = $node->getTitle();
+      $clean_title = mb_strlen($node_title) > 35 ? mb_substr($node_title, 0, 32) . '…' : $node_title;
+      $canonical_url = $node->toUrl('canonical')->toString();
+
+      if ($bundle === 'location') {
+        $variables['breadcrumb'] = [
+          ['text' => t('Home'), 'url' => '/'],
+          ['text' => t('Temples'), 'url' => '/temples'],
+          ['text' => $clean_title, 'url' => $canonical_url],
+          ['text' => t('Timeline'), 'url' => ''],
+        ];
+        return;
+      }
+      elseif ($bundle === 'theyyam') {
+        $variables['breadcrumb'] = [
+          ['text' => t('Home'), 'url' => '/'],
+          ['text' => t('Theyyam'), 'url' => '/theyyam'],
+          ['text' => $clean_title, 'url' => $canonical_url],
+          ['text' => t('Timeline'), 'url' => ''],
+        ];
+        return;
+      }
+      elseif ($bundle === 'event') {
+        $variables['breadcrumb'] = [
+          ['text' => t('Home'), 'url' => '/'],
+          ['text' => t('Events'), 'url' => '/events'],
+          ['text' => $clean_title, 'url' => $canonical_url],
+          ['text' => t('Timeline'), 'url' => ''],
+        ];
+        return;
+      }
+    }
+  }
+
   if ($route_name === 'view.events_calendar.page_1') {
     $variables['breadcrumb'] = [
       [

@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Kaliyattam Subtheme implementation for a local task (tab).
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the list element.
+ * - is_active: Whether the local task is currently active.
+ * - link: The link element.
+ * - hide_tab: Boolean set in preprocess to suppress redundant tabs.
+ */
+#}
+{% if not hide_tab %}
+  <li{{ attributes.addClass(is_active ? 'is-active') }}>{{ link }}</li>
+{% endif %}
