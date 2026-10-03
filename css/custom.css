@@ -268,11 +268,15 @@ html.dark .wiki-node-footer {
 .post-interaction-bar .flag a,
 .node-interaction-bar .action-flag,
 .post-interaction-bar .action-flag,
+.node-interaction-bar .btn-copy-link,
+.node-interaction-bar .comments-scroll-btn,
+.node-interaction-bar .timeline-action-btn,
+.node-interaction-bar .timeline-action-link,
 .action-flag-anon {
   display: inline-flex !important;
   align-items: center !important;
   gap: 0.35rem;
-  padding: 0.4rem 0.85rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
@@ -280,16 +284,32 @@ html.dark .wiki-node-footer {
   background: rgba(0, 0, 0, 0.04);
   color: var(--kaliyattam-text, #18181b);
   border: 1px solid transparent;
+  cursor: pointer;
+  line-height: 1.4;
   transition: all 0.15s ease;
 }
 
 .node-interaction-bar .flag a:hover,
 .post-interaction-bar .flag a:hover,
 .node-interaction-bar .action-flag:hover,
-.post-interaction-bar .action-flag:hover {
-  background: rgba(179, 57, 39, 0.1);
-  color: var(--kaliyattam-primary, #b33927);
-  border-color: rgba(179, 57, 39, 0.2);
+.post-interaction-bar .action-flag:hover,
+.node-interaction-bar .btn-copy-link:hover,
+.node-interaction-bar .comments-scroll-btn:hover,
+.node-interaction-bar .timeline-action-btn:hover,
+.node-interaction-bar .timeline-action-link:hover,
+.action-flag-anon:hover {
+  background: rgba(179, 57, 39, 0.1) !important;
+  color: var(--kaliyattam-primary, #b33927) !important;
+  border-color: rgba(179, 57, 39, 0.25) !important;
+}
+
+.node-interaction-bar .action-count {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.08);
+  color: inherit;
+  font-weight: 600;
 }
 
 :root[data-theme="dark"] .node-interaction-bar,
@@ -300,9 +320,23 @@ html.dark .wiki-node-footer {
 :root[data-theme="dark"] .node-interaction-bar .flag a,
 :root[data-theme="dark"] .post-interaction-bar .flag a,
 :root[data-theme="dark"] .node-interaction-bar .action-flag,
-:root[data-theme="dark"] .post-interaction-bar .action-flag {
+:root[data-theme="dark"] .post-interaction-bar .action-flag,
+:root[data-theme="dark"] .node-interaction-bar .btn-copy-link,
+:root[data-theme="dark"] .node-interaction-bar .comments-scroll-btn,
+:root[data-theme="dark"] .node-interaction-bar .timeline-action-btn,
+:root[data-theme="dark"] .node-interaction-bar .timeline-action-link,
+:root[data-theme="dark"] .action-flag-anon {
   background: rgba(255, 255, 255, 0.08);
   color: #f4f4f5;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .node-interaction-bar .btn-copy-link:hover,
+:root[data-theme="dark"] .node-interaction-bar .comments-scroll-btn:hover,
+:root[data-theme="dark"] .node-interaction-bar .action-flag:hover {
+  background: rgba(255, 107, 107, 0.18) !important;
+  color: #ff8585 !important;
+  border-color: rgba(255, 107, 107, 0.35) !important;
 }
 
 /* ==========================================================================

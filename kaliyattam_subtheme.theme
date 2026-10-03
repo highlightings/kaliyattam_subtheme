@@ -241,14 +241,28 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
     $variables['related_theyyams'] = $related;
   }
 
-  // Generate flag links for full node views (posts, temples, theyyam, events).
-  if (in_array($node->bundle(), ['post', 'location', 'theyyam', 'event'], TRUE) && \Drupal::hasService('flag.link_builder')) {
-    $link_builder = \Drupal::service('flag.link_builder');
-    foreach (['favorite_node', 'like_node', 'bookmark'] as $flag_id) {
-      try {
-        $variables['flag_' . $flag_id] = $link_builder->build('node', $node->id(), $flag_id);
+  // Generate flag links and interaction elements for full node views (posts, temples, theyyam, events).
+  if (in_array($node->bundle(), ['post', 'location', 'theyyam', 'event'], TRUE)) {
+    $variables['#attached']['library'][] = 'kaliyattam_subtheme/timeline-feeds';
+
+    // Comment count calculation for interaction bar badge.
+    $comment_count = 0;
+    if ($node->hasField('field_comments_without_title') && !$node->get('field_comments_without_title')->isEmpty()) {
+      $comment_count = (int) $node->get('field_comments_without_title')->comment_count;
+    }
+    elseif ($node->hasField('field_comments') && !$node->get('field_comments')->isEmpty()) {
+      $comment_count = (int) $node->get('field_comments')->comment_count;
+    }
+    $variables['comment_count'] = $comment_count;
+
+    if (\Drupal::hasService('flag.link_builder')) {
+      $link_builder = \Drupal::service('flag.link_builder');
+      foreach (['favorite_node', 'like_node', 'bookmark'] as $flag_id) {
+        try {
+          $variables['flag_' . $flag_id] = $link_builder->build('node', $node->id(), $flag_id);
+        }
+        catch (\Exception $e) {}
       }
-      catch (\Exception $e) {}
     }
   }
 
@@ -858,41 +872,93 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
  * Implements hook_views_query_alter().
  */
 function kaliyattam_subtheme_views_query_alter(\Drupal\views\ViewExecutable $view, \Drupal\views\Plugin\views\query\QueryPluginBase $query): void {
-  if ($view->id() === 'events' && in_array($view->current_display, ['page_year', 'page_month', 'page_day'], TRUE)) {
+  // 1. Events view date and status filtering.
+  if ($view->id() === 'events') {
     $args = $view->args;
-    $year = isset($args[0]) && is_numeric($args[0]) ? (int) $args[0] : 0;
-    if ($year < 1970 || $year > 2100) {
+    // Strict upcoming events filter when display is page_1 OR page_year with 'upcoming'.
+    if ($view->current_display === 'page_1' || ($view->current_display === 'page_year' && ($args[0] ?? '') === 'upcoming')) {
+      $alias = $query->ensureTable('node__field_when');
+      $query->addWhere(1, "$alias.field_when_end_value", \Drupal::time()->getRequestTime(), '>=');
+      $view->element['#cache']['contexts'][] = 'url.path';
+      return;
+    }
+    if ($view->current_display === 'page_year' && ($args[0] ?? '') === 'past') {
+      $alias = $query->ensureTable('node__field_when');
+      $query->addWhere(1, "$alias.field_when_end_value", \Drupal::time()->getRequestTime(), '<');
+      $view->element['#cache']['contexts'][] = 'url.path';
       return;
     }
 
-    $start = 0;
-    $end = 0;
+    if (in_array($view->current_display, ['page_year', 'page_month', 'page_day'], TRUE)) {
+      $year = isset($args[0]) && is_numeric($args[0]) ? (int) $args[0] : 0;
+      if ($year < 1970 || $year > 2100) {
+        return;
+      }
 
-    if ($view->current_display === 'page_year') {
-      $start = strtotime(sprintf('%04d-01-01 00:00:00', $year));
-      $end = strtotime(sprintf('%04d-12-31 23:59:59', $year));
-    }
-    elseif ($view->current_display === 'page_month') {
-      $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
-      if ($month >= 1 && $month <= 12) {
-        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $start = strtotime(sprintf('%04d-%02d-01 00:00:00', $year, $month));
-        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $days_in_month));
+      $start = 0;
+      $end = 0;
+
+      if ($view->current_display === 'page_year') {
+        $start = strtotime(sprintf('%04d-01-01 00:00:00', $year));
+        $end = strtotime(sprintf('%04d-12-31 23:59:59', $year));
+      }
+      elseif ($view->current_display === 'page_month') {
+        $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
+        if ($month >= 1 && $month <= 12) {
+          $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+          $start = strtotime(sprintf('%04d-%02d-01 00:00:00', $year, $month));
+          $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $days_in_month));
+        }
+      }
+      elseif ($view->current_display === 'page_day') {
+        $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
+        $day = isset($args[2]) && is_numeric($args[2]) ? (int) $args[2] : 0;
+        if ($month >= 1 && $month <= 12 && $day >= 1 && $day <= 31) {
+          $start = strtotime(sprintf('%04d-%02d-%02d 00:00:00', $year, $month, $day));
+          $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $day));
+        }
+      }
+
+      if ($start > 0 && $end > 0) {
+        $alias = $query->ensureTable('node__field_when');
+        $query->addWhere(1, "$alias.field_when_value", $end, '<=');
+        $query->addWhere(1, "$alias.field_when_end_value", $start, '>=');
       }
     }
-    elseif ($view->current_display === 'page_day') {
-      $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
-      $day = isset($args[2]) && is_numeric($args[2]) ? (int) $args[2] : 0;
-      if ($month >= 1 && $month <= 12 && $day >= 1 && $day <= 31) {
-        $start = strtotime(sprintf('%04d-%02d-%02d 00:00:00', $year, $month, $day));
-        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $day));
-      }
-    }
+  }
 
-    if ($start > 0 && $end > 0) {
-      $alias = $query->ensureTable('node__field_when');
-      $query->addWhere(1, "$alias.field_when_value", $end, '<=');
-      $query->addWhere(1, "$alias.field_when_end_value", $start, '>=');
+  // 2. Filter timeline feeds (e.g. /posts, /timeline/post, /timeline/site, /user/{uid}/timeline) by year, month, and day query parameters.
+  if (str_starts_with($view->id(), 'timeline_') || $view->id() === 'post') {
+    $req = \Drupal::request();
+    $q_year = $req->query->get('year');
+    if ($q_year !== null && is_numeric($q_year) && (int) $q_year >= 1970 && (int) $q_year <= 2100) {
+      $y = (int) $q_year;
+      $q_month = $req->query->get('month');
+      $q_day = $req->query->get('day');
+      $m = ($q_month !== null && is_numeric($q_month)) ? (int) $q_month : 0;
+      $d = ($q_day !== null && is_numeric($q_day)) ? (int) $q_day : 0;
+
+      $start = 0;
+      $end = 0;
+      if ($m >= 1 && $m <= 12 && $d >= 1 && $d <= 31) {
+        $start = strtotime(sprintf('%04d-%02d-%02d 00:00:00', $y, $m, $d));
+        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $y, $m, $d));
+      }
+      elseif ($m >= 1 && $m <= 12) {
+        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $m, $y);
+        $start = strtotime(sprintf('%04d-%02d-01 00:00:00', $y, $m));
+        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $y, $m, $days_in_month));
+      }
+      else {
+        $start = strtotime(sprintf('%04d-01-01 00:00:00', $y));
+        $end = strtotime(sprintf('%04d-12-31 23:59:59', $y));
+      }
+
+      if ($start > 0 && $end > 0) {
+        $query->addWhere(1, 'node_field_data.created', $start, '>=');
+        $query->addWhere(1, 'node_field_data.created', $end, '<=');
+        $view->element['#cache']['contexts'][] = 'url.query_args';
+      }
     }
   }
 }
@@ -905,53 +971,83 @@ function kaliyattam_subtheme_views_query_alter(\Drupal\views\ViewExecutable $vie
  * referencing for both Theyyam and Location nodes.
  */
 function kaliyattam_subtheme_views_pre_render(\Drupal\views\ViewExecutable $view): void {
-  if ($view->id() === 'events' && in_array($view->current_display, ['page_year', 'page_month', 'page_day'], TRUE)) {
+  if ($view->id() === 'events') {
     $args = $view->args;
-    $year = isset($args[0]) && is_numeric($args[0]) ? (int) $args[0] : 0;
-    $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
-    $day = isset($args[2]) && is_numeric($args[2]) ? (int) $args[2] : 0;
-
-    $start = 0;
-    $end = 0;
-
-    if ($view->current_display === 'page_year' && $year > 0) {
-      $view->setTitle(t('Events in @year', ['@year' => $year]));
-      $start = strtotime(sprintf('%04d-01-01 00:00:00', $year));
-      $end = strtotime(sprintf('%04d-12-31 23:59:59', $year));
-    }
-    elseif ($view->current_display === 'page_month' && $year > 0 && $month >= 1 && $month <= 12) {
-      $month_name = date('F', mktime(0, 0, 0, $month, 1, 2000));
-      $view->setTitle(t('Events in @month @year', ['@month' => t($month_name), '@year' => $year]));
-      $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-      $start = strtotime(sprintf('%04d-%02d-01 00:00:00', $year, $month));
-      $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $days_in_month));
-    }
-    elseif ($view->current_display === 'page_day' && $year > 0 && $month >= 1 && $month <= 12 && $day >= 1 && $day <= 31) {
-      $month_name = date('F', mktime(0, 0, 0, $month, 1, 2000));
-      $view->setTitle(t('Events on @month @day, @year', ['@month' => t($month_name), '@day' => $day, '@year' => $year]));
-      $start = strtotime(sprintf('%04d-%02d-%02d 00:00:00', $year, $month, $day));
-      $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $day));
+    if ($view->current_display === 'page_year' && ($args[0] ?? '') === 'upcoming') {
+      $view->setTitle(t('Upcoming Events'));
     }
 
-    if ($start > 0 && $end > 0) {
-      $filtered_results = [];
-      foreach ($view->result as $row) {
-        $node = $row->_entity ?? \Drupal\node\Entity\Node::load($row->nid);
-        if ($node instanceof \Drupal\node\NodeInterface) {
-          $date_field = $node->hasField('field_when') && !$node->get('field_when')->isEmpty()
-            ? $node->get('field_when')
-            : ($node->hasField('field_event__date') && !$node->get('field_event__date')->isEmpty() ? $node->get('field_event__date') : NULL);
-          if ($date_field) {
-            $val = (int) $date_field->value;
-            $end_val = (int) ($date_field->end_value ?? $val);
-            if ($val <= $end && $end_val >= $start) {
-              $filtered_results[] = $row;
+    if (in_array($view->current_display, ['page_year', 'page_month', 'page_day'], TRUE)) {
+      $year = isset($args[0]) && is_numeric($args[0]) ? (int) $args[0] : 0;
+      $month = isset($args[1]) && is_numeric($args[1]) ? (int) $args[1] : 0;
+      $day = isset($args[2]) && is_numeric($args[2]) ? (int) $args[2] : 0;
+
+      $start = 0;
+      $end = 0;
+
+      if ($view->current_display === 'page_year' && $year > 0) {
+        $view->setTitle(t('Events in @year', ['@year' => $year]));
+        $start = strtotime(sprintf('%04d-01-01 00:00:00', $year));
+        $end = strtotime(sprintf('%04d-12-31 23:59:59', $year));
+      }
+      elseif ($view->current_display === 'page_month' && $year > 0 && $month >= 1 && $month <= 12) {
+        $month_name = date('F', mktime(0, 0, 0, $month, 1, 2000));
+        $view->setTitle(t('Events in @month @year', ['@month' => t($month_name), '@year' => $year]));
+        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $start = strtotime(sprintf('%04d-%02d-01 00:00:00', $year, $month));
+        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $days_in_month));
+      }
+      elseif ($view->current_display === 'page_day' && $year > 0 && $month >= 1 && $month <= 12 && $day >= 1 && $day <= 31) {
+        $month_name = date('F', mktime(0, 0, 0, $month, 1, 2000));
+        $view->setTitle(t('Events on @month @day, @year', ['@month' => t($month_name), '@day' => $day, '@year' => $year]));
+        $start = strtotime(sprintf('%04d-%02d-%02d 00:00:00', $year, $month, $day));
+        $end = strtotime(sprintf('%04d-%02d-%02d 23:59:59', $year, $month, $day));
+      }
+
+      if ($start > 0 && $end > 0) {
+        $filtered_results = [];
+        foreach ($view->result as $row) {
+          $node = $row->_entity ?? \Drupal\node\Entity\Node::load($row->nid);
+          if ($node instanceof \Drupal\node\NodeInterface) {
+            $date_field = $node->hasField('field_when') && !$node->get('field_when')->isEmpty()
+              ? $node->get('field_when')
+              : ($node->hasField('field_event__date') && !$node->get('field_event__date')->isEmpty() ? $node->get('field_event__date') : NULL);
+            if ($date_field) {
+              $val = (int) $date_field->value;
+              $end_val = (int) ($date_field->end_value ?? $val);
+              if ($val <= $end && $end_val >= $start) {
+                $filtered_results[] = $row;
+              }
             }
           }
         }
+        $view->result = $filtered_results;
+        $view->total_rows = count($filtered_results);
       }
-      $view->result = $filtered_results;
-      $view->total_rows = count($filtered_results);
+    }
+  }
+
+  // Update view title for timeline feeds filtered by date.
+  if (str_starts_with($view->id(), 'timeline_') || $view->id() === 'post') {
+    $req = \Drupal::request();
+    $q_year = $req->query->get('year');
+    if ($q_year !== null && is_numeric($q_year) && (int) $q_year >= 1970 && (int) $q_year <= 2100) {
+      $y = (int) $q_year;
+      $q_month = $req->query->get('month');
+      $q_day = $req->query->get('day');
+      $m = ($q_month !== null && is_numeric($q_month)) ? (int) $q_month : 0;
+      $d = ($q_day !== null && is_numeric($q_day)) ? (int) $q_day : 0;
+      if ($m >= 1 && $m <= 12 && $d >= 1 && $d <= 31) {
+        $date_ts = strtotime(sprintf('%04d-%02d-%02d 12:00:00', $y, $m, $d));
+        $view->setTitle(t('Posts on @date', ['@date' => date('F j, Y', $date_ts)]));
+      }
+      elseif ($m >= 1 && $m <= 12) {
+        $date_ts = strtotime(sprintf('%04d-%02d-01 12:00:00', $y, $m));
+        $view->setTitle(t('Posts in @month @year', ['@month' => date('F', $date_ts), '@year' => $y]));
+      }
+      else {
+        $view->setTitle(t('Posts in @year', ['@year' => $y]));
+      }
     }
   }
 
@@ -988,14 +1084,19 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $variables['attributes']['class'][] = 'view-id-' . $view_id;
   $variables['attributes']['class'][] = 'view-display-id-' . $display_id;
 
-  // Event Date Archives & Hub navigation toolbar: unified across /events, /events/past, /events/YYYY, /events/YYYY/MM, /events/YYYY/MM/DD.
-  if ($view_id === 'events' && in_array($display_id, ['page_1', 'page_2', 'page_year', 'page_month', 'page_day'], TRUE)) {
+  // Event Date Archives & Hub navigation toolbar: unified across /events, /events/past, /events/calendar, /events/YYYY, /events/YYYY/MM, /events/YYYY/MM/DD.
+  $is_events_view = ($view_id === 'events' && in_array($display_id, ['page_1', 'page_2', 'page_year', 'page_month', 'page_day'], TRUE));
+  $is_events_calendar = ($view_id === 'events_calendar');
+  if ($is_events_view || $is_events_calendar) {
     $args = $view->args;
-    $is_upcoming = ($display_id === 'page_1');
-    $is_past = ($display_id === 'page_2');
-    $year = (int) ($args[0] ?? date('Y'));
-    $active_month = ($is_upcoming || $is_past) ? -1 : (int) ($args[1] ?? 0);
-    $active_day = (int) ($args[2] ?? 0);
+    $is_calendar = $is_events_calendar;
+    $is_upcoming = ($view_id === 'events' && ($display_id === 'page_1' || ($display_id === 'page_year' && ($args[0] ?? '') === 'upcoming')));
+    $is_past = ($view_id === 'events' && ($display_id === 'page_2' || ($display_id === 'page_year' && ($args[0] ?? '') === 'past')));
+    $is_by_date = ($view_id === 'events' && in_array($display_id, ['page_year', 'page_month', 'page_day'], TRUE) && !$is_upcoming && !$is_past);
+
+    $year = is_numeric($args[0] ?? '') ? (int) $args[0] : (int) date('Y');
+    $active_month = ($is_upcoming || $is_past || $is_calendar) ? -1 : (int) ($args[1] ?? 0);
+    $active_day = ($is_upcoming || $is_past || $is_calendar) ? 0 : (int) ($args[2] ?? 0);
 
     $months = [
       1 => t('Jan'), 2 => t('Feb'), 3 => t('Mar'), 4 => t('Apr'),
@@ -1016,33 +1117,46 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
       $day_badge = '<span class="events-date-day-badge ms-2"><i class="bi bi-calendar-check me-1"></i>' . t('Day @day', ['@day' => $day_pad]) . '</span>';
     }
 
+    $show_months = ($display_id === 'page_year' || $display_id === 'page_month' || $display_id === 'page_day') && !$is_upcoming && !$is_past;
+
     $variables['header']['event_date_nav'] = [
       '#type' => 'inline_template',
       '#template' => '
         <div class="events-archive-header mb-4">
-          <div class="events-archive-toolbar d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-            <div class="events-archive-title-group d-flex align-items-center gap-2">
-              <a href="/events" class="btn btn-sm events-back-btn' . ($is_upcoming ? ' btn-primary text-white' : ' btn-outline-secondary') . '">
-                <i class="bi bi-clock-history me-1"></i>{{ "Upcoming Events"|t }}
-              </a>
-              <a href="/events/{{ year }}" class="events-year-link fw-bold fs-5 text-decoration-none' . ($display_id === 'page_year' ? ' text-primary' : '') . '">
-                <i class="bi bi-calendar3 me-1 text-primary"></i>{{ year }}
-              </a>
-              {{ day_badge|raw }}
-            </div>
-            <div class="events-archive-quick-links d-flex align-items-center gap-2">
-              <a href="/events-calendar" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-calendar-week me-1"></i>{{ "Calendar View"|t }}
-              </a>
-              <a href="/events/past" class="btn btn-sm' . ($is_past ? ' btn-primary text-white' : ' btn-outline-secondary') . '">
-                <i class="bi bi-archive me-1"></i>{{ "Archive"|t }}
-              </a>
-            </div>
+          <div class="events-archive-toolbar vector-page-toolbar d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <nav class="vector-menu vector-menu-tabs events-vector-menu" aria-label="{{ "Events Views"|t }}">
+              <div class="vector-menu-content">
+                <ul class="vector-menu-content-list" role="tablist">
+                  <li class="mw-list-item events-tab-upcoming' . ($is_upcoming ? ' selected is-active' : '') . '">
+                    <a href="/events" class="' . ($is_upcoming ? 'is-active' : '') . '" title="{{ "Upcoming events"|t }}">
+                      <i class="bi bi-clock-history me-1" aria-hidden="true"></i><span>{{ "Upcoming events"|t }}</span>
+                    </a>
+                  </li>
+                  <li class="mw-list-item events-tab-calendar' . ($is_calendar ? ' selected is-active' : '') . '">
+                    <a href="/events-calendar" class="' . ($is_calendar ? 'is-active' : '') . '" title="{{ "Calendar view"|t }}">
+                      <i class="bi bi-calendar-week me-1" aria-hidden="true"></i><span>{{ "Calendar view"|t }}</span>
+                    </a>
+                  </li>
+                  <li class="mw-list-item events-tab-archive' . ($is_past ? ' selected is-active' : '') . '">
+                    <a href="/events/past" class="' . ($is_past ? 'is-active' : '') . '" title="{{ "Archive"|t }}">
+                      <i class="bi bi-archive me-1" aria-hidden="true"></i><span>{{ "Archive"|t }}</span>
+                    </a>
+                  </li>
+                  <li class="mw-list-item events-tab-year' . ($is_by_date ? ' selected is-active' : '') . '">
+                    <a href="/events/{{ year }}" class="' . ($is_by_date ? 'is-active' : '') . '" title="{{ "Events in " ~ year }}">
+                      <i class="bi bi-calendar3 me-1" aria-hidden="true"></i><span>{{ year }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            {{ day_badge|raw }}
           </div>
-          <nav class="events-months-nav d-flex flex-wrap gap-1" aria-label="{{ "Filter by month in " ~ year }}">
+          ' . ($show_months ? '
+          <nav class="events-months-nav d-flex flex-wrap gap-1 mt-2" aria-label="{{ "Filter by month in " ~ year }}">
             <a href="/events/{{ year }}" class="events-date-pill events-date-pill--all' . ($active_month === 0 ? ' is-active' : '') . '">{{ "All Year"|t }}</a>
             ' . $month_pills . '
-          </nav>
+          </nav>' : '') . '
         </div>',
       '#context' => [
         'year' => $year,

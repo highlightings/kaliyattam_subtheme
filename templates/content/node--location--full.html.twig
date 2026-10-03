@@ -62,37 +62,6 @@
         {% endembed %}
       {% endif %}
 
-      {# Flag Action Links (Interactive Bar) #}
-      <div class="node-interaction-bar post-interaction-bar d-flex flex-wrap align-items-center gap-3 py-3 my-4">
-        {% if logged_in %}
-          <div class="node-action-flags d-flex flex-wrap align-items-center gap-2">
-            {% if flag_favorite_node is not empty %}
-              {{ flag_favorite_node }}
-            {% endif %}
-            {% if flag_like_node is not empty %}
-              {{ flag_like_node }}
-            {% endif %}
-            {% if flag_bookmark is not empty %}
-              {{ flag_bookmark }}
-            {% endif %}
-            {% if content.links is not empty %}
-              {{ content.links }}
-            {% endif %}
-          </div>
-        {% else %}
-          <div class="post-action-links-anon node-action-flags-anon d-flex flex-wrap align-items-center gap-2">
-            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to add to favorites'|t }}">
-              <i class="bi bi-heart me-1" aria-hidden="true"></i>{{ 'Favorite'|t }}
-            </a>
-            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like'|t }}">
-              <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i>{{ 'Like'|t }}
-            </a>
-            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
-              <i class="bi bi-bookmark me-1" aria-hidden="true"></i>{{ 'Bookmark'|t }}
-            </a>
-          </div>
-        {% endif %}
-      </div>
 
       {# Temple Map Section #}
       <section id="temple-map" class="temple-map-section my-4 p-3 p-md-4 bg-surface rounded-3 border shadow-sm">
@@ -208,6 +177,59 @@
         {{ content|without('field_media', 'field_theyyam', 'field_comments', 'field_featured_image', 'field_location_address', 'field_geofield', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
       </div>
 
+      {# Node Interaction Bar (Bottom of Content) #}
+      <div class="node-interaction-bar post-interaction-bar d-flex flex-wrap align-items-center gap-2 py-3 my-4">
+        {% if logged_in %}
+          <div class="node-action-flags d-flex flex-wrap align-items-center gap-2">
+            {% if flag_favorite_node is not empty %}
+              {{ flag_favorite_node }}
+            {% endif %}
+            {% if flag_like_node is not empty %}
+              {{ flag_like_node }}
+            {% endif %}
+            {% if flag_bookmark is not empty %}
+              {{ flag_bookmark }}
+            {% endif %}
+            <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
+              <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
+            </button>
+            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}">
+              <i class="bi bi-chat-dots me-1" aria-hidden="true"></i><span>{{ 'Comments'|t }}</span>
+              {% if comment_count is defined and comment_count > 0 %}
+                <span class="action-count ms-1">{{ comment_count }}</span>
+              {% endif %}
+            </a>
+            {% if content.links is not empty %}
+              {{ content.links }}
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="post-action-links-anon node-action-flags-anon d-flex flex-wrap align-items-center gap-2">
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to add to favorites'|t }}">
+              <i class="bi bi-heart me-1" aria-hidden="true"></i><span>{{ 'Favorite'|t }}</span>
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like'|t }}">
+              <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i><span>{{ 'Like'|t }}</span>
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
+              <i class="bi bi-bookmark me-1" aria-hidden="true"></i><span>{{ 'Bookmark'|t }}</span>
+            </a>
+            <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
+              <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
+            </button>
+            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}">
+              <i class="bi bi-chat-dots me-1" aria-hidden="true"></i><span>{{ 'Comments'|t }}</span>
+              {% if comment_count is defined and comment_count > 0 %}
+                <span class="action-count ms-1">{{ comment_count }}</span>
+              {% endif %}
+            </a>
+            {% if content.links is not empty %}
+              {{ content.links }}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
       {# Wiki Page Metadata Footer (moved from top, no author name, shows last updated) #}
       <footer class="wiki-node-footer pt-3 mt-4 border-top text-muted d-flex flex-wrap justify-content-between align-items-center gap-2 small">
         <div class="wiki-last-updated">
@@ -222,9 +244,9 @@
       </footer>
 
       {% if content.field_comments is not empty %}
-        <div class="node-comments-section mt-5">
+        <section id="comments" class="node-comments-section mt-5 pt-3">
           {{ content.field_comments }}
-        </div>
+        </section>
       {% endif %}
     </div>
   </div>

@@ -336,8 +336,69 @@ body.node--type-event .block-page-title-block {
 }
 
 .events-archive-toolbar {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--kaliyattam-border, #c8ccd1);
+  padding-bottom: 0;
+  margin-bottom: 0.75rem;
+  background: transparent;
+}
+
+.events-archive-toolbar .vector-menu-content-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  gap: 0.25rem !important;
+}
+
+.events-archive-toolbar .vector-menu-content-list > li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  display: inline-flex !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.events-archive-toolbar .vector-menu-content-list > li > a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  padding: 0.55rem 0.95rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #54595d !important;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: 3px solid transparent !important;
+  border-radius: 4px 4px 0 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: 1.4 !important;
+  transition: all 0.15s ease !important;
+  margin-bottom: -1px !important;
+}
+
+.events-archive-toolbar .vector-menu-content-list > li > a:hover {
+  color: var(--kaliyattam-primary, #890000) !important;
+  border-bottom-color: rgba(137, 0, 0, 0.4) !important;
+  background: rgba(137, 0, 0, 0.04) !important;
+}
+
+/* Active tab: distinct color for button to know what is active */
+.events-archive-toolbar .vector-menu-content-list > li.selected > a,
+.events-archive-toolbar .vector-menu-content-list > li.is-active > a,
+.events-archive-toolbar .vector-menu-content-list > li > a.is-active {
+  color: var(--kaliyattam-primary, #890000) !important;
+  font-weight: 600 !important;
+  background: rgba(137, 0, 0, 0.08) !important;
+  border: none !important;
+  border-bottom: 3px solid var(--kaliyattam-primary, #890000) !important;
+  border-radius: 4px 4px 0 0 !important;
 }
 
 .events-year-link {
@@ -420,6 +481,24 @@ body.node--type-event .block-page-title-block {
 [data-bs-theme="dark"] .events-archive-toolbar {
   background: rgba(255, 255, 255, 0.02);
   border-bottom-color: #2e333d;
+}
+
+[data-bs-theme="dark"] .events-archive-toolbar .vector-menu-content-list > li > a {
+  color: #a2a9b1 !important;
+}
+
+[data-bs-theme="dark"] .events-archive-toolbar .vector-menu-content-list > li > a:hover {
+  color: #ff8585 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-bottom-color: rgba(255, 107, 107, 0.4) !important;
+}
+
+[data-bs-theme="dark"] .events-archive-toolbar .vector-menu-content-list > li.selected > a,
+[data-bs-theme="dark"] .events-archive-toolbar .vector-menu-content-list > li.is-active > a,
+[data-bs-theme="dark"] .events-archive-toolbar .vector-menu-content-list > li > a.is-active {
+  color: #ff8585 !important;
+  background: rgba(255, 107, 107, 0.15) !important;
+  border-bottom: 3px solid #ff6b6b !important;
 }
 
 [data-bs-theme="dark"] .event-calendar-title,
