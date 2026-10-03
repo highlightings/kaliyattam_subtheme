@@ -241,8 +241,8 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
     $variables['related_theyyams'] = $related;
   }
 
-  // Generate flag links for Post full view.
-  if ($node->bundle() === 'post' && \Drupal::hasService('flag.link_builder')) {
+  // Generate flag links for full node views (posts, temples, theyyam, events).
+  if (in_array($node->bundle(), ['post', 'location', 'theyyam', 'event'], TRUE) && \Drupal::hasService('flag.link_builder')) {
     $link_builder = \Drupal::service('flag.link_builder');
     foreach (['favorite_node', 'like_node', 'bookmark'] as $flag_id) {
       try {
@@ -250,6 +250,33 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
       }
       catch (\Exception $e) {}
     }
+  }
+
+  // Build interactive location map and directions for Location full view.
+  if ($node->bundle() === 'location' && $node->hasField('field_geofield') && !$node->get('field_geofield')->isEmpty()) {
+    try {
+      $variables['location_map'] = $node->get('field_geofield')->view([
+        'type' => 'leaflet_formatter_default',
+        'label' => 'hidden',
+        'settings' => [
+          'leaflet_map' => 'OSM Mapnik',
+          'height' => 420,
+          'height_unit' => 'px',
+          'zoom' => 15,
+          'minZoom' => 1,
+          'maxZoom' => 20,
+          'scrollWheelZoom' => FALSE,
+          'reset_map' => ['control' => TRUE],
+        ],
+      ]);
+      $geo_item = $node->get('field_geofield')->first();
+      if ($geo_item) {
+        $variables['location_lat'] = $geo_item->lat;
+        $variables['location_lon'] = $geo_item->lon;
+        $variables['location_directions_url'] = 'https://www.google.com/maps/dir/?api=1&destination=' . $geo_item->lat . ',' . $geo_item->lon;
+      }
+    }
+    catch (\Exception $e) {}
   }
 
   // Set wiki metadata for Theyyam and Location nodes.
@@ -769,28 +796,39 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
     $variables['is_wiki_toolbar'] = TRUE;
     $variables['wiki_bundle_label'] = ($bundle === 'theyyam') ? t('Theyyam') : t('Temple');
     $variables['wiki_invite_text'] = t('You are invited to edit and improve this and other pages');
-    $variables['wiki_tabs'] = [
+    $wiki_tabs = [
       'view' => [
         'title' => t('View'),
         'url' => $canonical_url,
         'is_active' => $is_view,
       ],
-      'timeline' => [
-        'title' => t('Timeline'),
-        'url' => $timeline_url,
-        'is_active' => $is_timeline,
-      ],
-      'edit' => [
-        'title' => t('Edit'),
-        'url' => $edit_url,
-        'is_active' => $is_edit,
-      ],
-      'history' => [
-        'title' => t('History'),
-        'url' => $history_url,
-        'is_active' => $is_history,
-      ],
     ];
+
+    if ($bundle === 'location') {
+      $wiki_tabs['map'] = [
+        'title' => t('Map'),
+        'url' => $canonical_url . '#temple-map',
+        'is_active' => FALSE,
+      ];
+    }
+
+    $wiki_tabs['timeline'] = [
+      'title' => t('Timeline'),
+      'url' => $timeline_url,
+      'is_active' => $is_timeline,
+    ];
+    $wiki_tabs['edit'] = [
+      'title' => t('Edit'),
+      'url' => $edit_url,
+      'is_active' => $is_edit,
+    ];
+    $wiki_tabs['history'] = [
+      'title' => t('History'),
+      'url' => $history_url,
+      'is_active' => $is_history,
+    ];
+
+    $variables['wiki_tabs'] = $wiki_tabs;
     $variables['wiki_extra_tabs'] = $extra_tabs;
   }
 

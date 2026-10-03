@@ -623,8 +623,8 @@ body[data-feed-layout="list"] .timeline-card-media-wrapper iframe {
 /* Hide empty action wrappers */
 .timeline-action-item:empty,
 .timeline-action-item:not(:has(a, button)),
-.timeline-card-actions .action-flag:not(:has(a)),
-.timeline-card-actions .action-unflag:not(:has(a)) {
+.timeline-card-actions div.action-flag:not(:has(a)),
+.timeline-card-actions div.action-unflag:not(:has(a)) {
   display: none !important;
 }
 

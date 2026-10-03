@@ -419,5 +419,168 @@
       });
     }
   };
+
+  /**
+   * Behavior for Wikipedia-style Vector page toolbar:
+   * - Interactive Map tab smooth-scrolling & Leaflet map recalculation
+   * - More dropdown visibility management and click-outside dismissal
+   */
+  Drupal.behaviors.kaliyattamVectorToolbar = {
+    attach: function (context) {
+      // 1. More Dropdown visibility and outside click handler
+      const dropdowns = once('vector-tools-dropdown', '.vector-tools-dropdown', context);
+      dropdowns.forEach(function (dropdown) {
+        const rightNav = dropdown.closest('#right-navigation');
+        const container = dropdown.closest('.vector-page-toolbar-container');
+
+        dropdown.addEventListener('toggle', function () {
+          if (dropdown.open) {
+            if (rightNav) rightNav.classList.add('has-dropdown-open');
+            if (container) container.classList.add('has-dropdown-open');
+          } else {
+            if (rightNav) rightNav.classList.remove('has-dropdown-open');
+            if (container) container.classList.remove('has-dropdown-open');
+          }
+        });
+
+        // Close dropdown when any link inside is clicked
+        dropdown.querySelectorAll('.vector-tools-menu a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            dropdown.removeAttribute('open');
+            if (rightNav) rightNav.classList.remove('has-dropdown-open');
+            if (container) container.classList.remove('has-dropdown-open');
+          });
+        });
+      });
+
+      // Global document listener to close open dropdowns when clicking outside
+      if (!window._kaliyattamDropdownListenerAttached) {
+        window._kaliyattamDropdownListenerAttached = true;
+        document.addEventListener('click', function (e) {
+          const openDropdowns = document.querySelectorAll('.vector-tools-dropdown[open]');
+          openDropdowns.forEach(function (dropdown) {
+            if (!dropdown.contains(e.target)) {
+              dropdown.removeAttribute('open');
+              const rightNav = dropdown.closest('#right-navigation');
+              const container = dropdown.closest('.vector-page-toolbar-container');
+              if (rightNav) rightNav.classList.remove('has-dropdown-open');
+              if (container) container.classList.remove('has-dropdown-open');
+            }
+          });
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            const openDropdowns = document.querySelectorAll('.vector-tools-dropdown[open]');
+            openDropdowns.forEach(function (dropdown) {
+              dropdown.removeAttribute('open');
+              const rightNav = dropdown.closest('#right-navigation');
+              const container = dropdown.closest('.vector-page-toolbar-container');
+              if (rightNav) rightNav.classList.remove('has-dropdown-open');
+              if (container) container.classList.remove('has-dropdown-open');
+            });
+          }
+        });
+      }
+
+      // 2. Temple Map Tab interaction
+      const mapTabs = once('vector-map-tab', '#ca-map a', context);
+      mapTabs.forEach(function (mapLink) {
+        mapLink.addEventListener('click', function (e) {
+          const mapSection = document.getElementById('temple-map');
+          if (mapSection) {
+            e.preventDefault();
+            mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Activate Map tab and deactivate other tabs in toolbar
+            const toolbarTabs = mapLink.closest('#right-navigation');
+            if (toolbarTabs) {
+              toolbarTabs.querySelectorAll('li').forEach(function (li) {
+                li.classList.remove('selected', 'is-active');
+                const a = li.querySelector('a');
+                if (a) a.classList.remove('is-active');
+              });
+              const caMap = document.getElementById('ca-map');
+              if (caMap) {
+                caMap.classList.add('selected', 'is-active');
+                mapLink.classList.add('is-active');
+              }
+            }
+
+            // Update URL hash without harsh jumping
+            if (window.history && window.history.pushState) {
+              window.history.pushState(null, '', '#temple-map');
+            }
+
+            // Trigger Leaflet map invalidateSize to prevent rendering glitches
+            setTimeout(function () {
+              window.dispatchEvent(new Event('resize'));
+              if (window.Drupal && Drupal.Leaflet && Drupal.Leaflet.maps) {
+                Object.values(Drupal.Leaflet.maps).forEach(function (map) {
+                  if (map && typeof map.invalidateSize === 'function') {
+                    map.invalidateSize();
+                  }
+                });
+              }
+            }, 300);
+          }
+        });
+      });
+
+      // 3. If View tab clicked while on hash #temple-map, return to top cleanly
+      const viewTabs = once('vector-view-tab', '#ca-view a', context);
+      viewTabs.forEach(function (viewLink) {
+        viewLink.addEventListener('click', function (e) {
+          if (window.location.hash === '#temple-map') {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.history && window.history.pushState) {
+              window.history.pushState(null, '', window.location.pathname);
+            }
+            const toolbarTabs = viewLink.closest('#right-navigation');
+            if (toolbarTabs) {
+              toolbarTabs.querySelectorAll('li').forEach(function (li) {
+                li.classList.remove('selected', 'is-active');
+                const a = li.querySelector('a');
+                if (a) a.classList.remove('is-active');
+              });
+              const caView = document.getElementById('ca-view');
+              if (caView) {
+                caView.classList.add('selected', 'is-active');
+                viewLink.classList.add('is-active');
+              }
+            }
+          }
+        });
+      });
+
+      // 4. Initial URL Hash handler for #temple-map on page load
+      if (window.location.hash === '#temple-map') {
+        const caMap = document.getElementById('ca-map');
+        const caView = document.getElementById('ca-view');
+        if (caMap) {
+          if (caView) {
+            caView.classList.remove('selected', 'is-active');
+            const a = caView.querySelector('a');
+            if (a) a.classList.remove('is-active');
+          }
+          caMap.classList.add('selected', 'is-active');
+          const aMap = caMap.querySelector('a');
+          if (aMap) aMap.classList.add('is-active');
+
+          setTimeout(function () {
+            window.dispatchEvent(new Event('resize'));
+            if (window.Drupal && Drupal.Leaflet && Drupal.Leaflet.maps) {
+              Object.values(Drupal.Leaflet.maps).forEach(function (map) {
+                if (map && typeof map.invalidateSize === 'function') {
+                  map.invalidateSize();
+                }
+              });
+            }
+          }, 350);
+        }
+      }
+    }
+  };
 })(Drupal, once);
 

@@ -62,6 +62,70 @@
         {% endembed %}
       {% endif %}
 
+      {# Flag Action Links (Interactive Bar) #}
+      <div class="node-interaction-bar post-interaction-bar d-flex flex-wrap align-items-center gap-3 py-3 my-4">
+        {% if logged_in %}
+          <div class="node-action-flags d-flex flex-wrap align-items-center gap-2">
+            {% if flag_favorite_node is not empty %}
+              {{ flag_favorite_node }}
+            {% endif %}
+            {% if flag_like_node is not empty %}
+              {{ flag_like_node }}
+            {% endif %}
+            {% if flag_bookmark is not empty %}
+              {{ flag_bookmark }}
+            {% endif %}
+            {% if content.links is not empty %}
+              {{ content.links }}
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="post-action-links-anon node-action-flags-anon d-flex flex-wrap align-items-center gap-2">
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to add to favorites'|t }}">
+              <i class="bi bi-heart me-1" aria-hidden="true"></i>{{ 'Favorite'|t }}
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like'|t }}">
+              <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i>{{ 'Like'|t }}
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
+              <i class="bi bi-bookmark me-1" aria-hidden="true"></i>{{ 'Bookmark'|t }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      {# Temple Map Section #}
+      <section id="temple-map" class="temple-map-section my-4 p-3 p-md-4 bg-surface rounded-3 border shadow-sm">
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2 border-bottom pb-2">
+          <h2 class="h5 mb-0 d-flex align-items-center gap-2">
+            <i class="bi bi-geo-alt-fill text-danger fs-5" aria-hidden="true"></i>
+            <span>{{ 'Temple Location & Map'|t }}</span>
+          </h2>
+          {% if location_directions_url %}
+            <a href="{{ location_directions_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1">
+              <i class="bi bi-compass" aria-hidden="true"></i>
+              <span>{{ 'Get directions'|t }}</span>
+            </a>
+          {% endif %}
+        </div>
+        {% if content.field_location_address is not empty %}
+          <div class="temple-address-info mb-3 text-muted small">
+            <i class="bi bi-pin-map me-1" aria-hidden="true"></i>
+            {{ content.field_location_address }}
+          </div>
+        {% endif %}
+        {% if location_map is not empty %}
+          <div class="temple-map-canvas rounded-2 overflow-hidden border">
+            {{ location_map }}
+          </div>
+        {% else %}
+          <div class="alert alert-light border mb-0 text-muted small">
+            <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+            {{ 'Map coordinates for this temple have not been added yet.'|t }}
+          </div>
+        {% endif %}
+      </section>
+
       {# Render related Theyyam in simple list mode with translations #}
       {% set theyyam_items = related_theyyams|default([]) %}
       {% if theyyam_items is not empty or node.field_theyyam is not empty %}
@@ -136,24 +200,6 @@
               {% endfor %}
             {% endif %}
           </div>
-        </div>
-      {% endif %}
-
-      {# Flag Action Links #}
-      {% if logged_in %}
-        {% if content.links is not empty %}
-          <div class="node-flag-actions mb-4">
-            {{ content.links }}
-          </div>
-        {% endif %}
-      {% else %}
-        <div class="node-flag-actions-anon d-flex flex-wrap align-items-center gap-2 mb-4">
-          <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to add to favorites'|t }}">
-            <i class="bi bi-heart me-1" aria-hidden="true"></i>{{ 'Favorite'|t }}
-          </a>
-          <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
-            <i class="bi bi-bookmark me-1" aria-hidden="true"></i>{{ 'Bookmark'|t }}
-          </a>
         </div>
       {% endif %}
 

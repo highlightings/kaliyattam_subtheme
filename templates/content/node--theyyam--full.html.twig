@@ -52,23 +52,37 @@
         {% endembed %}
       {% endif %}
 
-      {# Flag Action Links #}
-      {% if logged_in %}
-        {% if content.links is not empty %}
-          <div class="node-flag-actions mb-4">
-            {{ content.links }}
+      {# Flag Action Links (Interactive Bar) #}
+      <div class="node-interaction-bar post-interaction-bar d-flex flex-wrap align-items-center gap-3 py-3 my-4">
+        {% if logged_in %}
+          <div class="node-action-flags d-flex flex-wrap align-items-center gap-2">
+            {% if flag_favorite_node is not empty %}
+              {{ flag_favorite_node }}
+            {% endif %}
+            {% if flag_like_node is not empty %}
+              {{ flag_like_node }}
+            {% endif %}
+            {% if flag_bookmark is not empty %}
+              {{ flag_bookmark }}
+            {% endif %}
+            {% if content.links is not empty %}
+              {{ content.links }}
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="post-action-links-anon node-action-flags-anon d-flex flex-wrap align-items-center gap-2">
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to add to favorites'|t }}">
+              <i class="bi bi-heart me-1" aria-hidden="true"></i>{{ 'Favorite'|t }}
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like'|t }}">
+              <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i>{{ 'Like'|t }}
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
+              <i class="bi bi-bookmark me-1" aria-hidden="true"></i>{{ 'Bookmark'|t }}
+            </a>
           </div>
         {% endif %}
-      {% else %}
-        <div class="node-flag-actions-anon d-flex flex-wrap align-items-center gap-2 mb-4">
-          <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to add to favorites'|t }}">
-            <i class="bi bi-heart me-1" aria-hidden="true"></i>{{ 'Favorite'|t }}
-          </a>
-          <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
-            <i class="bi bi-bookmark me-1" aria-hidden="true"></i>{{ 'Bookmark'|t }}
-          </a>
-        </div>
-      {% endif %}
+      </div>
 
       {# Main node fields #}
       <div class="node-main-fields">

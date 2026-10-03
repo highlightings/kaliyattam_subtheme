@@ -79,10 +79,14 @@ ul.links.inline li:empty,
 ul.links.inline li:not(:has(a)),
 ul.links li:empty,
 ul.links li:not(:has(a)),
-.action-flag:empty,
-.action-unflag:empty,
-.action-flag:not(:has(a)),
-.action-unflag:not(:has(a)),
+div.action-flag:empty,
+div.action-unflag:empty,
+div.action-flag:not(:has(a)),
+div.action-unflag:not(:has(a)),
+li.action-flag:empty,
+li.action-unflag:empty,
+li.action-flag:not(:has(a)),
+li.action-unflag:not(:has(a)),
 ul.links.inline li > .action-flag > span:only-child:empty {
   display: none !important;
   border: none !important;
