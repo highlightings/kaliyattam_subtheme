@@ -234,25 +234,8 @@ html.dark .theyyam-list-snippet {
 }
 
 /* ==========================================================================
-   Wiki Community CTA & Footer
+   Wiki Node Footer
    ========================================================================== */
-.wiki-community-cta {
-  background: linear-gradient(135deg, rgba(179, 57, 39, 0.04) 0%, rgba(240, 238, 235, 0.7) 100%);
-  border-left: 4px solid var(--kaliyattam-primary, #b33927) !important;
-  border-radius: 12px;
-}
-
-.wiki-community-cta .wiki-cta-icon {
-  color: var(--kaliyattam-primary, #b33927);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(179, 57, 39, 0.1);
-}
-
 .wiki-node-footer {
   font-size: 0.875rem;
   border-top: 1px solid var(--kaliyattam-border, #e5e7eb);
@@ -265,12 +248,6 @@ html.dark .theyyam-list-snippet {
 
 .wiki-node-footer a:hover {
   color: var(--kaliyattam-primary, #b33927);
-}
-
-:root[data-theme="dark"] .wiki-community-cta,
-html.dark .wiki-community-cta {
-  background: #18181b;
-  border-left-color: #e11d48 !important;
 }
 
 :root[data-theme="dark"] .wiki-node-footer,
@@ -312,4 +289,358 @@ html.dark .wiki-node-footer {
 :root[data-theme="dark"] .post-interaction-bar .flag a {
   background: rgba(255, 255, 255, 0.08);
   color: #f4f4f5;
+}
+
+/* ==========================================================================
+   Wikipedia-Style Page Toolbar (vector-page-toolbar-container)
+   Matches Wikipedia Vector 2022 page toolbar structure & styling
+   ========================================================================== */
+.vector-page-toolbar {
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.vector-page-toolbar-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid #c8ccd1;
+  padding-bottom: 0;
+  min-height: 40px;
+  gap: 0.75rem;
+}
+
+/* Explicit reset against generic local-tasks block styling */
+.block-local-tasks-block .vector-page-toolbar ul,
+[id*="local-tasks"] .vector-page-toolbar ul,
+.vector-page-toolbar ul {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  gap: 0 !important;
+}
+
+.block-local-tasks-block .vector-page-toolbar li,
+[id*="local-tasks"] .vector-page-toolbar li,
+.vector-page-toolbar li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  display: inline-flex !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.block-local-tasks-block .vector-page-toolbar li a,
+[id*="local-tasks"] .vector-page-toolbar li a,
+.vector-page-toolbar li a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding: 0.5rem 0.85rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #54595d !important;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: 1.4 !important;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease !important;
+  margin-bottom: -1px !important;
+}
+
+.block-local-tasks-block .vector-page-toolbar li a:hover,
+[id*="local-tasks"] .vector-page-toolbar li a:hover,
+.vector-page-toolbar li a:hover {
+  color: var(--kaliyattam-primary, #890000) !important;
+  border-bottom-color: rgba(137, 0, 0, 0.4) !important;
+  background: rgba(0, 0, 0, 0.02) !important;
+  box-shadow: none !important;
+}
+
+/* Active / Selected Tab (matches Wikipedia Vector 2022) */
+.block-local-tasks-block .vector-page-toolbar li.selected a,
+.block-local-tasks-block .vector-page-toolbar li.is-active a,
+.block-local-tasks-block .vector-page-toolbar li a.is-active,
+[id*="local-tasks"] .vector-page-toolbar li.selected a,
+[id*="local-tasks"] .vector-page-toolbar li.is-active a,
+[id*="local-tasks"] .vector-page-toolbar li a.is-active,
+.vector-page-toolbar li.selected a,
+.vector-page-toolbar li.is-active a,
+.vector-page-toolbar li a.is-active {
+  color: #202122 !important;
+  font-weight: 600 !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--kaliyattam-primary, #890000) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Left Navigation (Namespaces & Invitation) */
+#left-navigation {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-bottom: -1px;
+}
+
+#left-navigation #ca-nstab-main a {
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  color: #202122 !important;
+  border-bottom: 2px solid var(--kaliyattam-primary, #890000) !important;
+}
+
+/* Wikipedia Invitation Tagline */
+.vector-wiki-invite-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8125rem;
+  color: #54595d;
+  padding: 0.25rem 0.65rem;
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+
+.vector-wiki-invite-line i {
+  color: var(--kaliyattam-primary, #890000);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Right Navigation (Views) */
+#right-navigation {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: -1px;
+}
+
+/* Dropdown Menu for Extra Tabs (More) */
+.vector-tools-dropdown {
+  position: relative;
+  display: inline-block;
+  margin-bottom: -1px;
+}
+
+.vector-tools-dropdown summary.vector-tools-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #54595d;
+  border-bottom: 2px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.vector-tools-dropdown summary::-webkit-details-marker,
+.vector-tools-dropdown summary::marker {
+  display: none;
+}
+
+.vector-tools-dropdown summary:hover {
+  color: var(--kaliyattam-primary, #890000);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.vector-tools-dropdown[open] summary {
+  color: var(--kaliyattam-primary, #890000);
+  border-bottom-color: var(--kaliyattam-primary, #890000);
+}
+
+.vector-tools-dropdown .vector-tools-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+  min-width: 170px;
+  background: #ffffff;
+  border: 1px solid #c8ccd1;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 0.35rem 0;
+  margin: 4px 0 0 0;
+  list-style: none;
+  display: block !important;
+}
+
+.vector-tools-dropdown .vector-tools-menu li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: block !important;
+}
+
+.vector-tools-dropdown .vector-tools-menu li a {
+  display: block !important;
+  width: 100%;
+  padding: 0.45rem 1rem !important;
+  font-size: 0.8125rem !important;
+  color: #202122 !important;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+.vector-tools-dropdown .vector-tools-menu li a:hover {
+  background: #f8f9fa !important;
+  color: var(--kaliyattam-primary, #890000) !important;
+}
+
+/* Dark mode overrides */
+:root[data-theme="dark"] .vector-page-toolbar-container {
+  border-bottom-color: #374151;
+}
+
+:root[data-theme="dark"] .block-local-tasks-block .vector-page-toolbar li a,
+:root[data-theme="dark"] [id*="local-tasks"] .vector-page-toolbar li a,
+:root[data-theme="dark"] .vector-page-toolbar li a {
+  color: #9ca3af !important;
+}
+
+:root[data-theme="dark"] .block-local-tasks-block .vector-page-toolbar li.selected a,
+:root[data-theme="dark"] .block-local-tasks-block .vector-page-toolbar li.is-active a,
+:root[data-theme="dark"] .block-local-tasks-block .vector-page-toolbar li a.is-active,
+:root[data-theme="dark"] [id*="local-tasks"] .vector-page-toolbar li.selected a,
+:root[data-theme="dark"] [id*="local-tasks"] .vector-page-toolbar li.is-active a,
+:root[data-theme="dark"] [id*="local-tasks"] .vector-page-toolbar li a.is-active,
+:root[data-theme="dark"] .vector-page-toolbar li.selected a,
+:root[data-theme="dark"] .vector-page-toolbar li.is-active a,
+:root[data-theme="dark"] .vector-page-toolbar li a.is-active {
+  color: #f3f4f6 !important;
+  border-bottom-color: #f87171 !important;
+}
+
+:root[data-theme="dark"] #left-navigation #ca-nstab-main a {
+  color: #f3f4f6 !important;
+  border-bottom-color: #f87171 !important;
+}
+
+:root[data-theme="dark"] .vector-wiki-invite-line {
+  color: #9ca3af;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .vector-wiki-invite-line i {
+  color: #f87171;
+}
+
+:root[data-theme="dark"] .vector-tools-dropdown summary.vector-tools-summary {
+  color: #9ca3af;
+}
+
+:root[data-theme="dark"] .vector-tools-dropdown .vector-tools-menu {
+  background: #1f2937;
+  border-color: #374151;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .vector-tools-dropdown .vector-tools-menu li a {
+  color: #e5e7eb !important;
+}
+
+:root[data-theme="dark"] .vector-tools-dropdown .vector-tools-menu li a:hover {
+  background: #374151 !important;
+  color: #f87171 !important;
+}
+
+@media (max-width: 768px) {
+  .vector-page-toolbar {
+    margin-bottom: 1rem;
+  }
+
+  .vector-page-toolbar-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    padding-bottom: 0;
+  }
+
+  #left-navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  #left-navigation #ca-nstab-main a {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.8125rem !important;
+  }
+
+  .vector-wiki-invite-line {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.55rem;
+    line-height: 1.35;
+    width: 100%;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  #right-navigation {
+    display: flex;
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+  }
+
+  #right-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  #right-navigation .vector-menu-content-list {
+    display: flex;
+    flex-wrap: nowrap !important;
+    min-width: max-content;
+    gap: 0.15rem !important;
+  }
+
+  #right-navigation .mw-list-item a {
+    padding: 0.4rem 0.65rem !important;
+    font-size: 0.8125rem !important;
+    white-space: nowrap;
+  }
+
+  .vector-tools-dropdown summary.vector-tools-summary {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+
+  .vector-tools-dropdown .vector-tools-menu {
+    right: 0;
+    min-width: 150px;
+  }
 }

@@ -10,7 +10,75 @@
  * - tasks_open: Boolean indicating if details should be open by default.
  */
 #}
-{% if primary %}
+{% if is_wiki_toolbar %}
+  <div class="vector-page-toolbar">
+    <div class="vector-page-toolbar-container">
+      <div id="left-navigation">
+        <nav aria-label="{{ 'Namespaces'|t }}">
+          <div id="p-associated-pages" class="vector-menu vector-menu-tabs mw-portlet mw-portlet-associated-pages">
+            <div class="vector-menu-content">
+              <ul class="vector-menu-content-list">
+                <li id="ca-nstab-main" class="selected is-active mw-list-item vector-tab-noicon">
+                  <a href="{{ wiki_tabs.view.url }}"><span>{{ wiki_bundle_label }}</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="vector-wiki-invite-line" title="{{ 'Community contribution'|t }}">
+          <i class="bi bi-pencil-square" aria-hidden="true"></i>
+          <span class="invite-text">{{ wiki_invite_text }}</span>
+        </div>
+      </div>
+      <div id="right-navigation" class="vector-collapsible">
+        <nav aria-label="{{ 'Views'|t }}">
+          <div id="p-views" class="vector-menu vector-menu-tabs mw-portlet mw-portlet-views">
+            <div class="vector-menu-content">
+              <ul class="vector-menu-content-list tabs tabs--primary">
+                <li id="ca-view" class="mw-list-item vector-tab-noicon {% if wiki_tabs.view.is_active %}selected is-active{% endif %}">
+                  <a href="{{ wiki_tabs.view.url }}" class="{% if wiki_tabs.view.is_active %}is-active{% endif %}">
+                    <span>{{ 'View'|t }}</span>
+                  </a>
+                </li>
+                <li id="ca-timeline" class="mw-list-item vector-tab-noicon {% if wiki_tabs.timeline.is_active %}selected is-active{% endif %}">
+                  <a href="{{ wiki_tabs.timeline.url }}" class="{% if wiki_tabs.timeline.is_active %}is-active{% endif %}">
+                    <span>{{ 'Timeline'|t }}</span>
+                  </a>
+                </li>
+                <li id="ca-edit" class="mw-list-item vector-tab-noicon {% if wiki_tabs.edit.is_active %}selected is-active{% endif %}">
+                  <a href="{{ wiki_tabs.edit.url }}" title="{{ 'Edit this page'|t }}" class="{% if wiki_tabs.edit.is_active %}is-active{% endif %}">
+                    <span>{{ 'Edit'|t }}</span>
+                  </a>
+                </li>
+                <li id="ca-history" class="mw-list-item vector-tab-noicon {% if wiki_tabs.history.is_active %}selected is-active{% endif %}">
+                  <a href="{{ wiki_tabs.history.url }}" title="{{ 'Past revisions of this page'|t }}" class="{% if wiki_tabs.history.is_active %}is-active{% endif %}">
+                    <span>{{ 'History'|t }}</span>
+                  </a>
+                </li>
+                {% if wiki_extra_tabs is not empty %}
+                  <li class="vector-menu-dropdown mw-list-item">
+                    <details class="vector-tools-dropdown">
+                      <summary class="vector-tools-summary"><span>{{ 'More'|t }} ▾</span></summary>
+                      <ul class="vector-tools-menu">
+                        {% for extra in wiki_extra_tabs %}
+                          <li class="{% if extra.is_active %}is-active{% endif %}">
+                            <a href="{{ extra.url }}" class="{% if extra.is_active %}is-active{% endif %}">
+                              <span>{{ extra.title }}</span>
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </details>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+{% elseif primary %}
   <div class="local-tasks-container">
     <details class="local-tasks-collapsible" {% if tasks_open %}open{% endif %}>
       <summary class="local-tasks-summary" title="{{ 'Toggle page management options'|t }}">

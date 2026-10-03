@@ -175,20 +175,24 @@
   background: var(--theme-surface, #ffffff);
   border: 1px solid var(--theme-border, #e2e8f0);
   border-radius: var(--radius-md, 10px);
-  padding: 0.3rem 0.35rem;
   box-shadow: var(--theme-card-shadow, 0 4px 16px rgba(0, 0, 0, 0.06));
-  animation: localTasksFadeIn 0.2s ease-out;
-  display: inline-block;
   max-width: 100%;
+}
+
+.local-tasks-collapsible:not([open]) .local-tasks-drawer {
+  display: none !important;
+}
+
+.local-tasks-collapsible[open] .local-tasks-drawer {
+  display: inline-block !important;
+  animation: localTasksFadeIn 0.2s ease-out;
 }
 
 @keyframes localTasksFadeIn {
   from {
-    opacity: 0;
     transform: translateY(-4px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -234,7 +238,7 @@ ul.tabs {
   padding: 0.35rem 0.85rem;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #475569;
+  color: #1e293b !important;
   text-decoration: none;
   border-radius: 6px;
   background: transparent;
@@ -600,7 +604,7 @@ html.dark .local-tasks-drawer {
 
 :root[data-theme="dark"] .local-tasks-drawer li a,
 html.dark .local-tasks-drawer li a {
-  color: #9ca3af !important;
+  color: #cbd5e1 !important;
 }
 
 :root[data-theme="dark"] .local-tasks-drawer li a:hover,

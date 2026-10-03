@@ -715,6 +715,85 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
     }
   }
 
+  // Resolve node from current internal path if not already loaded by route match.
+  if (!$current_node instanceof \Drupal\node\NodeInterface) {
+    try {
+      $path = \Drupal::service('path.current')->getPath();
+      if (preg_match('#^/node/(\d+)#', $path, $matches)) {
+        $current_node = \Drupal\node\Entity\Node::load($matches[1]);
+      }
+    }
+    catch (\Exception $e) {}
+  }
+
+  // Build Wikipedia-style vector-page-toolbar for Theyyam and Temple (Location) content types.
+  if ($current_node instanceof \Drupal\node\NodeInterface && in_array($current_node->bundle(), ['location', 'theyyam'], TRUE)) {
+    $bundle = $current_node->bundle();
+    $canonical_url = $current_node->toUrl('canonical')->toString();
+    $timeline_url = $canonical_url . '/timeline';
+    $edit_url = \Drupal::currentUser()->isAuthenticated()
+      ? $current_node->toUrl('edit-form')->toString()
+      : \Drupal\Core\Url::fromRoute('user.login', [], ['query' => ['destination' => $current_node->toUrl('edit-form')->toString()]])->toString();
+    $history_url = \Drupal\Core\Url::fromRoute('entity.node.version_history', ['node' => $current_node->id()])->toString();
+
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    $path_info = \Drupal::request()->getPathInfo();
+
+    $is_timeline = (strpos($route_name, 'timeline') !== FALSE || str_ends_with($path_info, '/timeline'));
+    $is_edit = ($route_name === 'entity.node.edit_form');
+    $is_history = ($route_name === 'entity.node.version_history' || str_contains($path_info, '/revisions'));
+    $is_view = (!$is_timeline && !$is_edit && !$is_history && $route_name === 'entity.node.canonical');
+
+    $extra_tabs = [];
+    if (!empty($variables['primary'])) {
+      foreach (\Drupal\Core\Render\Element::children($variables['primary']) as $key) {
+        $item = $variables['primary'][$key];
+        if (!empty($item['#link']['url'])) {
+          try {
+            $url_str = $item['#link']['url']->toString();
+            $title = !empty($item['#link']['title']) ? (string) $item['#link']['title'] : '';
+            $title_lower = mb_strtolower(trim($title));
+            if (!str_contains($url_str, '/timeline') && !str_contains($url_str, '/edit') && !str_contains($url_str, '/revisions') && !in_array($title_lower, ['view', 'കാഴ്ച', 'കാണുക', 'വിവരങ്ങൾ'])) {
+              $extra_tabs[] = [
+                'title' => $title,
+                'url' => $url_str,
+                'is_active' => !empty($item['#active']),
+              ];
+            }
+          }
+          catch (\Exception $e) {}
+        }
+      }
+    }
+
+    $variables['is_wiki_toolbar'] = TRUE;
+    $variables['wiki_bundle_label'] = ($bundle === 'theyyam') ? t('Theyyam') : t('Temple');
+    $variables['wiki_invite_text'] = t('You are invited to edit and improve this and other pages');
+    $variables['wiki_tabs'] = [
+      'view' => [
+        'title' => t('View'),
+        'url' => $canonical_url,
+        'is_active' => $is_view,
+      ],
+      'timeline' => [
+        'title' => t('Timeline'),
+        'url' => $timeline_url,
+        'is_active' => $is_timeline,
+      ],
+      'edit' => [
+        'title' => t('Edit'),
+        'url' => $edit_url,
+        'is_active' => $is_edit,
+      ],
+      'history' => [
+        'title' => t('History'),
+        'url' => $history_url,
+        'is_active' => $is_history,
+      ],
+    ];
+    $variables['wiki_extra_tabs'] = $extra_tabs;
+  }
+
   // Open tabs drawer by default when a public Timeline or Edit history tab is present.
   $has_public_extra_tabs = FALSE;
   if (!empty($variables['primary'])) {

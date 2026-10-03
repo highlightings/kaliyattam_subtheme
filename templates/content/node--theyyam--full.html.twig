@@ -75,31 +75,6 @@
         {{ content|without('field_media', 'field_comments', 'field_featured_image', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
       </div>
 
-      {# Collaborative Wiki Community Call to Action #}
-      <div class="wiki-community-cta card p-4 my-5 border-0 shadow-sm">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-          <div class="d-flex align-items-center gap-3">
-            <div class="wiki-cta-icon fs-1 text-primary">
-              <i class="bi bi-pencil-square" aria-hidden="true"></i>
-            </div>
-            <div>
-              <h4 class="h5 mb-1">{{ 'Help document this Theyyam deity & ritual'|t }}</h4>
-              <p class="mb-0 text-muted small">
-                {{ 'Kaliyattam is an open cultural archive. If you have authentic thottam songs, origin folklore, or ritual details, authorized contributors are invited to improve this page.'|t }}
-              </p>
-            </div>
-          </div>
-          <div class="wiki-cta-actions d-flex align-items-center gap-2">
-            <a href="{{ path('entity.node.edit_form', {'node': node.id}) }}" class="btn btn-primary btn-sm px-3">
-              <i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ 'Edit this page'|t }}
-            </a>
-            <a href="{{ path('entity.node.version_history', {'node': node.id}) }}" class="btn btn-outline-secondary btn-sm">
-              <i class="bi bi-clock-history me-1" aria-hidden="true"></i>{{ 'Edit history'|t }}
-            </a>
-          </div>
-        </div>
-      </div>
-
       {# Wiki Page Metadata Footer (moved from top, no author name, shows last updated) #}
       <footer class="wiki-node-footer pt-3 mt-4 border-top text-muted d-flex flex-wrap justify-content-between align-items-center gap-2 small">
         <div class="wiki-last-updated">
