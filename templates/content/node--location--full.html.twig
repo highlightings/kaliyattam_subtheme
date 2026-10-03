@@ -2,65 +2,33 @@
 /**
  * @file
  * Theme override to display a Location node in full view mode.
+ * Wiki-style collaborative page.
  */
 #}
-<article{{ attributes.addClass('node', 'node--type-location', 'node--view-mode-full') }}>
+<article{{ attributes.addClass('node', 'node--type-location', 'node--view-mode-full', 'wiki-node-view') }}>
   <div class="container">
     {{ title_prefix }}
     {% if not page %}
-      <h1{{ title_attributes.addClass('node-title') }}>
+      <h1{{ title_attributes.addClass('node-title', 'mb-3') }}>
         <a href="{{ url }}" rel="bookmark">{{ label }}</a>
       </h1>
     {% endif %}
     {{ title_suffix }}
 
-    {# Node Author & Date Metadata Bar with Icons #}
-    <div class="node-meta-bar mb-4">
-      <div class="node-author-group">
-        <a href="{{ author_url }}" class="node-author-avatar" aria-hidden="true" tabindex="-1">
-          <span class="avatar-initial">{{ author_initial }}</span>
-        </a>
-        <div class="node-meta-info">
-          <div class="node-meta-author">
-            <a href="{{ author_url }}" class="node-author-link">
-              <i class="icon icon-user bi-person me-1" aria-hidden="true"></i>
-              <span>{{ author_name }}</span>
-            </a>
-            {% if flag_follow_user is not empty %}
-              <span class="node-follow-wrapper ms-2">
-                {{ flag_follow_user }}
-              </span>
-            {% endif %}
-          </div>
-          <div class="node-meta-date">
-            <time datetime="{{ node.getCreatedTime()|date('c') }}">
-              <i class="icon icon-calendar bi-calendar-event me-1" aria-hidden="true"></i>
-              <span>{{ node.getCreatedTime()|format_date('medium') }}</span>
-            </time>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div{{ content_attributes.addClass('node__content') }}>
       {% if content.field_featured_image is not empty %}
-        <div class="theyyam-cover-image">
+        <div class="location-cover-image mb-4">
           {{ content.field_featured_image }}
         </div>
       {% endif %}
 
-      {# Location Map & Address info #}
-      {% if node.field_geofield is not empty %}
-        <div class="location-geo-wrapper mb-4 p-4 shadow-sm rounded bg-white">
-          <div class="location-map">
-            {{ content.field_geofield }}
+      {# Address & Place details #}
+      {% if content.field_location_address is not empty %}
+        <div class="location-address-box mb-4 p-3 bg-light rounded-3 d-flex align-items-center gap-2">
+          <i class="bi bi-geo-alt-fill text-danger fs-4" aria-hidden="true"></i>
+          <div>
+            {{ content.field_location_address }}
           </div>
-          {% if node.field_location_address is not empty %}
-            <div class="location-address mt-3">
-              <i class="icon icon-location bi-geo-alt me-1" aria-hidden="true"></i>
-              <span>{{ content.field_location_address |render|trim|replace({'<br>': ' - '})|striptags|raw }}</span>
-            </div>
-          {% endif %}
         </div>
       {% endif %}
 
@@ -94,53 +62,98 @@
         {% endembed %}
       {% endif %}
 
-      {# Render related Theyyam in simple list mode #}
-      {% if node.field_theyyam is not empty %}
+      {# Render related Theyyam in simple list mode with translations #}
+      {% set theyyam_items = related_theyyams|default([]) %}
+      {% if theyyam_items is not empty or node.field_theyyam is not empty %}
         <div class="theyyam-related mt-5 mb-5">
-          <h2 class="mb-4">{{ 'Theyyam at this location'|trans }}</h2>
+          <h2 class="mb-4">{{ 'Theyyam at this location'|t }}</h2>
           <div class="theyyam-simple-list">
-            {% for theyyam_item in node.field_theyyam %}
-              {% set theyyam_node = theyyam_item.entity %}
-              {% if theyyam_node %}
-                {% set theyyam_url = path('entity.node.canonical', {'node': theyyam_node.id}) %}
+            {% if theyyam_items is not empty %}
+              {% for theyyam in theyyam_items %}
                 <article class="theyyam-list-row">
                   <div class="theyyam-list-media">
-                    {% if theyyam_node.field_featured_image is not empty and theyyam_node.field_featured_image.entity %}
-                      <a href="{{ theyyam_url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
-                        {{ drupal_entity('media', theyyam_node.field_featured_image.target_id, 'thumbnail') }}
+                    {% if theyyam.media_id %}
+                      <a href="{{ theyyam.url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
+                        {{ drupal_entity('media', theyyam.media_id, 'thumbnail') }}
                       </a>
                     {% else %}
-                      <a href="{{ theyyam_url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
+                      <a href="{{ theyyam.url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
                         <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
                       </a>
                     {% endif %}
                   </div>
                   <div class="theyyam-list-body">
                     <h3 class="theyyam-list-title">
-                      <a href="{{ theyyam_url }}">{{ theyyam_node.label }}</a>
+                      <a href="{{ theyyam.url }}">{{ theyyam.label }}</a>
                     </h3>
-                    {% if theyyam_node.body.value is not empty %}
+                    {% if theyyam.snippet %}
                       <div class="theyyam-list-snippet">
-                        {{ theyyam_node.body.value|striptags|trim|slice(0, 140) ~ '…' }}
+                        {{ theyyam.snippet }}
                       </div>
                     {% endif %}
                   </div>
                   <div class="theyyam-list-action">
-                    <a href="{{ theyyam_url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam_node.label }}">
+                    <a href="{{ theyyam.url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam.label }}">
                       <span>{{ 'More'|t }} &raquo;</span>
                     </a>
                   </div>
                 </article>
-              {% endif %}
-            {% endfor %}
+              {% endfor %}
+            {% else %}
+              {% for theyyam_item in node.field_theyyam %}
+                {% set theyyam_node = theyyam_item.entity %}
+                {% if theyyam_node %}
+                  {% set theyyam_url = path('entity.node.canonical', {'node': theyyam_node.id}) %}
+                  <article class="theyyam-list-row">
+                    <div class="theyyam-list-media">
+                      {% if theyyam_node.field_featured_image is not empty and theyyam_node.field_featured_image.entity %}
+                        <a href="{{ theyyam_url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
+                          {{ drupal_entity('media', theyyam_node.field_featured_image.target_id, 'thumbnail') }}
+                        </a>
+                      {% else %}
+                        <a href="{{ theyyam_url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
+                          <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
+                        </a>
+                      {% endif %}
+                    </div>
+                    <div class="theyyam-list-body">
+                      <h3 class="theyyam-list-title">
+                        <a href="{{ theyyam_url }}">{{ theyyam_node.label }}</a>
+                      </h3>
+                      {% if theyyam_node.body.value is not empty %}
+                        <div class="theyyam-list-snippet">
+                          {{ theyyam_node.body.value|striptags|trim|slice(0, 140) ~ '…' }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="theyyam-list-action">
+                      <a href="{{ theyyam_url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam_node.label }}">
+                        <span>{{ 'More'|t }} &raquo;</span>
+                      </a>
+                    </div>
+                  </article>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
           </div>
         </div>
       {% endif %}
 
       {# Flag Action Links #}
-      {% if content.links is not empty %}
-        <div class="node-flag-actions mb-4">
-          {{ content.links }}
+      {% if logged_in %}
+        {% if content.links is not empty %}
+          <div class="node-flag-actions mb-4">
+            {{ content.links }}
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="node-flag-actions-anon d-flex flex-wrap align-items-center gap-2 mb-4">
+          <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to add to favorites'|t }}">
+            <i class="bi bi-heart me-1" aria-hidden="true"></i>{{ 'Favorite'|t }}
+          </a>
+          <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
+            <i class="bi bi-bookmark me-1" aria-hidden="true"></i>{{ 'Bookmark'|t }}
+          </a>
         </div>
       {% endif %}
 
@@ -148,6 +161,44 @@
       <div class="node-main-fields">
         {{ content|without('field_media', 'field_theyyam', 'field_comments', 'field_featured_image', 'field_location_address', 'field_geofield', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
       </div>
+
+      {# Collaborative Wiki Community Call to Action #}
+      <div class="wiki-community-cta card p-4 my-5 border-0 shadow-sm">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="wiki-cta-icon fs-1 text-primary">
+              <i class="bi bi-pencil-square" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h4 class="h5 mb-1">{{ 'Help document this temple / sacred site'|t }}</h4>
+              <p class="mb-0 text-muted small">
+                {{ 'Kaliyattam is an open cultural archive. If you have authentic festival dates, folklore, or ritual history, authorized contributors are invited to improve this page.'|t }}
+              </p>
+            </div>
+          </div>
+          <div class="wiki-cta-actions d-flex align-items-center gap-2">
+            <a href="{{ path('entity.node.edit_form', {'node': node.id}) }}" class="btn btn-primary btn-sm px-3">
+              <i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ 'Edit this page'|t }}
+            </a>
+            <a href="{{ path('entity.node.version_history', {'node': node.id}) }}" class="btn btn-outline-secondary btn-sm">
+              <i class="bi bi-clock-history me-1" aria-hidden="true"></i>{{ 'Edit history'|t }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {# Wiki Page Metadata Footer (moved from top, no author name, shows last updated) #}
+      <footer class="wiki-node-footer pt-3 mt-4 border-top text-muted d-flex flex-wrap justify-content-between align-items-center gap-2 small">
+        <div class="wiki-last-updated">
+          <i class="bi bi-clock-history me-1" aria-hidden="true"></i>
+          <span>{{ 'Last updated on'|t }} {{ last_updated_date|default(node.getChangedTime()|format_date('medium')) }}</span>
+        </div>
+        <div class="wiki-history-links">
+          <a href="{{ path('entity.node.version_history', {'node': node.id}) }}" class="text-decoration-none text-muted">
+            <i class="bi bi-journals me-1" aria-hidden="true"></i>{{ 'View versions & revision history'|t }}
+          </a>
+        </div>
+      </footer>
 
       {% if content.field_comments is not empty %}
         <div class="node-comments-section mt-5">

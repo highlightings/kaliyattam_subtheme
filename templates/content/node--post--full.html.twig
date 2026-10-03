@@ -128,12 +128,28 @@
         </div>
       {% endif %}
 
-      {# Flag Action Links (Inline) #}
-      {% if content.links is not empty %}
-        <div class="node-flag-actions mb-4">
-          {{ content.links }}
-        </div>
-      {% endif %}
+      {# Flag Action Links (Interactive Bar) #}
+      <div class="post-interaction-bar d-flex flex-wrap align-items-center gap-3 py-3 my-4">
+        {% if logged_in %}
+          {% if content.links is not empty %}
+            <div class="post-action-links">
+              {{ content.links }}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="post-action-links-anon d-flex flex-wrap align-items-center gap-2">
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to favorite this post'|t }}">
+              <i class="bi bi-heart me-1" aria-hidden="true"></i>{{ 'Favorite'|t }}
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like this post'|t }}">
+              <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i>{{ 'Like'|t }}
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark this post'|t }}">
+              <i class="bi bi-bookmark me-1" aria-hidden="true"></i>{{ 'Bookmark'|t }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
 
       {# Remaining fields #}
       <div class="node-main-fields">

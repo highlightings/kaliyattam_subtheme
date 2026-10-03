@@ -232,3 +232,84 @@ html.dark .theyyam-list-title a {
 html.dark .theyyam-list-snippet {
   color: #a1a1aa;
 }
+
+/* ==========================================================================
+   Wiki Community CTA & Footer
+   ========================================================================== */
+.wiki-community-cta {
+  background: linear-gradient(135deg, rgba(179, 57, 39, 0.04) 0%, rgba(240, 238, 235, 0.7) 100%);
+  border-left: 4px solid var(--kaliyattam-primary, #b33927) !important;
+  border-radius: 12px;
+}
+
+.wiki-community-cta .wiki-cta-icon {
+  color: var(--kaliyattam-primary, #b33927);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(179, 57, 39, 0.1);
+}
+
+.wiki-node-footer {
+  font-size: 0.875rem;
+  border-top: 1px solid var(--kaliyattam-border, #e5e7eb);
+}
+
+.wiki-node-footer a {
+  color: var(--kaliyattam-text-muted, #4b5563);
+  transition: color 0.15s ease;
+}
+
+.wiki-node-footer a:hover {
+  color: var(--kaliyattam-primary, #b33927);
+}
+
+:root[data-theme="dark"] .wiki-community-cta,
+html.dark .wiki-community-cta {
+  background: #18181b;
+  border-left-color: #e11d48 !important;
+}
+
+:root[data-theme="dark"] .wiki-node-footer,
+html.dark .wiki-node-footer {
+  border-top-color: #27272a;
+}
+
+/* ==========================================================================
+   Post Interaction Bar
+   ========================================================================== */
+.post-interaction-bar {
+  border-top: 1px solid var(--kaliyattam-border, #e5e7eb);
+  border-bottom: 1px solid var(--kaliyattam-border, #e5e7eb);
+}
+
+.post-interaction-bar .flag a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--kaliyattam-text, #18181b);
+  transition: all 0.15s ease;
+}
+
+.post-interaction-bar .flag a:hover {
+  background: rgba(179, 57, 39, 0.1);
+  color: var(--kaliyattam-primary, #b33927);
+}
+
+:root[data-theme="dark"] .post-interaction-bar {
+  border-color: #27272a;
+}
+
+:root[data-theme="dark"] .post-interaction-bar .flag a {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f4f4f5;
+}

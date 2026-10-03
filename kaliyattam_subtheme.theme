@@ -57,8 +57,9 @@ function kaliyattam_subtheme_preprocess_page(array &$variables): void {
       $node = \Drupal\node\Entity\Node::load($node);
     }
     if ($node instanceof \Drupal\node\NodeInterface) {
-      // Individual posts are atomic updates: redirect /node/{id}/timeline to canonical post URL.
-      if ($node->bundle() === 'post') {
+      // Only location, theyyam, and event nodes have child timelines.
+      // Other content types (post, page, etc.) redirect to canonical URL.
+      if (!in_array($node->bundle(), ['location', 'theyyam', 'event'], TRUE)) {
         $canonical_url = $node->toUrl('canonical')->toString();
         $response = new \Symfony\Component\HttpFoundation\RedirectResponse($canonical_url, 301);
         $response->send();
@@ -200,6 +201,61 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
         'total_days' => $total_days,
       ];
     }
+  }
+
+  // Prepare translated related Theyyam items for Location full view mode.
+  if ($node->bundle() === 'location' && $node->hasField('field_theyyam') && !$node->get('field_theyyam')->isEmpty()) {
+    $entity_repository = \Drupal::service('entity.repository');
+    $current_langcode = \Drupal::languageManager()->getCurrentLanguage(\Drupal\Core\Language\LanguageInterface::TYPE_CONTENT)->getId();
+    $related = [];
+    foreach ($node->get('field_theyyam')->referencedEntities() as $theyyam_entity) {
+      if (!$theyyam_entity instanceof \Drupal\node\NodeInterface) {
+        continue;
+      }
+      /** @var \Drupal\node\NodeInterface $theyyam_trans */
+      $theyyam_trans = $entity_repository->getTranslationFromContext($theyyam_entity, $current_langcode);
+      $media_id = NULL;
+      if ($theyyam_trans->hasField('field_featured_image') && !$theyyam_trans->get('field_featured_image')->isEmpty()) {
+        $media_id = $theyyam_trans->get('field_featured_image')->target_id;
+      }
+      elseif ($theyyam_entity->hasField('field_featured_image') && !$theyyam_entity->get('field_featured_image')->isEmpty()) {
+        $media_id = $theyyam_entity->get('field_featured_image')->target_id;
+      }
+
+      $body_text = '';
+      if ($theyyam_trans->hasField('body') && !$theyyam_trans->get('body')->isEmpty()) {
+        $body_text = strip_tags($theyyam_trans->get('body')->value);
+      }
+      elseif ($theyyam_entity->hasField('body') && !$theyyam_entity->get('body')->isEmpty()) {
+        $body_text = strip_tags($theyyam_entity->get('body')->value);
+      }
+
+      $related[] = [
+        'id' => $theyyam_trans->id(),
+        'label' => $theyyam_trans->label(),
+        'url' => $theyyam_trans->toUrl('canonical')->toString(),
+        'media_id' => $media_id,
+        'snippet' => $body_text ? (mb_substr(trim($body_text), 0, 140) . '…') : '',
+      ];
+    }
+    $variables['related_theyyams'] = $related;
+  }
+
+  // Generate flag links for Post full view.
+  if ($node->bundle() === 'post' && \Drupal::hasService('flag.link_builder')) {
+    $link_builder = \Drupal::service('flag.link_builder');
+    foreach (['favorite_node', 'like_node', 'bookmark'] as $flag_id) {
+      try {
+        $variables['flag_' . $flag_id] = $link_builder->build('node', $node->id(), $flag_id);
+      }
+      catch (\Exception $e) {}
+    }
+  }
+
+  // Set wiki metadata for Theyyam and Location nodes.
+  if (in_array($node->bundle(), ['theyyam', 'location'], TRUE)) {
+    $variables['is_wiki_page'] = TRUE;
+    $variables['last_updated_date'] = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'medium');
   }
 }
 
@@ -555,13 +611,26 @@ function kaliyattam_subtheme_preprocess_menu_local_task(array &$variables): void
   if (is_string($node) || is_numeric($node)) {
     $node = \Drupal\node\Entity\Node::load($node);
   }
-  // Suppress timeline tab on Post nodes (posts are atomic updates, not timeline containers).
-  if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'post') {
+  // Suppress timeline tab on non-container nodes (post, page, etc.).
+  if ($node instanceof \Drupal\node\NodeInterface && !in_array($node->bundle(), ['location', 'theyyam', 'event'], TRUE)) {
     if (!empty($variables['link']['#url'])) {
       try {
         $url_str = $variables['link']['#url']->toString();
         if (str_contains($url_str, '/timeline')) {
           $variables['hide_tab'] = TRUE;
+        }
+      }
+      catch (\Exception $e) {}
+    }
+  }
+
+  // Rename Revisions tab to Edit history on Wiki content types (location, theyyam).
+  if ($node instanceof \Drupal\node\NodeInterface && in_array($node->bundle(), ['location', 'theyyam'], TRUE)) {
+    if (!empty($variables['link']['#url'])) {
+      try {
+        $url_str = $variables['link']['#url']->toString();
+        if (str_contains($url_str, '/revisions')) {
+          $variables['link']['#title'] = t('Edit history');
         }
       }
       catch (\Exception $e) {}
@@ -592,14 +661,27 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
     foreach (\Drupal\Core\Render\Element::children($variables['primary']) as $key) {
       $item = $variables['primary'][$key];
 
-      // Omit timeline tab on Post nodes (posts are atomic updates, not timeline containers).
-      if ($current_node instanceof \Drupal\node\NodeInterface && $current_node->bundle() === 'post') {
+      // Omit timeline tab on non-container nodes (posts, pages).
+      if ($current_node instanceof \Drupal\node\NodeInterface && !in_array($current_node->bundle(), ['location', 'theyyam', 'event'], TRUE)) {
         if (!empty($item['#link']['url'])) {
           try {
             $url_str = $item['#link']['url']->toString();
             if (str_contains($url_str, '/timeline')) {
               unset($variables['primary'][$key]);
               continue;
+            }
+          }
+          catch (\Exception $e) {}
+        }
+      }
+
+      // Rename Revisions tab to Edit history on Wiki content types (location, theyyam).
+      if ($current_node instanceof \Drupal\node\NodeInterface && in_array($current_node->bundle(), ['location', 'theyyam'], TRUE)) {
+        if (!empty($item['#link']['url'])) {
+          try {
+            $url_str = $item['#link']['url']->toString();
+            if (str_contains($url_str, '/revisions') || ($item['#link']['title'] ?? '') === 'Revisions') {
+              $variables['primary'][$key]['#link']['title'] = t('Edit history');
             }
           }
           catch (\Exception $e) {}
@@ -633,15 +715,16 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
     }
   }
 
-  // Open tabs drawer by default when a public Timeline tab is present.
-  $has_timeline_tab = FALSE;
+  // Open tabs drawer by default when a public Timeline or Edit history tab is present.
+  $has_public_extra_tabs = FALSE;
   if (!empty($variables['primary'])) {
     foreach (\Drupal\Core\Render\Element::children($variables['primary']) as $key) {
       $item = $variables['primary'][$key];
       if (!empty($item['#link']['url'])) {
         try {
-          if (str_contains($item['#link']['url']->toString(), '/timeline')) {
-            $has_timeline_tab = TRUE;
+          $url_str = $item['#link']['url']->toString();
+          if (str_contains($url_str, '/timeline') || str_contains($url_str, '/revisions')) {
+            $has_public_extra_tabs = TRUE;
             break;
           }
         }
@@ -651,7 +734,7 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
   }
 
   $variables['active_tab_title'] = $active_tab_title;
-  $variables['tasks_open'] = $is_admin_action || $has_timeline_tab;
+  $variables['tasks_open'] = $is_admin_action || $has_public_extra_tabs;
 }
 
 /**
@@ -1093,23 +1176,16 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
     $node = \Drupal\node\Entity\Node::load($node);
   }
 
-  // Format breadcrumbs for posts: home > author (/user/[uid]/timeline?page=1) > YYYY-MM-DD > [cleaned title].
+  // Format breadcrumbs for posts: Home > alice > posts > 2026 > 10 > 02 > [node_id].
   if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'post') {
     $created_time = (int) $node->getCreatedTime();
-    $date_formatted = date('Y-m-d', $created_time);
+    $year = date('Y', $created_time);
+    $month = date('m', $created_time);
+    $day = date('d', $created_time);
+    $nid = $node->id();
     $author = $node->getOwner();
     $author_name = $author ? $author->getDisplayName() : 'User';
     $author_uid = $author ? $author->id() : 1;
-
-    // Clean and trim the post title for breadcrumbs.
-    $raw_title = (string) $node->getTitle();
-    // Remove auto-generated timer prefix like "0 seconds : " or "[0 seconds : " if present.
-    $cleaned_title = preg_replace('/^\s*\[?\s*\d+\s*(?:seconds?|minutes?|hours?|days?|weeks?|months?|years?)\s*:\s*/i', '', $raw_title);
-    $cleaned_title = trim(rtrim($cleaned_title ?: $raw_title, ']'));
-    // Trim to reasonable size (e.g. max 35 characters with ellipsis).
-    if (mb_strlen($cleaned_title) > 35) {
-      $cleaned_title = mb_substr($cleaned_title, 0, 32) . '…';
-    }
 
     $variables['breadcrumb'] = [
       [
@@ -1121,11 +1197,23 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
         'url' => '/user/' . $author_uid . '/timeline?page=1',
       ],
       [
-        'text' => $date_formatted,
-        'url' => '',
+        'text' => t('posts'),
+        'url' => '/posts',
       ],
       [
-        'text' => $cleaned_title,
+        'text' => $year,
+        'url' => '/posts?year=' . $year,
+      ],
+      [
+        'text' => $month,
+        'url' => '/posts?year=' . $year . '&month=' . $month,
+      ],
+      [
+        'text' => $day,
+        'url' => '/posts?year=' . $year . '&month=' . $month . '&day=' . $day,
+      ],
+      [
+        'text' => (string) $nid,
         'url' => '',
       ],
     ];
@@ -1184,6 +1272,30 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
   }
 
   $route_name = $route_match->getRouteName();
+
+  // Format breadcrumbs for user timelines (/user/{uid}/timeline): Home > {User} > Timeline.
+  if (in_array($route_name, ['view.timeline_user.page_timeline', 'entity.user.canonical', 'entity.user.edit_form'], TRUE)) {
+    $user_param = $route_match->getParameter('user') ?? $route_match->getParameter('arg_0');
+    $user_entity = is_numeric($user_param) ? \Drupal\user\Entity\User::load($user_param) : ($user_param instanceof \Drupal\user\UserInterface ? $user_param : NULL);
+    $user_display_name = $user_entity ? $user_entity->getDisplayName() : ('User ' . $user_param);
+    $user_uid = $user_entity ? $user_entity->id() : $user_param;
+
+    $variables['breadcrumb'] = [
+      [
+        'text' => t('Home'),
+        'url' => '/',
+      ],
+      [
+        'text' => $user_display_name,
+        'url' => '/user/' . $user_uid . '/timeline?page=1',
+      ],
+      [
+        'text' => t('Timeline'),
+        'url' => '',
+      ],
+    ];
+    return;
+  }
 
   // Format breadcrumbs for event date archive views:
   // /events/YYYY -> Home > Events > YYYY
