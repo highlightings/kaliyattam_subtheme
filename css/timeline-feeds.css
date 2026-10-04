@@ -1158,75 +1158,98 @@ html, body {
    Timeline Feeds: Grid & List Layouts
    ========================================================================== */
 
-/* Grid Layout: matches /events layout and container bounds */
+/* Feed Stream Layout: matches /events wide card layout and container bounds */
 .timeline-feed--grid,
-.view-timeline-site:not(.is-list-layout) .view-content,
-.view-timeline-site:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
-.view-timeline-locations:not(.is-list-layout) .view-content,
-.view-timeline-locations:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
-.view-timeline-type:not(.is-list-layout) .view-content,
-.view-timeline-type:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
-.view-timeline-events:not(.is-list-layout) .view-content,
-.view-timeline-events:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
-.view-timeline-theyyam:not(.is-list-layout) .view-content,
-.view-timeline-theyyam:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
-.view-timeline-location:not(.is-list-layout) .view-content,
-.view-timeline-location:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
+.timeline-feed--list,
+.view-timeline-site .view-content,
+.view-timeline-site .views-infinite-scroll-content-wrapper,
+.view-timeline-locations .view-content,
+.view-timeline-locations .views-infinite-scroll-content-wrapper,
+.view-timeline-type .view-content,
+.view-timeline-type .views-infinite-scroll-content-wrapper,
+.view-timeline-events .view-content,
+.view-timeline-events .views-infinite-scroll-content-wrapper,
+.view-timeline-theyyam .view-content,
+.view-timeline-theyyam .views-infinite-scroll-content-wrapper,
+.view-timeline-location .view-content,
+.view-timeline-location .views-infinite-scroll-content-wrapper,
+.view-locations-map .view-content,
+.view-locations-map .views-infinite-scroll-content-wrapper,
+.view-events .view-content,
+.view-events .views-infinite-scroll-content-wrapper,
 .is-grid-layout .view-content,
 .is-grid-layout .views-infinite-scroll-content-wrapper,
-.is-grid-layout .view-display-id-attachment_pinned .view-content {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)) !important;
+.is-grid-layout .view-display-id-attachment_pinned .view-content,
+.is-list-layout .view-content,
+.is-list-layout .views-infinite-scroll-content-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
   gap: 1.5rem !important;
   align-items: stretch !important;
   width: 100% !important;
+  max-width: 100% !important;
   margin-bottom: 2rem !important;
 }
 
+.timeline-feed-item,
 .timeline-feed--grid > .timeline-feed-item,
-.view-timeline-site:not(.is-list-layout) .timeline-feed-item,
-.view-timeline-locations:not(.is-list-layout) .timeline-feed-item,
-.view-timeline-type:not(.is-list-layout) .timeline-feed-item,
-.view-timeline-events:not(.is-list-layout) .timeline-feed-item,
-.view-timeline-theyyam:not(.is-list-layout) .timeline-feed-item,
-.view-timeline-location:not(.is-list-layout) .timeline-feed-item,
-.is-grid-layout .timeline-feed-item {
+.timeline-feed--list > .timeline-feed-item,
+.view-timeline-site .timeline-feed-item,
+.view-timeline-locations .timeline-feed-item,
+.view-timeline-type .timeline-feed-item,
+.view-timeline-events .timeline-feed-item,
+.view-timeline-theyyam .timeline-feed-item,
+.view-timeline-location .timeline-feed-item,
+.view-locations-map .timeline-feed-item,
+.view-events .timeline-feed-item,
+.is-grid-layout .timeline-feed-item,
+.is-list-layout .timeline-feed-item {
   margin-bottom: 0 !important;
-  height: 100% !important;
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
+  max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
+.timeline-card,
 .timeline-feed--grid .timeline-card,
-.view-timeline-site:not(.is-list-layout) .timeline-card,
-.view-timeline-locations:not(.is-list-layout) .timeline-card,
-.view-timeline-type:not(.is-list-layout) .timeline-card,
-.view-timeline-events:not(.is-list-layout) .timeline-card,
-.view-timeline-theyyam:not(.is-list-layout) .timeline-card,
-.view-timeline-location:not(.is-list-layout) .timeline-card,
-.is-grid-layout .timeline-card {
+.timeline-feed--list .timeline-card,
+.view-timeline-site .timeline-card,
+.view-timeline-locations .timeline-card,
+.view-timeline-type .timeline-card,
+.view-timeline-events .timeline-card,
+.view-timeline-theyyam .timeline-card,
+.view-timeline-location .timeline-card,
+.view-locations-map .timeline-card,
+.view-events .timeline-card,
+.is-grid-layout .timeline-card,
+.is-list-layout .timeline-card {
   height: 100% !important;
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
+  max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
 .timeline-feed--grid .timeline-card-body,
-.view-timeline-site:not(.is-list-layout) .timeline-card-body,
-.view-timeline-locations:not(.is-list-layout) .timeline-card-body,
-.view-timeline-type:not(.is-list-layout) .timeline-card-body,
-.is-grid-layout .timeline-card-body {
+.timeline-feed--list .timeline-card-body,
+.view-timeline-site .timeline-card-body,
+.view-timeline-locations .timeline-card-body,
+.view-timeline-type .timeline-card-body,
+.is-grid-layout .timeline-card-body,
+.is-list-layout .timeline-card-body {
   flex: 1 1 auto;
 }
 
 .timeline-feed--grid .timeline-card-actions,
-.view-timeline-site:not(.is-list-layout) .timeline-card-actions,
-.view-timeline-locations:not(.is-list-layout) .timeline-card-actions,
-.view-timeline-type:not(.is-list-layout) .timeline-card-actions,
-.is-grid-layout .timeline-card-actions {
+.timeline-feed--list .timeline-card-actions,
+.view-timeline-site .timeline-card-actions,
+.view-timeline-locations .timeline-card-actions,
+.view-timeline-type .timeline-card-actions,
+.is-grid-layout .timeline-card-actions,
+.is-list-layout .timeline-card-actions {
   margin-top: auto;
 }
 
@@ -1238,8 +1261,10 @@ html, body {
 .is-list-layout .view-display-id-attachment_pinned,
 .is-list-layout .view-display-id-attachment_pinned .view-content,
 .view-timeline-site.is-list-layout div[class*="js-view-dom-id-"] {
-  display: block !important;
-  max-width: min(880px, 100%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+  max-width: 100% !important;
   width: 100% !important;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -1249,7 +1274,7 @@ html, body {
 .is-list-layout .timeline-feed-item {
   width: 100% !important;
   max-width: 100% !important;
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 0 !important;
 }
 
 .timeline-feed--list .timeline-card,

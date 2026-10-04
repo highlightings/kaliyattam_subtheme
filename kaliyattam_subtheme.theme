@@ -768,8 +768,8 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
     catch (\Exception $e) {}
   }
 
-  // Build Wikipedia-style vector-page-toolbar for Theyyam and Temple (Location) content types.
-  if ($current_node instanceof \Drupal\node\NodeInterface && in_array($current_node->bundle(), ['location', 'theyyam'], TRUE)) {
+  // Build Wikipedia-style vector-page-toolbar for Theyyam, Temple, Event, and Post content types.
+  if ($current_node instanceof \Drupal\node\NodeInterface && in_array($current_node->bundle(), ['location', 'theyyam', 'event', 'post'], TRUE)) {
     $bundle = $current_node->bundle();
     $canonical_url = $current_node->toUrl('canonical')->toString();
     $timeline_url = $canonical_url . '/timeline';
@@ -808,8 +808,15 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
       }
     }
 
+    $bundle_labels = [
+      'theyyam' => t('Theyyam'),
+      'location' => t('Temple'),
+      'event' => t('Event'),
+      'post' => t('Post'),
+    ];
+
     $variables['is_wiki_toolbar'] = TRUE;
-    $variables['wiki_bundle_label'] = ($bundle === 'theyyam') ? t('Theyyam') : t('Temple');
+    $variables['wiki_bundle_label'] = $bundle_labels[$bundle] ?? ucfirst($bundle);
     $variables['wiki_invite_text'] = t('You are invited to edit and improve this and other pages');
     $wiki_tabs = [
       'view' => [
@@ -827,11 +834,14 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
       ];
     }
 
-    $wiki_tabs['timeline'] = [
-      'title' => t('Timeline'),
-      'url' => $timeline_url,
-      'is_active' => $is_timeline,
-    ];
+    if (in_array($bundle, ['location', 'theyyam', 'event'], TRUE)) {
+      $wiki_tabs['timeline'] = [
+        'title' => t('Timeline'),
+        'url' => $timeline_url,
+        'is_active' => $is_timeline,
+      ];
+    }
+
     $wiki_tabs['edit'] = [
       'title' => t('Edit'),
       'url' => $edit_url,

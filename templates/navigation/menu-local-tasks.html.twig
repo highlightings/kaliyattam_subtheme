@@ -47,11 +47,13 @@
                     </a>
                   </li>
                 {% endif %}
-                <li id="ca-timeline" class="mw-list-item vector-tab-noicon {% if wiki_tabs.timeline.is_active %}selected is-active{% endif %}">
-                  <a href="{{ wiki_tabs.timeline.url }}" class="{% if wiki_tabs.timeline.is_active %}is-active{% endif %}">
-                    <span>{{ 'Timeline'|t }}</span>
-                  </a>
-                </li>
+                {% if wiki_tabs.timeline is defined %}
+                  <li id="ca-timeline" class="mw-list-item vector-tab-noicon {% if wiki_tabs.timeline.is_active %}selected is-active{% endif %}">
+                    <a href="{{ wiki_tabs.timeline.url }}" class="{% if wiki_tabs.timeline.is_active %}is-active{% endif %}">
+                      <span>{{ 'Timeline'|t }}</span>
+                    </a>
+                  </li>
+                {% endif %}
                 <li id="ca-edit" class="mw-list-item vector-tab-noicon {% if wiki_tabs.edit.is_active %}selected is-active{% endif %}">
                   <a href="{{ wiki_tabs.edit.url }}" title="{{ 'Edit this page'|t }}" class="{% if wiki_tabs.edit.is_active %}is-active{% endif %}">
                     <span>{{ 'Edit'|t }}</span>

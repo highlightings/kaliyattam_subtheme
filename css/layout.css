@@ -337,14 +337,20 @@ ul.tabs {
 /* Views Grid Auto-layout for Cards & Feeds */
 .view-content:has(.kaliyattam-card),
 .view-content:has(.views-row > .kaliyattam-card),
-.view-content:has([class*="node--view-mode-teaser"]),
-.view-content:has([class*="node--view-mode-card"]),
+.view-content:has([class*="node--view-mode-teaser"]) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
 .view-content:has(.timeline-card),
 .view-content:has(.timeline-feed-item),
 .views-infinite-scroll-content-wrapper:has(.timeline-card),
 .views-infinite-scroll-content-wrapper:has(.timeline-feed-item) {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
   margin-bottom: 2rem;
   width: 100%;
