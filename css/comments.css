@@ -1,0 +1,348 @@
+/**
+ * @file
+ * Premium Themed Comments & Collapsible Comment Section Styles.
+ */
+
+/* ==========================================================================
+   Collapsible Comments Section
+   ========================================================================== */
+
+.node-comments-section.comments-collapsible:not(.is-open) {
+  display: none !important;
+}
+
+.node-comments-section.comments-collapsible.is-open {
+  display: block !important;
+  animation: commentsSectionReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes commentsSectionReveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.node-comments-section {
+  border-top: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
+}
+
+.comments-title {
+  font-family: var(--font-serif-heading, Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--kaliyattam-text, #1c1917);
+  display: flex;
+  align-items: center;
+}
+
+/* Comments Toggle Active State on Button */
+.comments-scroll-btn.is-active {
+  background-color: var(--kaliyattam-primary, #890000) !important;
+  color: #ffffff !important;
+  border-color: var(--kaliyattam-primary, #890000) !important;
+}
+
+.comments-scroll-btn.is-active i,
+.comments-scroll-btn.is-active span {
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Comment Cards & List
+   ========================================================================== */
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.kaliyattam-comment.comment-card {
+  position: relative;
+  background-color: var(--kaliyattam-surface-warm, #f8fafc);
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-md, 12px);
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kaliyattam-comment.comment-card:hover {
+  border-color: var(--kaliyattam-border, #cbd5e1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.comment-card-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.comment-avatar-wrapper {
+  flex-shrink: 0;
+}
+
+.comment-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--kaliyattam-gradient, linear-gradient(135deg, #890000 0%, #4a0000 100%));
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(137, 0, 0, 0.2);
+}
+
+.comment-avatar:hover {
+  opacity: 0.92;
+  color: #ffffff;
+}
+
+.comment-avatar--anon {
+  background: #64748b;
+  box-shadow: none;
+}
+
+.comment-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-header {
+  margin-bottom: 0.5rem;
+}
+
+.comment-author-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.comment-author-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--kaliyattam-text, #1c1917);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.comment-author-name:hover {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.comment-meta-dot {
+  color: var(--kaliyattam-text-muted, #94a3b8);
+  font-size: 0.8rem;
+}
+
+.comment-time {
+  font-size: 0.825rem;
+  color: var(--kaliyattam-text-muted, #64748b);
+  display: inline-flex;
+  align-items: center;
+}
+
+.comment-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.25rem 0 0.5rem 0;
+  color: var(--kaliyattam-text, #1c1917);
+}
+
+.comment-body-content {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--kaliyattam-text, #334155);
+  word-break: break-word;
+}
+
+.comment-body-content p {
+  margin-bottom: 0.5rem;
+}
+
+.comment-body-content p:last-child {
+  margin-bottom: 0;
+}
+
+.comment-actions {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.comment-actions .links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.comment-actions .links a {
+  color: var(--kaliyattam-text-muted, #64748b);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.comment-actions .links a:hover {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.no-comments-msg {
+  padding: 1.5rem;
+  background-color: var(--kaliyattam-surface-warm, #f8fafc);
+  border: 1px dashed var(--kaliyattam-border, #cbd5e1);
+  border-radius: var(--radius-md, 12px);
+  color: var(--kaliyattam-text-muted, #64748b);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Comment Form Styling
+   ========================================================================== */
+
+.comment-form-wrapper {
+  background-color: var(--kaliyattam-surface, #ffffff);
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-md, 12px);
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.comment-form-heading {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--kaliyattam-text, #1c1917);
+  display: flex;
+  align-items: center;
+}
+
+.comment-form .form-item {
+  margin-bottom: 1rem;
+}
+
+.comment-form label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: var(--kaliyattam-text, #1c1917);
+}
+
+.comment-form textarea.form-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border: 1.5px solid var(--kaliyattam-border, #cbd5e1);
+  border-radius: var(--radius-sm, 8px);
+  background-color: var(--kaliyattam-surface, #ffffff);
+  color: var(--kaliyattam-text, #1c1917);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.comment-form textarea.form-textarea:focus {
+  outline: none;
+  border-color: var(--kaliyattam-primary, #890000);
+  box-shadow: 0 0 0 3px rgba(137, 0, 0, 0.12);
+}
+
+.comment-form .form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.comment-form .form-actions input[type="submit"],
+.comment-form .form-actions .button {
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+  border: 1px solid var(--kaliyattam-primary, #890000);
+  border-radius: var(--radius-sm, 8px);
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.comment-form .form-actions input[type="submit"]:hover,
+.comment-form .form-actions .button:hover {
+  background: #a00000;
+  border-color: #a00000;
+  box-shadow: 0 2px 8px rgba(137, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.comment-anon-prompt {
+  background-color: var(--kaliyattam-surface-warm, #f8fafc) !important;
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08)) !important;
+  border-radius: var(--radius-md, 12px) !important;
+  padding: 1.5rem !important;
+}
+
+/* ==========================================================================
+   Dark Theme Support
+   ========================================================================== */
+
+:root[data-theme="dark"] .comments-title,
+:root[data-theme="dark"] .comment-form-heading,
+:root[data-theme="dark"] .comment-author-name,
+:root[data-theme="dark"] .comment-title,
+:root[data-theme="dark"] .comment-form label {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .kaliyattam-comment.comment-card {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="dark"] .kaliyattam-comment.comment-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="dark"] .comment-body-content {
+  color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .no-comments-msg,
+:root[data-theme="dark"] .comment-anon-prompt {
+  background-color: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+}
+
+:root[data-theme="dark"] .comment-form-wrapper {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="dark"] .comment-form textarea.form-textarea {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .comment-form textarea.form-textarea:focus {
+  border-color: var(--kaliyattam-gold-primary, #b45309);
+  box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.2);
+}

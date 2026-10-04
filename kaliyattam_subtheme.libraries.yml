@@ -9,6 +9,7 @@ global-styling:
       css/article.css: {}
       css/event-detail.css: {}
       css/views-filters.css: {}
+      css/comments.css: {}
       css/custom.css: {}
 
 navigation:

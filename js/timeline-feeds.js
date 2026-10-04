@@ -243,6 +243,51 @@
         });
       });
 
+      // 6b. Comments Collapsible Toggle
+      const commentsButtons = once('comments-scroll-toggle', '.comments-scroll-btn', context);
+      commentsButtons.forEach(function (btn) {
+        const commentsSection = document.querySelector('.node-comments-section');
+        if (!commentsSection) return;
+
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          const willOpen = !commentsSection.classList.contains('is-open');
+          commentsSection.classList.toggle('is-open', willOpen);
+          btn.classList.toggle('is-active', willOpen);
+          btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+
+          if (willOpen) {
+            setTimeout(function () {
+              const formWrapper = commentsSection.querySelector('.comment-form-wrapper') || commentsSection;
+              formWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              const firstInput = commentsSection.querySelector('textarea, input[type="text"]:not([type="hidden"])');
+              if (firstInput) {
+                setTimeout(function () {
+                  firstInput.focus();
+                }, 350);
+              }
+            }, 60);
+          }
+        });
+      });
+
+      // Automatically open comments if page has #comments or #comment in URL hash
+      if (window.location.hash && (window.location.hash === '#comments' || window.location.hash.startsWith('#comment'))) {
+        const commentsSection = document.querySelector('.node-comments-section');
+        if (commentsSection) {
+          commentsSection.classList.add('is-open');
+          const btn = document.querySelector('.comments-scroll-btn');
+          if (btn) {
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+          setTimeout(function () {
+            const target = document.querySelector(window.location.hash) || commentsSection;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        }
+      }
+
       // 7. Multi-image Slider (Flickity style matching released.in)
       const mediaGrids = once('timeline-media-slider', '.timeline-card-media-grid', context);
       mediaGrids.forEach(function (grid) {

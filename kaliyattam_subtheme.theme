@@ -271,6 +271,30 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
 }
 
 /**
+ * Implements hook_preprocess_comment().
+ */
+function kaliyattam_subtheme_preprocess_comment(array &$variables): void {
+  /** @var \Drupal\comment\CommentInterface $comment */
+  $comment = $variables['comment'];
+  $author = $comment->getOwner();
+  $author_name = (string) ($author ? $author->getDisplayName() : $comment->getAuthorName());
+  if (empty(trim($author_name))) {
+    $author_name = (string) t('Anonymous');
+  }
+  $variables['author_name'] = $author_name;
+  $variables['author_initial'] = mb_strtoupper(mb_substr($author_name, 0, 1));
+  $variables['author_url'] = ($author && $author->id() > 0) ? ('/user/' . $author->id() . '/timeline') : '';
+
+  $created = (int) $comment->getCreatedTime();
+  $variables['time_ago'] = \Drupal::service('date.formatter')->formatTimeDiffSince($created) . ' ' . t('ago');
+  $variables['date_formatted'] = \Drupal::service('date.formatter')->format($created, 'medium');
+
+  // Suppress "Member for" and other raw user display artifacts from submitted.
+  unset($variables['submitted']);
+  unset($variables['user_picture']);
+}
+
+/**
  * Implements hook_preprocess_media().
  */
 function kaliyattam_subtheme_preprocess_media(array &$variables): void {

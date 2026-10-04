@@ -1,0 +1,60 @@
+{#
+/**
+ * @file
+ * Premium themed template for comments in Kaliyattam subtheme.
+ */
+#}
+<article{{ attributes.addClass('kaliyattam-comment', 'comment-card') }} data-comment-id="{{ comment.id() }}">
+  <mark class="hidden" data-comment-timestamp="{{ new_indicator_timestamp }}"></mark>
+
+  <div class="comment-card-inner">
+    <div class="comment-avatar-wrapper">
+      {% if author_url %}
+        <a href="{{ author_url }}" class="comment-avatar" aria-label="{{ author_name }}">
+          <span>{{ author_initial }}</span>
+        </a>
+      {% else %}
+        <div class="comment-avatar comment-avatar--anon">
+          <span>{{ author_initial }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="comment-main">
+      <header class="comment-header">
+        <div class="comment-author-meta">
+          {% if author_url %}
+            <a href="{{ author_url }}" class="comment-author-name">{{ author_name }}</a>
+          {% else %}
+            <span class="comment-author-name">{{ author_name }}</span>
+          {% endif %}
+          <span class="comment-meta-dot" aria-hidden="true">&bull;</span>
+          <time datetime="{{ comment.getCreatedTime()|date('c') }}" class="comment-time" title="{{ date_formatted }}">
+            <i class="bi bi-clock me-1" aria-hidden="true"></i>{{ time_ago }}
+          </time>
+        </div>
+      </header>
+
+      {% if title and not (title|striptags|trim starts with author_name) and not ('commented' in title|lower) %}
+        <h4 class="comment-title">{{ title }}</h4>
+      {% endif %}
+
+      <div class="comment-body-content">
+        {{ content.comment_body }}
+      </div>
+
+      {% set extra_content = content|without('comment_body', 'links') %}
+      {% if extra_content|render|striptags|trim %}
+        <div class="comment-extra">
+          {{ extra_content }}
+        </div>
+      {% endif %}
+
+      {% if content.links is not empty %}
+        <div class="comment-actions">
+          {{ content.links }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</article>

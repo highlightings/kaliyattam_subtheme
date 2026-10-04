@@ -67,21 +67,15 @@
             {% if flag_like_node is not empty %}
               {{ flag_like_node }}
             {% endif %}
-            {% if flag_bookmark is not empty %}
-              {{ flag_bookmark }}
-            {% endif %}
             <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
               <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
             </button>
-            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}">
+            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}" aria-expanded="false">
               <i class="bi bi-chat-dots me-1" aria-hidden="true"></i><span>{{ 'Comments'|t }}</span>
               {% if comment_count is defined and comment_count > 0 %}
                 <span class="action-count ms-1">{{ comment_count }}</span>
               {% endif %}
             </a>
-            {% if content.links is not empty %}
-              {{ content.links }}
-            {% endif %}
           </div>
         {% else %}
           <div class="post-action-links-anon node-action-flags-anon d-flex flex-wrap align-items-center gap-2">
@@ -91,21 +85,15 @@
             <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like'|t }}">
               <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i><span>{{ 'Like'|t }}</span>
             </a>
-            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
-              <i class="bi bi-bookmark me-1" aria-hidden="true"></i><span>{{ 'Bookmark'|t }}</span>
-            </a>
             <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
               <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
             </button>
-            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}">
+            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}" aria-expanded="false">
               <i class="bi bi-chat-dots me-1" aria-hidden="true"></i><span>{{ 'Comments'|t }}</span>
               {% if comment_count is defined and comment_count > 0 %}
                 <span class="action-count ms-1">{{ comment_count }}</span>
               {% endif %}
             </a>
-            {% if content.links is not empty %}
-              {{ content.links }}
-            {% endif %}
           </div>
         {% endif %}
       </div>
@@ -124,7 +112,8 @@
       </footer>
 
       {% if content.field_comments is not empty %}
-        <section id="comments" class="node-comments-section mt-5 pt-3">
+        <section id="comments" class="node-comments-section comments-collapsible mt-5 pt-3">
+          <h3 class="comments-title mb-3"><i class="bi bi-chat-dots me-2" aria-hidden="true"></i>{{ 'Comments'|t }}</h3>
           {{ content.field_comments }}
         </section>
       {% endif %}
