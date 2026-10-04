@@ -47,6 +47,21 @@
   margin-bottom: 0.875rem;
 }
 
+.timeline-card-header--wiki {
+  align-items: flex-start;
+}
+
+.timeline-card-wiki-group {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.timeline-card-wiki-group .timeline-card-title {
+  margin: 0;
+  font-size: var(--text-lg, 1.125rem);
+  line-height: var(--leading-snug, 1.35);
+}
+
 .timeline-card-author-group {
   display: flex;
   align-items: center;
