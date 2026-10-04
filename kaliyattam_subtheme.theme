@@ -69,7 +69,7 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
   $variables['attributes']['class'][] = 'node--view-mode-' . Html::cleanCssIdentifier($variables['view_mode']);
 
   // Remove contextual links from card and teaser view modes to prevent clashing with card links.
-  if (in_array($variables['view_mode'], ['card', 'teaser', 'minicard', 'miniteaser'], TRUE)) {
+  if (in_array($variables['view_mode'], ['card', 'teaser', 'timeline_card', 'miniteaser'], TRUE)) {
     unset($variables['title_suffix']['contextual_links']);
     if (!empty($variables['attributes']['class']) && is_array($variables['attributes']['class'])) {
       $variables['attributes']['class'] = array_values(array_diff($variables['attributes']['class'], ['contextual-region']));
@@ -324,7 +324,7 @@ function kaliyattam_subtheme_entity_view_alter(array &$build, \Drupal\Core\Entit
     }
   }
   elseif ($entity->getEntityTypeId() === 'node') {
-    if (in_array($display->getMode(), ['card', 'teaser', 'minicard', 'miniteaser'], TRUE)) {
+    if (in_array($display->getMode(), ['card', 'teaser', 'timeline_card', 'miniteaser'], TRUE)) {
       unset($build['#contextual_links']);
     }
   }
