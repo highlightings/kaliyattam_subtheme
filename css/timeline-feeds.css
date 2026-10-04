@@ -1143,44 +1143,75 @@ html, body {
    Timeline Feeds: Grid & List Layouts
    ========================================================================== */
 
-/* Grid Layout */
+/* Grid Layout: matches /events layout and container bounds */
 .timeline-feed--grid,
-.is-grid-layout .view-display-id-attachment_pinned,
-.is-grid-layout .view-display-id-attachment_pinned .view-content,
-.view-timeline-site.is-grid-layout .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"],
-.view-timeline-site:not(.is-list-layout) .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"] {
+.view-timeline-site:not(.is-list-layout) .view-content,
+.view-timeline-site:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
+.view-timeline-locations:not(.is-list-layout) .view-content,
+.view-timeline-locations:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
+.view-timeline-type:not(.is-list-layout) .view-content,
+.view-timeline-type:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
+.view-timeline-events:not(.is-list-layout) .view-content,
+.view-timeline-events:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
+.view-timeline-theyyam:not(.is-list-layout) .view-content,
+.view-timeline-theyyam:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
+.view-timeline-location:not(.is-list-layout) .view-content,
+.view-timeline-location:not(.is-list-layout) .views-infinite-scroll-content-wrapper,
+.is-grid-layout .view-content,
+.is-grid-layout .views-infinite-scroll-content-wrapper,
+.is-grid-layout .view-display-id-attachment_pinned .view-content {
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
-  gap: 1.25rem !important;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)) !important;
+  gap: 1.5rem !important;
   align-items: stretch !important;
   width: 100% !important;
-  margin-bottom: 1.25rem !important;
+  margin-bottom: 2rem !important;
 }
 
 .timeline-feed--grid > .timeline-feed-item,
-.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"] > .timeline-feed-item,
-.is-grid-layout .view-display-id-attachment_pinned .timeline-feed-item {
+.view-timeline-site:not(.is-list-layout) .timeline-feed-item,
+.view-timeline-locations:not(.is-list-layout) .timeline-feed-item,
+.view-timeline-type:not(.is-list-layout) .timeline-feed-item,
+.view-timeline-events:not(.is-list-layout) .timeline-feed-item,
+.view-timeline-theyyam:not(.is-list-layout) .timeline-feed-item,
+.view-timeline-location:not(.is-list-layout) .timeline-feed-item,
+.is-grid-layout .timeline-feed-item {
   margin-bottom: 0 !important;
   height: 100% !important;
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .timeline-feed--grid .timeline-card,
-.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) .timeline-card,
-.is-grid-layout .view-display-id-attachment_pinned .timeline-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.view-timeline-site:not(.is-list-layout) .timeline-card,
+.view-timeline-locations:not(.is-list-layout) .timeline-card,
+.view-timeline-type:not(.is-list-layout) .timeline-card,
+.view-timeline-events:not(.is-list-layout) .timeline-card,
+.view-timeline-theyyam:not(.is-list-layout) .timeline-card,
+.view-timeline-location:not(.is-list-layout) .timeline-card,
+.is-grid-layout .timeline-card {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .timeline-feed--grid .timeline-card-body,
-.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) .timeline-card-body {
+.view-timeline-site:not(.is-list-layout) .timeline-card-body,
+.view-timeline-locations:not(.is-list-layout) .timeline-card-body,
+.view-timeline-type:not(.is-list-layout) .timeline-card-body,
+.is-grid-layout .timeline-card-body {
   flex: 1 1 auto;
 }
 
 .timeline-feed--grid .timeline-card-actions,
-.view-timeline-site .views-element-container:has(.timeline-pinned-indicator) .timeline-card-actions {
+.view-timeline-site:not(.is-list-layout) .timeline-card-actions,
+.view-timeline-locations:not(.is-list-layout) .timeline-card-actions,
+.view-timeline-type:not(.is-list-layout) .timeline-card-actions,
+.is-grid-layout .timeline-card-actions {
   margin-top: auto;
 }
 
@@ -1191,12 +1222,7 @@ html, body {
 .is-list-layout .view-content,
 .is-list-layout .view-display-id-attachment_pinned,
 .is-list-layout .view-display-id-attachment_pinned .view-content,
-.view-timeline-site.is-list-layout .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"],
-.view-timeline-site .view-content:not(.timeline-feed--grid),
-.view-timeline-events .view-content:not(.timeline-feed--grid),
-.view-timeline-theyyam .view-content:not(.timeline-feed--grid),
-.view-timeline-location .view-content:not(.timeline-feed--grid),
-.view-timeline-locations .view-content:not(.timeline-feed--grid) {
+.view-timeline-site.is-list-layout div[class*="js-view-dom-id-"] {
   display: block !important;
   max-width: min(880px, 100%) !important;
   width: 100% !important;
@@ -1205,8 +1231,7 @@ html, body {
 }
 
 .timeline-feed--list > .timeline-feed-item,
-.is-list-layout .timeline-feed-item,
-.view-timeline-site.is-list-layout .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"] > .timeline-feed-item {
+.is-list-layout .timeline-feed-item {
   width: 100% !important;
   max-width: 100% !important;
   margin-bottom: 1.5rem !important;

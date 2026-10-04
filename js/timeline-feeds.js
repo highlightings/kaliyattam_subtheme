@@ -171,7 +171,7 @@
         });
 
         // Set state class on the view containers so CSS can consistently style pinned attachments and list mode
-        const timelineViews = document.querySelectorAll('.view-timeline-site, .view-timeline-events, .view-timeline-theyyam, .view-timeline-location, .view-timeline-locations');
+        const timelineViews = document.querySelectorAll('.view-timeline-site, .view-timeline-events, .view-timeline-theyyam, .view-timeline-location, .view-timeline-locations, .view-timeline-type, .view-theyyam-views, .view-events');
         timelineViews.forEach(function (view) {
           if (layout === 'grid') {
             view.classList.add('is-grid-layout');

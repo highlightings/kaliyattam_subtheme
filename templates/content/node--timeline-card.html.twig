@@ -28,7 +28,7 @@
 {% set bundle_labels = {
   'theyyam': 'Theyyam'|t,
   'location': 'Temple / Place'|t,
-  'event': 'Performance'|t,
+  'event': 'Event'|t,
   'post': 'Post'|t
 } %}
 {% set bundle_icons = {
@@ -37,6 +37,7 @@
   'event': '📅',
   'post': '💬'
 } %}
+{% set post_category_name = (node.bundle() == 'post' and node.field_post_category is not empty and node.field_post_category.entity) ? node.field_post_category.entity.label() : '' %}
 
 <article{{ attributes.addClass(classes) }} data-node-id="{{ node.id() }}" data-bundle="{{ node.bundle() }}">
   {# Card Header: Author, Meta, and Badges #}
@@ -50,7 +51,7 @@
           <a href="/user/{{ author.id() }}/timeline?page=1" class="timeline-card-author-name">{{ author_name }}</a>
           <span class="timeline-badge timeline-badge--{{ node.bundle() }}">
             <span class="badge-icon" aria-hidden="true">{{ bundle_icons[node.bundle()]|default('📜') }}</span>
-            <span class="badge-text">{{ bundle_labels[node.bundle()]|default(node.bundle()) }}</span>
+            <span class="badge-text">{{ post_category_name ?: (bundle_labels[node.bundle()]|default(node.bundle())) }}</span>
           </span>
         </div>
         <div class="timeline-card-time-line">

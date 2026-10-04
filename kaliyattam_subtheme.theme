@@ -653,10 +653,17 @@ function kaliyattam_subtheme_preprocess_menu_local_task(array &$variables): void
  * Implements hook_preprocess_menu_local_tasks().
  */
 function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): void {
+  // Suppress duplicate local tasks toolbar on events views to keep unified timeline-tabs-bar.
+  $current_path = \Drupal::service('path.current')->getPath();
+  $current_route = \Drupal::routeMatch()->getRouteName();
+  if (str_starts_with($current_path, '/events') || str_starts_with((string) $current_route, 'view.events')) {
+    unset($variables['primary']);
+    return;
+  }
+
   $active_tab_title = '';
   $is_admin_action = FALSE;
 
-  $current_route = \Drupal::routeMatch()->getRouteName();
   $is_canonical_view = in_array($current_route, [
     'entity.node.canonical',
     'entity.taxonomy_term.canonical',
@@ -889,56 +896,54 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
     }
 
     $show_months = ($display_id === 'page_year' || $display_id === 'page_month' || $display_id === 'page_day') && !$is_upcoming && !$is_past;
+    $has_search = !empty(\Drupal::request()->query->get('search'));
+
+    $tabs_html = '
+      <div class="timeline-tabs-bar-wrapper">
+        <div class="timeline-tabs-bar">
+          <nav class="timeline-nav-tabs" aria-label="' . t('Events Navigation') . '">
+            <a href="/events" class="timeline-nav-tab' . ($is_upcoming ? ' is-active' : '') . '" data-tab="upcoming">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span class="tab-label">' . t('Upcoming') . '</span>
+            </a>
+            <a href="/events/calendar" class="timeline-nav-tab' . ($is_calendar ? ' is-active' : '') . '" data-tab="calendar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span class="tab-label">' . t('Calendar') . '</span>
+            </a>
+            <a href="/events/past" class="timeline-nav-tab' . ($is_past ? ' is-active' : '') . '" data-tab="past">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+              <span class="tab-label">' . t('Archive') . '</span>
+            </a>
+            ' . ($is_by_date ? '
+            <a href="/events/' . $year . '" class="timeline-nav-tab is-active" data-tab="year">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span class="tab-label">' . $year . '</span>
+            </a>' : '') . '
+            <button type="button" class="timeline-nav-tab timeline-nav-tab--search' . ($has_search ? ' is-active' : '') . '" data-tab="search" aria-label="' . t('Toggle search filters') . '" aria-expanded="' . ($has_search ? 'true' : 'false') . '">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <span class="tab-label">' . t('Search') . '</span>
+            </button>
+          </nav>
+          <div class="timeline-tabs-actions">
+            ' . $day_badge . '
+          </div>
+        </div>
+        ' . ($show_months ? '
+        <nav class="events-months-nav d-flex flex-wrap gap-1 mt-2 pt-2 border-top" aria-label="' . t('Filter by month in @year', ['@year' => $year]) . '">
+          <a href="/events/' . $year . '" class="events-date-pill events-date-pill--all' . ($active_month === 0 ? ' is-active' : '') . '">' . t('All Year') . '</a>
+          ' . $month_pills . '
+        </nav>' : '') . '
+      </div>';
 
     $variables['header']['event_date_nav'] = [
       '#type' => 'inline_template',
-      '#template' => '
-        <div class="events-archive-header mb-4">
-          <div class="events-archive-toolbar vector-page-toolbar d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-            <nav class="vector-menu vector-menu-tabs events-vector-menu" aria-label="{{ "Events Views"|t }}">
-              <div class="vector-menu-content">
-                <ul class="vector-menu-content-list">
-                  <li class="mw-list-item events-tab-upcoming' . ($is_upcoming ? ' selected is-active' : '') . '">
-                    <a href="/events" class="' . ($is_upcoming ? 'is-active' : '') . '" title="{{ "Upcoming events"|t }}">
-                      <i class="bi bi-clock-history me-1" aria-hidden="true"></i><span>{{ "Upcoming events"|t }}</span>
-                    </a>
-                  </li>
-                  <li class="mw-list-item events-tab-calendar' . ($is_calendar ? ' selected is-active' : '') . '">
-                    <a href="/events-calendar" class="' . ($is_calendar ? 'is-active' : '') . '" title="{{ "Calendar view"|t }}">
-                      <i class="bi bi-calendar-week me-1" aria-hidden="true"></i><span>{{ "Calendar view"|t }}</span>
-                    </a>
-                  </li>
-                  <li class="mw-list-item events-tab-archive' . ($is_past ? ' selected is-active' : '') . '">
-                    <a href="/events/past" class="' . ($is_past ? 'is-active' : '') . '" title="{{ "Archive"|t }}">
-                      <i class="bi bi-archive me-1" aria-hidden="true"></i><span>{{ "Archive"|t }}</span>
-                    </a>
-                  </li>
-                  <li class="mw-list-item events-tab-year' . ($is_by_date ? ' selected is-active' : '') . '">
-                    <a href="/events/{{ year }}" class="' . ($is_by_date ? 'is-active' : '') . '" title="{{ "Events in " ~ year }}">
-                      <i class="bi bi-calendar3 me-1" aria-hidden="true"></i><span>{{ year }}</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-            {{ day_badge|raw }}
-          </div>
-          ' . ($show_months ? '
-          <nav class="events-months-nav d-flex flex-wrap gap-1 mt-2" aria-label="{{ "Filter by month in " ~ year }}">
-            <a href="/events/{{ year }}" class="events-date-pill events-date-pill--all' . ($active_month === 0 ? ' is-active' : '') . '">{{ "All Year"|t }}</a>
-            ' . $month_pills . '
-          </nav>' : '') . '
-        </div>',
-      '#context' => [
-        'year' => $year,
-        'day_badge' => $day_badge,
-      ],
+      '#template' => $tabs_html,
       '#weight' => -10,
     ];
   }
 
-  // Process timeline feeds.
-  if (str_starts_with($view_id, 'timeline_')) {
+  // Process timeline feeds and specialized lists (timeline_*, locations_map).
+  if (str_starts_with($view_id, 'timeline_') || $view_id === 'locations_map') {
     // Skip attachment displays (e.g., attachment_pinned) to prevent duplicate headers.
     if ($view->display_handler && $view->display_handler->getPluginId() === 'attachment') {
       return;
@@ -993,7 +998,7 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
               <a href="/timeline/events?when=2" class="timeline-nav-tab' . ($active_tab === 'past' ? ' is-active' : '') . '" data-tab="past">
                 <span class="tab-label">' . t('Past') . '</span>
               </a>
-              <a href="/events-calendar" class="timeline-nav-tab" data-tab="calendar">
+              <a href="/events/calendar" class="timeline-nav-tab" data-tab="calendar">
                 <span class="tab-label">' . t('Calendar') . '</span>
               </a>
               <button type="button" class="timeline-nav-tab timeline-nav-tab--search' . ($active_tab === 'search' ? ' is-active' : '') . '" data-tab="search" aria-label="' . t('Toggle search filters') . '" aria-expanded="' . ($active_tab === 'search' ? 'true' : 'false') . '">
@@ -1087,22 +1092,29 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
         '#weight' => -10,
       ];
     }
-    // 3. Locations Timeline (/timeline/locations): tabs [Map View], [List View] + Near Me + Grid/List Switcher
-    elseif ($view_id === 'timeline_locations') {
+    // 3. Locations / Temples (/temples & /temples/map): tabs [List View], [Map View], [Search] + Near Me + Switcher
+    elseif ($view_id === 'timeline_locations' || $view_id === 'locations_map') {
       unset($variables['header']['area']);
+      $is_map = ($view_id === 'locations_map');
+      $is_list = !$is_map;
+      $search = $params['search'] ?? '';
 
       $tabs_html = '
         <div class="timeline-tabs-bar-wrapper">
           <div class="timeline-tabs-bar">
-            <nav class="timeline-nav-tabs" aria-label="' . t('Locations Timeline Navigation') . '">
-              <a href="/temples" class="timeline-nav-tab" data-tab="map">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-                <span class="tab-label">' . t('Map View') . '</span>
-              </a>
-              <a href="/timeline/locations" class="timeline-nav-tab is-active" data-tab="list">
+            <nav class="timeline-nav-tabs" aria-label="' . t('Temples Navigation') . '">
+              <a href="/temples" class="timeline-nav-tab' . ($is_list ? ' is-active' : '') . '" data-tab="list">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
                 <span class="tab-label">' . t('List View') . '</span>
               </a>
+              <a href="/temples/map" class="timeline-nav-tab' . ($is_map ? ' is-active' : '') . '" data-tab="map">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                <span class="tab-label">' . t('Map View') . '</span>
+              </a>
+              <button type="button" class="timeline-nav-tab timeline-nav-tab--search' . (!empty($search) ? ' is-active' : '') . '" data-tab="search" aria-label="' . t('Toggle search filters') . '" aria-expanded="' . (!empty($search) ? 'true' : 'false') . '">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span class="tab-label">' . t('Search') . '</span>
+              </button>
             </nav>
             <div class="timeline-tabs-actions">
               <div id="near-me-toggle-wrapper" class="near-me-wrapper">
@@ -1112,6 +1124,63 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
                 </button>
                 <span id="near-me-status" class="near-me-status"></span>
               </div>
+              ' . ($is_list ? '
+              <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
+                <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  <span class="switcher-text">' . t('Grid') . '</span>
+                </button>
+                <button type="button" class="view-switch-btn" data-layout="list" title="' . t('List view') . '" aria-label="' . t('List view') . '" aria-pressed="false">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                  <span class="switcher-text">' . t('List') . '</span>
+                </button>
+              </div>' : '') . '
+            </div>
+          </div>
+        </div>
+      ';
+
+      $variables['header']['locations_nav'] = [
+        '#type' => 'inline_template',
+        '#template' => $tabs_html,
+        '#weight' => -10,
+      ];
+    }
+    // 4. Theyyam Timeline (/theyyam): tabs [Latest], [Recently Updated], [Popular], [Search] + Switcher
+    elseif ($view_id === 'timeline_type' && $display_id === 'theyyam_page') {
+      $sort_by = $params['sort_by'] ?? '';
+      $search = $params['search'] ?? '';
+
+      $active_tab = 'latest';
+      if ($sort_by === 'changed') {
+        $active_tab = 'changed';
+      }
+      elseif ($sort_by === 'count' || $sort_by === 'sort_favorite') {
+        $active_tab = 'popular';
+      }
+      elseif (!empty($search)) {
+        $active_tab = 'search';
+      }
+
+      $tabs_html = '
+        <div class="timeline-tabs-bar-wrapper">
+          <div class="timeline-tabs-bar">
+            <nav class="timeline-nav-tabs" aria-label="' . t('Theyyam Navigation') . '">
+              <a href="/theyyam" class="timeline-nav-tab' . ($active_tab === 'latest' ? ' is-active' : '') . '" data-tab="latest">
+                <span class="tab-label">' . t('Latest') . '</span>
+              </a>
+              <a href="/theyyam?sort_by=changed" class="timeline-nav-tab' . ($active_tab === 'changed' ? ' is-active' : '') . '" data-tab="changed">
+                <span class="tab-label">' . t('Recently Updated') . '</span>
+              </a>
+              <a href="/theyyam?sort_by=count" class="timeline-nav-tab' . ($active_tab === 'popular' ? ' is-active' : '') . '" data-tab="popular">
+                <span class="tab-label">' . t('Popular') . '</span>
+              </a>
+              <button type="button" class="timeline-nav-tab timeline-nav-tab--search' . ($active_tab === 'search' ? ' is-active' : '') . '" data-tab="search" aria-label="' . t('Toggle search filters') . '" aria-expanded="' . ($active_tab === 'search' ? 'true' : 'false') . '">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span class="tab-label">' . t('Search') . '</span>
+              </button>
+            </nav>
+            <div class="timeline-tabs-actions">
               <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
                 <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -1127,13 +1196,69 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
         </div>
       ';
 
-      $variables['header']['locations_nav'] = [
+      $variables['header']['theyyam_nav'] = [
         '#type' => 'inline_template',
         '#template' => $tabs_html,
         '#weight' => -10,
       ];
     }
-    // 4. Other timelines: Theyyam, Location, User, Type
+    // 5. Posts Timeline (/posts): tabs [Latest], [Recently Updated], [Popular], [Search] + Switcher
+    elseif ($view_id === 'timeline_type' && $display_id === 'post_page') {
+      $sort_by = $params['sort_by'] ?? '';
+      $search = $params['search'] ?? '';
+
+      $active_tab = 'latest';
+      if ($sort_by === 'changed') {
+        $active_tab = 'changed';
+      }
+      elseif ($sort_by === 'count' || $sort_by === 'sort_favorite') {
+        $active_tab = 'popular';
+      }
+      elseif (!empty($search)) {
+        $active_tab = 'search';
+      }
+
+      $tabs_html = '
+        <div class="timeline-tabs-bar-wrapper">
+          <div class="timeline-tabs-bar">
+            <nav class="timeline-nav-tabs" aria-label="' . t('Posts Navigation') . '">
+              <a href="/posts" class="timeline-nav-tab' . ($active_tab === 'latest' ? ' is-active' : '') . '" data-tab="latest">
+                <span class="tab-label">' . t('Latest') . '</span>
+              </a>
+              <a href="/posts?sort_by=changed" class="timeline-nav-tab' . ($active_tab === 'changed' ? ' is-active' : '') . '" data-tab="changed">
+                <span class="tab-label">' . t('Recently Updated') . '</span>
+              </a>
+              <a href="/posts?sort_by=count" class="timeline-nav-tab' . ($active_tab === 'popular' ? ' is-active' : '') . '" data-tab="popular">
+                <span class="tab-label">' . t('Popular') . '</span>
+              </a>
+              <button type="button" class="timeline-nav-tab timeline-nav-tab--search' . ($active_tab === 'search' ? ' is-active' : '') . '" data-tab="search" aria-label="' . t('Toggle search filters') . '" aria-expanded="' . ($active_tab === 'search' ? 'true' : 'false') . '">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span class="tab-label">' . t('Search') . '</span>
+              </button>
+            </nav>
+            <div class="timeline-tabs-actions">
+              <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
+                <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  <span class="switcher-text">' . t('Grid') . '</span>
+                </button>
+                <button type="button" class="view-switch-btn" data-layout="list" title="' . t('List view') . '" aria-label="' . t('List view') . '" aria-pressed="false">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                  <span class="switcher-text">' . t('List') . '</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ';
+
+      $variables['header']['posts_nav'] = [
+        '#type' => 'inline_template',
+        '#template' => $tabs_html,
+        '#weight' => -10,
+      ];
+    }
+    // 6. Other timelines: Location node timeline, User timeline, etc.
     else {
       $tabs_html = '
         <div class="timeline-tabs-bar-wrapper timeline-tabs-bar-wrapper--compact">
