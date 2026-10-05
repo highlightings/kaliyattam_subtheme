@@ -883,7 +883,7 @@ body:has(.updates-community-page) .site-content {
 .updates-user-name {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--kaliyattam-text, #1c1917);
+  color: #1c1917;
   margin: 0 0 0.15rem 0;
 }
 
@@ -956,7 +956,7 @@ body:has(.updates-community-page) .site-content {
 .updates-guest-desc {
   font-size: 0.84rem;
   line-height: 1.5;
-  color: var(--kaliyattam-text-secondary, #52525b);
+  color: #52525b;
   margin: 0 0 1rem 0;
 }
 
@@ -1020,7 +1020,7 @@ body:has(.updates-community-page) .site-content {
   border-radius: 8px;
   font-size: 0.88rem;
   font-weight: 500;
-  color: var(--kaliyattam-text, #1c1917);
+  color: #1c1917;
   text-decoration: none;
   transition: all 0.15s ease;
 }
@@ -1085,7 +1085,7 @@ body:has(.updates-community-page) .site-content {
   border-radius: 8px;
   font-size: 0.86rem;
   font-weight: 600;
-  color: var(--kaliyattam-text, #1c1917);
+  color: #1c1917;
   text-decoration: none;
   transition: all 0.15s ease;
 }
@@ -1116,7 +1116,7 @@ body:has(.updates-community-page) .site-content {
 .updates-heritage-text {
   font-size: 0.82rem;
   line-height: 1.55;
-  color: var(--kaliyattam-text-secondary, #52525b);
+  color: #52525b;
   margin: 0;
 }
 
@@ -1147,4 +1147,39 @@ body:has(.updates-community-page) .site-content {
     max-height: none;
     overflow-y: visible;
   }
+}
+
+.site-layout.has-both-sidebars .site-sidebar .updates-sidebar-heading,
+.site-layout.has-both-sidebars .site-sidebar h3.user-name,
+.site-layout.has-both-sidebars .site-sidebar h3.updates-user-name,
+.site-layout.has-both-sidebars .site-sidebar h3.guest-card-title,
+.site-layout.has-both-sidebars .site-sidebar h3.updates-guest-title {
+  color: #1c1917;
+}
+
+.site-layout.has-both-sidebars .site-sidebar .updates-sidebar-heading {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.site-layout.has-both-sidebars .site-sidebar .updates-sidebar-menu li a,
+.site-layout.has-both-sidebars .site-sidebar .sidebar-item a {
+  color: #1c1917;
+}
+
+.site-layout.has-both-sidebars .site-sidebar .btn-user-action--primary,
+.site-layout.has-both-sidebars .site-sidebar .btn-guest-action--register,
+.site-layout.has-both-sidebars .site-sidebar .updates-sidebar-btn-primary {
+  color: #ffffff;
+}
+
+.site-layout.has-both-sidebars .site-sidebar .btn-user-action--secondary,
+.site-layout.has-both-sidebars .site-sidebar .btn-guest-action--login,
+.site-layout.has-both-sidebars .site-sidebar .updates-sidebar-btn-secondary {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.site-layout.has-both-sidebars .site-sidebar .guest-card-desc,
+.site-layout.has-both-sidebars .site-sidebar .updates-guest-desc,
+.site-layout.has-both-sidebars .site-sidebar .updates-heritage-text {
+  color: #52525b;
 }

@@ -5,6 +5,9 @@
  * Zero external CSS/JS framework dependencies. Responsive CSS Grid & Flexbox.
  */
 #}
+{% if page.sidebar_first or page.sidebar_second %}
+  {{ attach_library('kaliyattam_subtheme/updates-community') }}
+{% endif %}
 <div class="site-wrapper">
 
   <header role="banner" class="site-header">
