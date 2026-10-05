@@ -781,7 +781,9 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
     $edit_url = \Drupal::currentUser()->isAuthenticated()
       ? $current_node->toUrl('edit-form')->toString()
       : \Drupal\Core\Url::fromRoute('user.login', [], ['query' => ['destination' => $current_node->toUrl('edit-form')->toString()]])->toString();
-    $history_url = \Drupal\Core\Url::fromRoute('entity.node.version_history', ['node' => $current_node->id()])->toString();
+    $history_url = \Drupal::currentUser()->isAuthenticated()
+      ? \Drupal\Core\Url::fromRoute('entity.node.version_history', ['node' => $current_node->id()])->toString()
+      : \Drupal\Core\Url::fromRoute('user.login', [], ['query' => ['destination' => \Drupal\Core\Url::fromRoute('entity.node.version_history', ['node' => $current_node->id()])->toString()]])->toString();
 
     $route_name = \Drupal::routeMatch()->getRouteName();
     $path_info = \Drupal::request()->getPathInfo();
@@ -900,6 +902,23 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $variables['attributes']['class'][] = 'view-' . \Drupal\Component\Utility\Html::cleanCssIdentifier($view_id);
   $variables['attributes']['class'][] = 'view-id-' . $view_id;
   $variables['attributes']['class'][] = 'view-display-id-' . $display_id;
+
+  // Attach timeline-feeds library contextually to timeline, feed, and card views.
+  $timeline_views = [
+    'events',
+    'events_calendar',
+    'theyyam',
+    'temples',
+    'post',
+    'user_timeline',
+    'timeline_theyyam',
+    'timeline_location',
+    'sitewide_timeline',
+    'timeline_type',
+  ];
+  if (in_array($view_id, $timeline_views, TRUE) || str_contains($view_id, 'timeline') || str_contains($view_id, 'feed')) {
+    $variables['#attached']['library'][] = 'kaliyattam_subtheme/timeline-feeds';
+  }
 
   // Event Date Archives & Hub navigation toolbar: unified across /events, /events/past, /events/calendar, /events/YYYY, /events/YYYY/MM, /events/YYYY/MM/DD.
   $is_events_view = ($view_id === 'events' && in_array($display_id, ['page_1', 'page_2', 'page_year', 'page_month', 'page_day'], TRUE));

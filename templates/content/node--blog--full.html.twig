@@ -39,10 +39,12 @@
           <h2 class="mb-3">{{ 'Gallery'|t }}</h2>
           {% embed 'kaliyattam_subtheme:media-carousel' with { id: 'article-carousel-' ~ node.id } %}
             {% block slides %}
-              {% for media in node.field_media %}
-                <div class="carousel-slide">
-                  {{ content.field_media }}
-                </div>
+              {% for media_item in node.field_media %}
+                {% if media_item.entity and media_item.entity.access('view') %}
+                  <div class="carousel-slide carousel-slide--{{ media_item.entity.bundle }}">
+                    {{ drupal_entity('media', media_item.target_id) }}
+                  </div>
+                {% endif %}
               {% endfor %}
             {% endblock %}
           {% endembed %}

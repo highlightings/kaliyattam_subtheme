@@ -68,25 +68,10 @@
           {% embed 'kaliyattam_subtheme:media-carousel' with { id: 'post-carousel-' ~ node.id() } %}
             {% block slides %}
               {% for media_item in node.field_media %}
-                {% if media_item.entity %}
-                  {% set media_bundle = media_item.entity.bundle %}
-                  {% if media_bundle == 'image' %}
-                    {% set img_uri = media_item.entity.field_media_image.entity.fileuri ?: media_item.entity.thumbnail.entity.fileuri %}
-                    {% set img_alt = media_item.entity.field_media_image.alt|default(media_item.entity.label) %}
-                    {% if img_uri is not empty %}
-                      <div class="carousel-slide carousel-slide--image">
-                        <img src="{{ img_uri | image_style('3_2_300x200_focal_point_webp') }}" alt="{{ img_alt }}" loading="lazy">
-                      </div>
-                    {% endif %}
-                  {% elseif media_bundle == 'remote_video' %}
-                    <div class="carousel-slide carousel-slide--video">
-                      {{ drupal_entity('media', media_item.target_id, 'default') }}
-                    </div>
-                  {% else %}
-                    <div class="carousel-slide">
-                      {{ drupal_entity('media', media_item.target_id) }}
-                    </div>
-                  {% endif %}
+                {% if media_item.entity and media_item.entity.access('view') %}
+                  <div class="carousel-slide carousel-slide--{{ media_item.entity.bundle }}">
+                    {{ drupal_entity('media', media_item.target_id) }}
+                  </div>
                 {% endif %}
               {% endfor %}
             {% endblock %}

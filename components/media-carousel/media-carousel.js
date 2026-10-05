@@ -42,6 +42,17 @@
           });
         }
 
+        // Ensure inert and aria-hidden on inactive slides for accessibility.
+        slides.forEach((slide, i) => {
+          if (i === 0) {
+            slide.removeAttribute('inert');
+            slide.removeAttribute('aria-hidden');
+          } else {
+            slide.setAttribute('inert', '');
+            slide.setAttribute('aria-hidden', 'true');
+          }
+        });
+
         const dots = carousel.querySelectorAll('.carousel-dot');
         let currentIndex = 0;
         const totalSlides = slides.length;
@@ -56,6 +67,16 @@
           }
 
           track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+          slides.forEach((slide, i) => {
+            if (i === currentIndex) {
+              slide.removeAttribute('inert');
+              slide.removeAttribute('aria-hidden');
+            } else {
+              slide.setAttribute('inert', '');
+              slide.setAttribute('aria-hidden', 'true');
+            }
+          });
 
           dots.forEach((dot, i) => {
             dot.classList.toggle('is-active', i === currentIndex);

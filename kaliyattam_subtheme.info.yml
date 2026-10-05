@@ -7,9 +7,6 @@ core_version_requirement: '^10.1 || ^11.0'
 libraries:
   - kaliyattam_subtheme/global-styling
   - kaliyattam_subtheme/navigation
-  - kaliyattam_subtheme/post-composer
-  - kaliyattam_subtheme/node-form
-  - kaliyattam_subtheme/timeline-feeds
 
 ckeditor_stylesheets:
   - css/tokens.css
