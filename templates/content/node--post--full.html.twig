@@ -68,7 +68,7 @@
           {% embed 'kaliyattam_subtheme:media-carousel' with { id: 'post-carousel-' ~ node.id() } %}
             {% block slides %}
               {% for media_item in node.field_media %}
-                {% if media_item.entity and media_item.entity.access('view') %}
+                {% if media_item.entity %}
                   <div class="carousel-slide carousel-slide--{{ media_item.entity.bundle }}">
                     {{ drupal_entity('media', media_item.target_id) }}
                   </div>
