@@ -1,10 +1,11 @@
 /**
  * @file
  * Styles for Kaliyattam Updates / Community Feed Page (/updates).
- * Inspired by released.in/test2 aesthetic:
- * - Airy hero cover with gradient title and rounded action buttons
- * - Submenu navigation bar
- * - Modern 3-column responsive card feed
+ * Styled to match the sacred Kaliyattam design system with:
+ * - Sacred Crimson, Vermilion, and Gold color palette
+ * - Block-based Cover Hero with warm aura background
+ * - Responsive Sticky Submenu Navigation Bar
+ * - Dynamic Masonry layout with variable-height cards
  * - Subtle author details on events
  * - No author details on Theyyam & Temples (last updated date only)
  * - Full author details on posts
@@ -29,7 +30,7 @@ body:has(.updates-community-page) .site-content {
 }
 
 /* ==========================================================================
-   1. HERO COVER BANNER (inspired by released.in/test2)
+   1. HERO COVER BANNER (Kaliyattam Sacred Warm Aura Palette)
    ========================================================================== */
 .updates-community-page {
   width: 100%;
@@ -40,8 +41,8 @@ body:has(.updates-community-page) .site-content {
 .updates-cover-wrapper {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #fdfbf7 0%, #f7f2ea 100%);
+  border-bottom: 1px solid #e7ded4;
   padding: 4.5rem 1.5rem 4rem 1.5rem;
   text-align: center;
 }
@@ -55,7 +56,7 @@ body:has(.updates-community-page) .site-content {
   max-width: 1200px;
   height: 100%;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.08) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 70%);
+  background: radial-gradient(circle at 50% 25%, rgba(217, 119, 6, 0.12) 0%, rgba(137, 0, 0, 0.06) 50%, transparent 70%);
 }
 
 .updates-cover-container {
@@ -66,33 +67,34 @@ body:has(.updates-community-page) .site-content {
 }
 
 .updates-cover-title {
-  font-family: inherit;
+  font-family: var(--font-serif-heading, "Cinzel", "Playfair Display", Georgia, serif);
   font-size: clamp(2.25rem, 5vw, 3.75rem);
   font-weight: 800;
   line-height: 1.15;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   margin: 0 0 1.25rem 0;
 }
 
 .updates-cover-title .cover-title-line-1 {
   display: block;
-  color: #1e293b;
+  color: var(--kaliyattam-text, #1c1917);
   padding-bottom: 0.25rem;
 }
 
 .updates-cover-title .cover-title-line-2 {
   display: block;
-  background: linear-gradient(90deg, #10b981 0%, #3b82f6 50%, #2563eb 100%);
+  background: linear-gradient(135deg, var(--kaliyattam-primary, #890000) 0%, var(--kaliyattam-vermilion, #c2410c) 45%, var(--kaliyattam-gold, #d97706) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   padding-bottom: 0.25rem;
+  text-shadow: 0 2px 10px rgba(137, 0, 0, 0.05);
 }
 
 .updates-cover-subtitle {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 300;
-  line-height: 1.6;
-  color: #475569;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--kaliyattam-text-secondary, #52525b);
   max-width: 680px;
   margin: 0 auto 2.25rem auto;
 }
@@ -121,33 +123,33 @@ body:has(.updates-community-page) .site-content {
 }
 
 .updates-btn-primary {
-  background: #2563eb;
+  background: var(--kaliyattam-primary, #890000);
   color: #ffffff !important;
-  border: 1px solid #1d4ed8;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.22);
+  border: 1px solid var(--kaliyattam-primary-dark, #5c0000);
+  box-shadow: 0 4px 14px rgba(137, 0, 0, 0.25);
 }
 
 .updates-btn-primary:hover {
-  background: #1d4ed8;
-  border-color: #1e40af;
+  background: var(--kaliyattam-primary-light, #a81414);
+  border-color: var(--kaliyattam-primary, #890000);
   color: #ffffff !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.32);
+  box-shadow: 0 6px 20px rgba(137, 0, 0, 0.35);
 }
 
 .updates-btn-secondary {
   background: #ffffff;
-  color: #334155 !important;
-  border: 1px solid #cbd5e1;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--kaliyattam-text, #1c1917) !important;
+  border: 1px solid #dcd3c8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .updates-btn-secondary:hover {
-  background: #f8fafc;
-  color: #0f172a !important;
-  border-color: #94a3b8;
+  background: #fdfaf7;
+  color: var(--kaliyattam-primary, #890000) !important;
+  border-color: var(--kaliyattam-gold, #d97706);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
 }
 
 .updates-btn-icon {
@@ -157,15 +159,15 @@ body:has(.updates-community-page) .site-content {
 }
 
 /* ==========================================================================
-   2. COMMUNITY SUBMENU BAR (inspired by released.in/test2 bx-menu-main-bar)
+   2. COMMUNITY SUBMENU BAR (Kaliyattam Brand Underlines & Accents)
    ========================================================================== */
 .updates-submenu-bar {
   background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e7ded4;
   position: sticky;
   top: 0;
   z-index: 15;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .updates-submenu-container {
@@ -198,26 +200,26 @@ body:has(.updates-community-page) .site-content {
 .updates-submenu-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   padding: 0.85rem 1.15rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--kaliyattam-text-secondary, #52525b);
   text-decoration: none;
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 
 .updates-submenu-link:hover {
-  color: #1e293b;
-  border-bottom-color: #cbd5e1;
+  color: var(--kaliyattam-primary, #890000);
+  border-bottom-color: var(--kaliyattam-gold, #d97706);
 }
 
 .updates-submenu-item.is-active .updates-submenu-link {
-  color: #2563eb;
-  border-bottom-color: #2563eb;
-  font-weight: 600;
+  color: var(--kaliyattam-primary, #890000);
+  border-bottom-color: var(--kaliyattam-primary, #890000);
+  font-weight: 700;
 }
 
 .submenu-icon {
@@ -226,10 +228,10 @@ body:has(.updates-community-page) .site-content {
 }
 
 /* ==========================================================================
-   3. COMMUNITY FEED & 3-COLUMN RESPONSIVE CARD GRID
+   3. COMMUNITY FEED & DYNAMIC MASONRY LAYOUT
    ========================================================================== */
 .updates-main-content {
-  background: #f8fafc;
+  background: #f7f3ec;
   padding: 2.5rem 0 4rem 0;
   min-height: 50vh;
 }
@@ -240,55 +242,65 @@ body:has(.updates-community-page) .site-content {
   padding: 0 1.5rem;
 }
 
+/* Multi-Column Masonry Layout */
 .updates-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.75rem;
-  align-items: start;
+  column-count: 3;
+  column-gap: 1.5rem;
+  width: 100%;
+}
+
+.updates-grid-item {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  vertical-align: top;
 }
 
 @media (max-width: 1024px) {
   .updates-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+    column-count: 2;
+    column-gap: 1.25rem;
+  }
+  .updates-grid-item {
+    margin-bottom: 1.25rem;
   }
 }
 
 @media (max-width: 640px) {
   .updates-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    column-count: 1;
+    column-gap: 0;
+  }
+  .updates-grid-item {
+    margin-bottom: 1.25rem;
   }
 }
 
-.updates-grid-item {
-  width: 100%;
-}
-
 /* ==========================================================================
-   4. CARD STYLING ON /UPDATES (Matching released.in/test2 Card Aesthetics)
+   4. CARD STYLING ON /UPDATES (Kaliyattam Warm Surfaces & Sacred Accents)
    ========================================================================== */
 .view-updates .timeline-card {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e7ded4;
   border-radius: 14px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .view-updates .timeline-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
-  border-color: #cbd5e1;
+  box-shadow: 0 14px 28px -6px rgba(137, 0, 0, 0.09), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  border-color: #d6bfa8;
 }
 
 .view-updates .timeline-card-header {
   padding: 1.15rem 1.25rem 0.65rem 1.25rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f4ede4;
 }
 
 /* A. POSTS: Full author details included */
@@ -302,7 +314,7 @@ body:has(.updates-community-page) .site-content {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, var(--kaliyattam-primary, #890000) 0%, var(--kaliyattam-gold-dark, #b45309) 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -311,23 +323,23 @@ body:has(.updates-community-page) .site-content {
   font-size: 1rem;
   text-decoration: none;
   flex-shrink: 0;
-  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 2px 6px rgba(137, 0, 0, 0.28);
 }
 
 .view-updates .timeline-card--post .timeline-card-author-name {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--kaliyattam-text, #1c1917);
   text-decoration: none;
 }
 
 .view-updates .timeline-card--post .timeline-card-author-name:hover {
-  color: #2563eb;
+  color: var(--kaliyattam-primary, #890000);
 }
 
 .view-updates .timeline-card--post .timeline-card-time {
   font-size: 0.78rem;
-  color: #64748b;
+  color: var(--kaliyattam-text-muted, #71717a);
 }
 
 /* B. EVENTS: Subtle author details */
@@ -348,7 +360,7 @@ body:has(.updates-community-page) .site-content {
 .view-updates .timeline-card-event-header .timeline-card-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--kaliyattam-text, #1c1917);
   line-height: 1.35;
   margin: 0;
 }
@@ -359,7 +371,7 @@ body:has(.updates-community-page) .site-content {
 }
 
 .view-updates .timeline-card-event-header .timeline-card-title a:hover {
-  color: #2563eb;
+  color: var(--kaliyattam-primary, #890000);
 }
 
 .view-updates .timeline-card-subtle-author {
@@ -367,31 +379,31 @@ body:has(.updates-community-page) .site-content {
   align-items: center;
   gap: 0.35rem;
   font-size: 0.76rem;
-  color: #64748b;
+  color: var(--kaliyattam-text-muted, #71717a);
   font-weight: 400;
 }
 
 .view-updates .timeline-card-subtle-author .subtle-author-text {
-  color: #64748b;
+  color: var(--kaliyattam-text-muted, #71717a);
 }
 
 .view-updates .timeline-card-subtle-author .subtle-author-link {
-  color: #475569;
+  color: var(--kaliyattam-text-secondary, #52525b);
   text-decoration: none;
   font-weight: 500;
 }
 
 .view-updates .timeline-card-subtle-author .subtle-author-link:hover {
-  color: #2563eb;
+  color: var(--kaliyattam-primary, #890000);
   text-decoration: underline;
 }
 
 .view-updates .timeline-card-subtle-author .subtle-author-sep {
-  color: #cbd5e1;
+  color: #d6cfc7;
 }
 
 .view-updates .timeline-card-subtle-author .subtle-author-time {
-  color: #94a3b8;
+  color: var(--kaliyattam-text-muted, #71717a);
 }
 
 /* C. THEYYAM & TEMPLES (is_wiki): No author details, ONLY Last updated date */
@@ -412,7 +424,7 @@ body:has(.updates-community-page) .site-content {
 .view-updates .timeline-card-header--wiki .timeline-card-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--kaliyattam-text, #1c1917);
   line-height: 1.35;
   margin: 0;
 }
@@ -423,16 +435,16 @@ body:has(.updates-community-page) .site-content {
 }
 
 .view-updates .timeline-card-header--wiki .timeline-card-title a:hover {
-  color: #2563eb;
+  color: var(--kaliyattam-primary, #890000);
 }
 
 .view-updates .timeline-card-header--wiki .timeline-card-time-line {
   font-size: 0.76rem;
-  color: #64748b;
+  color: var(--kaliyattam-text-muted, #71717a);
 }
 
 .view-updates .timeline-card-header--wiki .timeline-card-time-link {
-  color: #64748b;
+  color: var(--kaliyattam-text-muted, #71717a);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -440,7 +452,7 @@ body:has(.updates-community-page) .site-content {
 }
 
 .view-updates .timeline-card-header--wiki .timeline-card-time-link:hover {
-  color: #2563eb;
+  color: var(--kaliyattam-primary, #890000);
 }
 
 /* Badges */
@@ -457,23 +469,27 @@ body:has(.updates-community-page) .site-content {
 }
 
 .view-updates .timeline-badge--post {
-  background: #f1f5f9;
-  color: #334155;
+  background: #f5f5f4;
+  color: #44403c;
+  border: 1px solid #e7e5e4;
 }
 
 .view-updates .timeline-badge--event {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
 }
 
 .view-updates .timeline-badge--theyyam {
   background: #fef2f2;
-  color: #b91c1c;
+  color: #991b1b;
+  border: 1px solid #fecaca;
 }
 
 .view-updates .timeline-badge--location {
   background: #fefce8;
   color: #854d0e;
+  border: 1px solid #fef08a;
 }
 
 /* Card Body */
@@ -490,12 +506,12 @@ body:has(.updates-community-page) .site-content {
 }
 
 .view-updates .timeline-card-body .timeline-card-title a {
-  color: #0f172a;
+  color: var(--kaliyattam-text, #1c1917);
   text-decoration: none;
 }
 
 .view-updates .timeline-card-body .timeline-card-title a:hover {
-  color: #2563eb;
+  color: var(--kaliyattam-primary, #890000);
 }
 
 .view-updates .timeline-card-text {
@@ -510,12 +526,13 @@ body:has(.updates-community-page) .site-content {
   margin-top: 0.85rem;
   border-radius: 10px;
   overflow: hidden;
-  background: #f1f5f9;
+  background: #f5f2eb;
 }
 
 .view-updates .timeline-card-media-wrapper img {
   width: 100%;
-  height: 200px;
+  height: auto;
+  max-height: 280px;
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
@@ -541,25 +558,26 @@ body:has(.updates-community-page) .site-content {
   font-weight: 500;
   padding: 0.25rem 0.55rem;
   border-radius: 6px;
-  background: #f1f5f9;
-  color: #475569;
   text-decoration: none;
 }
 
 .view-updates .timeline-chip--date {
-  background: #ecfdf5;
-  color: #065f46;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
   font-weight: 600;
 }
 
 .view-updates .timeline-chip--theyyam {
-  background: #fff1f2;
-  color: #9f1239;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
 }
 
 .view-updates .timeline-chip--place {
-  background: #eff6ff;
-  color: #1e40af;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
 }
 
 .view-updates .timeline-chip a {
@@ -577,7 +595,7 @@ body:has(.updates-community-page) .site-content {
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1.25rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid #f4ede4;
   background: #ffffff;
   border-radius: 0 0 14px 14px;
 }
@@ -594,7 +612,7 @@ body:has(.updates-community-page) .site-content {
   gap: 0.35rem;
   font-size: 0.8rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--kaliyattam-text-muted, #71717a);
   background: none;
   border: none;
   padding: 0.35rem 0.5rem;
@@ -606,8 +624,8 @@ body:has(.updates-community-page) .site-content {
 
 .view-updates .timeline-action-link:hover,
 .view-updates .timeline-action-btn:hover {
-  background: #f1f5f9;
-  color: #1e293b;
+  background: #fdfaf7;
+  color: var(--kaliyattam-primary, #890000);
 }
 
 .view-updates .action-more {
@@ -615,12 +633,12 @@ body:has(.updates-community-page) .site-content {
 }
 
 .view-updates .action-more .more-action-link {
-  color: #2563eb;
+  color: var(--kaliyattam-primary, #890000);
   font-weight: 600;
 }
 
 .view-updates .action-more .more-action-link:hover {
-  color: #1d4ed8;
+  color: var(--kaliyattam-primary-dark, #5c0000);
 }
 
 /* Empty State & Pager */
@@ -629,7 +647,7 @@ body:has(.updates-community-page) .site-content {
   padding: 4rem 1.5rem;
   background: #ffffff;
   border-radius: 14px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e7ded4;
 }
 
 .updates-pager-wrapper {
@@ -654,9 +672,9 @@ body:has(.updates-community-page) .site-content {
   height: 2.25rem;
   padding: 0 0.65rem;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e7ded4;
   background: #ffffff;
-  color: #334155;
+  color: var(--kaliyattam-text, #1c1917);
   font-size: 0.88rem;
   font-weight: 500;
   text-decoration: none;
@@ -664,14 +682,15 @@ body:has(.updates-community-page) .site-content {
 }
 
 .updates-pager-wrapper .page-item.active .page-link {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: var(--kaliyattam-primary, #890000);
+  border-color: var(--kaliyattam-primary, #890000);
   color: #ffffff;
 }
 
 .updates-pager-wrapper .page-item .page-link:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: #fdfaf7;
+  border-color: var(--kaliyattam-gold, #d97706);
+  color: var(--kaliyattam-primary, #890000);
 }
 
 /* ==========================================================================

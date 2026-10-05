@@ -30,32 +30,7 @@
 
 <div{{ attributes.addClass(classes) }}>
 
-  {# 1. Hero Cover Banner (inspired by released.in/test2) #}
-  <section class="updates-cover-wrapper" aria-label="{{ 'Community Welcome'|t }}">
-    <div class="updates-cover-gradient"></div>
-    <div class="updates-cover-container">
-      <h1 class="updates-cover-title">
-        <span class="cover-title-line-1">{{ 'Welcome to'|t }}</span>
-        <span class="cover-title-line-2">{{ 'the community'|t }}</span>
-      </h1>
-      <p class="updates-cover-subtitle">
-        {{ 'The best social media network for people to connect, collaborate, share content and inspire each other.'|t }}
-      </p>
-      <div class="updates-cover-actions">
-        <a href="/timeline" class="updates-btn updates-btn-primary" id="updates-hero-btn-explore">
-          {{ 'Explore Timeline'|t }}
-        </a>
-        <a href="/user/login" class="updates-btn updates-btn-secondary" id="updates-hero-btn-login">
-          <svg class="updates-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-          </svg>
-          <span>{{ 'Login'|t }}</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  {# 2. Community Navigation Submenu Bar (matching released.in/test2 bx-menu-main-bar) #}
+  {# 1. Community Navigation Submenu Bar (matching released.in/test2 bx-menu-main-bar) #}
   <nav class="updates-submenu-bar" role="navigation" aria-label="{{ 'Community Sections'|t }}">
     <div class="updates-submenu-container">
       <ul class="updates-submenu-list">

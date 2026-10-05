@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - kaliyattam_core
+    - system
+  theme:
+    - kaliyattam_subtheme
+id: kaliyattam_subtheme_updates_cover
+theme: kaliyattam_subtheme
+region: content_above
+weight: -50
+provider: null
+plugin: kaliyattam_updates_cover
+settings:
+  id: kaliyattam_updates_cover
+  label: 'Updates Cover Hero'
+  label_display: '0'
+  provider: kaliyattam_core
+  title_line1: 'Welcome to'
+  title_line2: 'the community'
+  subtitle: 'The sacred heritage and community network for devotees and artists to connect, share Theyyam experiences, and discover temple rituals.'
+  primary_btn_text: 'Explore Timeline'
+  primary_btn_url: '/timeline'
+  secondary_btn_text: 'Login'
+  secondary_btn_url: '/user/login'
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/updates\n/updates/*"
