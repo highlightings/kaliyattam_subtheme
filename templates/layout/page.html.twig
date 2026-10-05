@@ -65,6 +65,9 @@
         </div>
       {% endif %}
 
+      {{ page.highlighted }}
+      {{ page.content_top }}
+
       {% set layout_classes = [
         'site-layout',
         page.sidebar_first ? 'has-sidebar-first' : '',
@@ -80,7 +83,9 @@
         {% endif %}
 
         <div class="site-content">
+          {{ page.content_above }}
           {{ page.content }}
+          {{ page.content_below }}
         </div>
 
         {% if page.sidebar_second %}
@@ -89,6 +94,8 @@
           </aside>
         {% endif %}
       </div>
+
+      {{ page.content_bottom }}
     </div>
   </main>
 

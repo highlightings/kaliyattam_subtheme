@@ -334,6 +334,36 @@ ul.tabs {
   min-width: 0; /* Prevent grid overflow */
 }
 
+/* Custom Content & Layout Regions */
+.region-highlighted,
+.region-content-top {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.region-content-above {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.region-content-below {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.region-content-bottom {
+  margin-top: 2.5rem;
+  width: 100%;
+}
+
+.region-highlighted:empty,
+.region-content-top:empty,
+.region-content-above:empty,
+.region-content-below:empty,
+.region-content-bottom:empty {
+  display: none;
+}
+
 /* Views Grid Auto-layout for Cards & Feeds */
 .view-content:has(.kaliyattam-card),
 .view-content:has(.views-row > .kaliyattam-card),
