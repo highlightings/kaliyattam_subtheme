@@ -1,0 +1,196 @@
+{#
+/**
+ * @file
+ * Theme override for Kaliyattam Newspaper Frontpage view (display page_1).
+ *
+ * Implements a modern, responsive, mobile-first newspaper layout inspired by
+ * BBC News and Mathrubhumi, adhering to the sacred Kaliyattam design system.
+ */
+#}
+{%
+  set classes = [
+    'view',
+    'view-frontpage',
+    'view-id-frontpage',
+    'view-display-id-page_1',
+    'newspaper-frontpage',
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+  ]
+%}
+
+{{ attach_library('kaliyattam_subtheme/frontpage-newspaper') }}
+{{ attach_library('kaliyattam_subtheme/timeline-feeds') }}
+
+<div{{ attributes.addClass(classes) }}>
+
+  {# 1. Newspaper Top Masthead & Branding #}
+  <header class="newspaper-masthead">
+    <div class="newspaper-masthead-brand">
+      <div class="brand-left">
+        <h1 class="newspaper-site-title">
+          <span class="title-crimson">KALIYATTAM</span>
+          <span class="title-serif">CHRONICLE</span>
+        </h1>
+        <p class="newspaper-tagline">{{ 'The Living Ritual Arts & Sacred Traditions of North Malabar'|t }}</p>
+      </div>
+      <div class="brand-right">
+        <div class="season-badge-box">
+          <span class="badge-live-pulse" aria-hidden="true"></span>
+          <div class="season-text-group">
+            <span class="season-status">{{ 'Festival Season Active'|t }}</span>
+            <span class="season-calendar">{{ 'Thulam – Edavam 1202'|t }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="newspaper-masthead-dateline">
+      <div class="dateline-left">
+        <span class="masthead-date"><i class="bi bi-calendar3" aria-hidden="true"></i> {{ "now"|date("l, F j, Y") }}</span>
+        <span class="masthead-divider" aria-hidden="true">•</span>
+        <span class="masthead-edition">{{ 'Kannur & Kasaragod Cultural Edition'|t }}</span>
+      </div>
+      <div class="dateline-right">
+        <span class="masthead-stats">{{ 'Sacred Deities • Ancient Shrines • Living Folklore'|t }}</span>
+      </div>
+    </div>
+
+    <nav class="newspaper-masthead-nav" role="navigation" aria-label="{{ 'Frontpage Sections'|t }}">
+      <span class="masthead-nav-label">{{ 'Sections:'|t }}</span>
+      <ul class="masthead-quicklinks">
+        <li><a href="#hero-desk" class="quicklink-pill">{{ 'Top Stories'|t }}</a></li>
+        <li><a href="#events-desk" class="quicklink-pill">{{ 'Festival Calendar'|t }}</a></li>
+        <li><a href="#dispatches-desk" class="quicklink-pill">{{ 'Field Dispatches'|t }}</a></li>
+        <li><a href="#spotlight-desk" class="quicklink-pill">{{ 'Theyyam Spotlight'|t }}</a></li>
+        <li><a href="#voices-desk" class="quicklink-pill">{{ 'Devotee Voices'|t }}</a></li>
+        <li class="quicklink-timeline"><a href="/timeline" class="quicklink-pill quicklink-pill--timeline">{{ 'Sitewide Timeline'|t }} <span aria-hidden="true">→</span></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  {# 2. Top Lead Story / Hero Section (BBC News style) #}
+  <section id="hero-desk" class="newspaper-hero-deck" aria-label="{{ 'Top Headlines'|t }}">
+    <div class="newspaper-hero-grid">
+      {# Primary Lead Feature (Left, ~65%) #}
+      <div class="hero-primary-story">
+        <div class="deck-header">
+          <div class="deck-header-left">
+            <span class="deck-marker" aria-hidden="true"></span>
+            <h2 class="deck-title">{{ 'Lead Story'|t }}</h2>
+          </div>
+          <span class="deck-badge">{{ 'Special Feature'|t }}</span>
+        </div>
+        <div class="hero-lead-embed">
+          {{ drupal_view('frontpage', 'block_hero') }}
+        </div>
+      </div>
+
+      {# Supporting Lead Headlines (Right, ~35%) #}
+      <div class="hero-secondary-stories">
+        <div class="deck-header">
+          <div class="deck-header-left">
+            <span class="deck-marker deck-marker--secondary" aria-hidden="true"></span>
+            <h2 class="deck-title">{{ 'Key Highlights'|t }}</h2>
+          </div>
+        </div>
+        <div class="hero-secondary-embed">
+          {{ drupal_view('frontpage', 'block_hero_secondary') }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# 3. Main Newspaper Grid: 2 Columns on Desktop, Stacking on Mobile #}
+  <div class="newspaper-main-deck">
+    {# Primary Editorial Desk (Left, ~65%) #}
+    <div class="newspaper-col-primary">
+
+      {# Section A: Latest Community Dispatches & Field Reports #}
+      <section id="dispatches-desk" class="newspaper-section" aria-label="{{ 'Latest Community Dispatches'|t }}">
+        <div class="newspaper-section-header">
+          <div class="section-title-wrap">
+            <span class="section-icon" aria-hidden="true">📰</span>
+            <h2 class="newspaper-section-title">{{ 'Field Dispatches & Stories'|t }}</h2>
+          </div>
+          <a href="/timeline" class="section-action-link" title="{{ 'View all dispatches on timeline'|t }}">
+            <span>{{ 'All Updates'|t }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="newspaper-posts-grid">
+          {{ drupal_view('frontpage', 'block_posts') }}
+        </div>
+      </section>
+
+      {# Section B: Sacred Heritage Spotlight #}
+      <section id="spotlight-desk" class="newspaper-section" aria-label="{{ 'Sacred Heritage Spotlight'|t }}">
+        <div class="newspaper-section-header">
+          <div class="section-title-wrap">
+            <span class="section-icon" aria-hidden="true">🎭</span>
+            <h2 class="newspaper-section-title">{{ 'Sacred Heritage Spotlight: The Living Deities'|t }}</h2>
+          </div>
+          <a href="/theyyam" class="section-action-link" title="{{ 'View deity encyclopedia'|t }}">
+            <span>{{ 'Theyyam Archive'|t }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="newspaper-spotlight-grid">
+          {{ drupal_view('frontpage', 'block_theyyam') }}
+        </div>
+      </section>
+
+    </div>
+
+    {# Editorial Rail (Right, ~35%) #}
+    <aside class="newspaper-col-rail" aria-label="{{ 'Sidebar News and Calendar'|t }}">
+
+      {# Rail Box 1: Upcoming Kaliyattams Calendar #}
+      <div id="events-desk" class="newspaper-rail-box newspaper-rail-box--events">
+        <div class="rail-box-header">
+          <div class="rail-title-wrap">
+            <span class="rail-icon" aria-hidden="true">📅</span>
+            <h2 class="rail-title">{{ 'Upcoming Kaliyattams'|t }}</h2>
+          </div>
+          <a href="/events" class="rail-action-link">{{ 'Calendar'|t }} <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="rail-box-content">
+          {{ drupal_view('frontpage', 'block_events') }}
+        </div>
+      </div>
+
+      {# Rail Box 2: Community Voices & Recent Discussions #}
+      <div id="voices-desk" class="newspaper-rail-box newspaper-rail-box--voices">
+        <div class="rail-box-header">
+          <div class="rail-title-wrap">
+            <span class="rail-icon" aria-hidden="true">💬</span>
+            <h2 class="rail-title">{{ 'Devotee Voices & Notes'|t }}</h2>
+          </div>
+        </div>
+        <div class="rail-box-content">
+          {{ drupal_view('frontpage_comments', 'block_1') }}
+        </div>
+      </div>
+
+      {# Rail Box 3: Sacred Temples & Shrines Quick Guide #}
+      <div class="newspaper-rail-box newspaper-rail-box--shrines">
+        <div class="rail-box-header">
+          <div class="rail-title-wrap">
+            <span class="rail-icon" aria-hidden="true">🛕</span>
+            <h2 class="rail-title">{{ 'Sacred Shrines of Malabar'|t }}</h2>
+          </div>
+          <a href="/locations" class="rail-action-link">{{ 'Map'|t }} <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="rail-box-content shrines-summary">
+          <p class="shrines-intro">{{ 'Explore the ancient kavus, tharavads, and temple shrines where ritual arts come alive across Kannur and Kasaragod.'|t }}</p>
+          <ul class="shrines-highlights">
+            <li><a href="/locations"><strong>Payyanur</strong> <span class="badge-count">Muchilot Kavu & Temples</span></a></li>
+            <li><a href="/locations"><strong>Parassinikadavu</strong> <span class="badge-count">Sree Muthappan Madappura</span></a></li>
+            <li><a href="/locations"><strong>Madhur</strong> <span class="badge-count">Sree Madanantheshwara</span></a></li>
+          </ul>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+</div>

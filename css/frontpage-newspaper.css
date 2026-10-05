@@ -1,0 +1,967 @@
+/**
+ * @file
+ * Newspaper Front Page Styling for Kaliyattam Arts Theme.
+ *
+ * Inspired by modern news portals (BBC News, Mathrubhumi) while maintaining
+ * the sacred Kaliyattam design system (sacred crimson, gold, warm stone).
+ * Zero external CSS dependencies. Mobile-first responsive Grid & Flexbox.
+ */
+
+/* ==========================================================================
+   1. Frontpage Core & Duplicate Title Suppression
+   ========================================================================== */
+
+/* Hide default single page title block on frontpage to allow editorial masthead */
+body:has(.newspaper-frontpage) .block-page-title-block,
+body:has(.newspaper-masthead) .block-page-title-block,
+body.path-frontpage .block-page-title-block,
+body.page-node-frontpage .block-page-title-block {
+  display: none !important;
+}
+
+.newspaper-frontpage {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  margin-bottom: 3.5rem;
+}
+
+/* ==========================================================================
+   2. Newspaper Top Masthead & Branding Bar
+   ========================================================================== */
+
+.newspaper-masthead {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 3px double var(--kaliyattam-primary, #890000);
+  position: relative;
+}
+
+.newspaper-masthead::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 90px;
+  height: 3px;
+  background-color: var(--kaliyattam-gold, #d97706);
+}
+
+.newspaper-masthead-brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.08));
+}
+
+.newspaper-site-title {
+  margin: 0;
+  font-family: var(--font-serif-heading, "Cinzel", Georgia, serif);
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.title-crimson {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.title-serif {
+  color: var(--kaliyattam-gold-dark, #b45309);
+  font-weight: 600;
+  font-style: normal;
+}
+
+.newspaper-tagline {
+  margin: 0.35rem 0 0 0;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--theme-text-secondary, #52525b);
+  font-style: italic;
+  font-family: var(--font-serif-heading, Georgia, serif);
+}
+
+.season-badge-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.95rem;
+  background: var(--theme-surface-warm, #f4efe8);
+  border: 1px solid rgba(137, 0, 0, 0.15);
+  border-radius: var(--radius-md, 10px);
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.04));
+}
+
+.season-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.season-status {
+  font-size: 0.785rem;
+  font-weight: 700;
+  color: var(--kaliyattam-primary, #890000);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.season-calendar {
+  font-size: 0.725rem;
+  color: var(--theme-text-secondary, #52525b);
+  font-weight: 500;
+}
+
+.badge-live-pulse {
+  width: 9px;
+  height: 9px;
+  background-color: #16a34a;
+  border-radius: 50%;
+  box-shadow: 0 0 0 rgba(22, 163, 74, 0.4);
+  animation: livePulse 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes livePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+.newspaper-masthead-dateline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--theme-text-secondary, #52525b);
+  padding: 0.25rem 0;
+}
+
+.dateline-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.masthead-date {
+  color: var(--theme-text, #1c1917);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.masthead-divider {
+  color: var(--theme-border, #cbd5e1);
+}
+
+.masthead-edition {
+  font-style: italic;
+  font-family: var(--font-serif-heading, Georgia, serif);
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.masthead-stats {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--theme-text-muted, #71717a);
+}
+
+.newspaper-masthead-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  padding-top: 0.25rem;
+}
+
+.masthead-nav-label {
+  font-size: 0.785rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--theme-text-muted, #71717a);
+}
+
+.masthead-quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.masthead-quicklinks li {
+  margin: 0;
+  padding: 0;
+}
+
+.quicklink-pill {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--theme-text, #1c1917);
+  background-color: var(--theme-surface-alt, #f5f5f7);
+  border: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-sm, 6px);
+  text-decoration: none;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.quicklink-pill:hover,
+.quicklink-pill:focus-visible {
+  background-color: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+  border-color: var(--kaliyattam-primary, #890000);
+  text-decoration: none;
+}
+
+.quicklink-pill--timeline {
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+  font-weight: 600;
+  border-color: var(--kaliyattam-primary, #890000);
+}
+
+.quicklink-pill--timeline:hover {
+  background: var(--kaliyattam-primary-dark, #5c0000);
+  border-color: var(--kaliyattam-primary-dark, #5c0000);
+}
+
+/* ==========================================================================
+   3. Top Lead Stories / Hero Section (BBC News Style)
+   ========================================================================== */
+
+.newspaper-hero-deck {
+  margin-top: 0.25rem;
+}
+
+.deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1.5px solid var(--theme-border, #cbd5e1);
+}
+
+.deck-header-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.deck-title {
+  margin: 0;
+  font-family: var(--font-serif-heading, Georgia, serif);
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: 700;
+  color: var(--theme-text, #1c1917);
+  letter-spacing: -0.01em;
+}
+
+.deck-marker {
+  display: inline-block;
+  width: 8px;
+  height: 18px;
+  background-color: var(--kaliyattam-primary, #890000);
+  border-radius: 2px;
+}
+
+.deck-marker--secondary {
+  background-color: var(--kaliyattam-gold, #d97706);
+}
+
+.deck-badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  background: rgba(137, 0, 0, 0.08);
+  color: var(--kaliyattam-primary, #890000);
+  border-radius: var(--radius-xs, 4px);
+}
+
+.newspaper-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+}
+
+@media (min-width: 992px) {
+  .newspaper-hero-grid {
+    grid-template-columns: minmax(0, 1.85fr) minmax(0, 1.15fr);
+    align-items: stretch;
+  }
+}
+
+/* Primary Lead Feature Story */
+.hero-primary-story {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-lead-embed {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-lead-embed .timeline-card {
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--theme-border, #cbd5e1);
+  border-top: 4px solid var(--kaliyattam-primary, #890000);
+  border-radius: var(--radius-md, 10px);
+  background: var(--theme-surface, #ffffff);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast, 150ms ease), box-shadow var(--transition-fast, 150ms ease);
+}
+
+.hero-lead-embed .timeline-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.1));
+}
+
+.hero-lead-embed .timeline-card-title {
+  font-size: clamp(1.35rem, 1.2rem + 0.8vw, 1.85rem) !important;
+  line-height: var(--leading-tight, 1.25) !important;
+  font-family: var(--font-serif-heading, Georgia, serif) !important;
+  font-weight: 700 !important;
+  margin-top: 0.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.hero-lead-embed .timeline-card-title a {
+  color: var(--theme-text, #1c1917);
+  text-decoration: none;
+}
+
+.hero-lead-embed .timeline-card-title a:hover {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.hero-lead-embed .timeline-card-body {
+  font-size: var(--text-base, 1rem);
+  line-height: var(--leading-relaxed, 1.65);
+  color: var(--theme-text-secondary, #52525b);
+}
+
+/* Secondary Top Stories */
+.hero-secondary-stories {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-secondary-embed {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-secondary-embed .view-frontpage,
+.hero-secondary-embed .views-element-container > div[class*="js-view-dom-id-"] {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  height: 100% !important;
+}
+
+.hero-secondary-embed .views-row {
+  flex: 1 1 50%;
+}
+
+.hero-secondary-embed .timeline-card {
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.08));
+  border-left: 3px solid var(--kaliyattam-gold, #d97706);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--theme-surface, #ffffff);
+  padding: 0.95rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-secondary-embed .timeline-card:hover {
+  border-color: var(--kaliyattam-primary, #890000);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.06));
+}
+
+.hero-secondary-embed .timeline-card-title {
+  font-size: var(--text-base, 1rem) !important;
+  line-height: var(--leading-snug, 1.35) !important;
+  font-family: var(--font-serif-heading, Georgia, serif) !important;
+  margin-bottom: 0.35rem;
+}
+
+/* ==========================================================================
+   4. Main Newspaper Grid (Multi-Column Layout)
+   ========================================================================== */
+
+.newspaper-main-deck {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.25rem;
+}
+
+@media (min-width: 992px) {
+  .newspaper-main-deck {
+    grid-template-columns: minmax(0, 1.85fr) minmax(0, 1.15fr);
+    align-items: start;
+  }
+}
+
+.newspaper-col-primary {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.newspaper-col-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ==========================================================================
+   5. Section Headers & Action Links
+   ========================================================================== */
+
+.newspaper-section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--kaliyattam-primary, #890000);
+}
+
+.section-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-icon {
+  font-size: 1.25rem;
+}
+
+.newspaper-section-title {
+  margin: 0;
+  font-family: var(--font-serif-heading, Georgia, serif);
+  font-size: var(--text-xl, 1.25rem);
+  font-weight: 700;
+  color: var(--kaliyattam-primary, #890000);
+  letter-spacing: -0.01em;
+}
+
+.section-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--kaliyattam-primary, #890000);
+  text-decoration: none;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-xs, 4px);
+  background: rgba(137, 0, 0, 0.05);
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.section-action-link:hover,
+.section-action-link:focus-visible {
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   6. Latest Posts Grid (2-Column Editorial Grid)
+   ========================================================================== */
+
+.newspaper-posts-grid .view-frontpage,
+.newspaper-posts-grid .views-element-container > div[class*="js-view-dom-id-"],
+.newspaper-posts-grid .view-display-id-block_posts {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1.25rem !important;
+}
+
+@media (min-width: 600px) {
+  .newspaper-posts-grid .view-frontpage,
+  .newspaper-posts-grid .views-element-container > div[class*="js-view-dom-id-"],
+  .newspaper-posts-grid .view-display-id-block_posts {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+.newspaper-posts-grid .views-row {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+.newspaper-posts-grid .views-row > .timeline-card {
+  flex: 1 1 auto;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.06));
+  border: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-md, 10px);
+  background: var(--theme-surface, #ffffff);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.newspaper-posts-grid .views-row > .timeline-card:hover {
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.08));
+  border-color: var(--kaliyattam-primary, #890000);
+  transform: translateY(-2px);
+}
+
+.newspaper-posts-grid .timeline-card-text {
+  font-size: 0.925rem;
+  line-height: var(--leading-normal, 1.55);
+  color: var(--theme-text, #1c1917);
+}
+
+/* ==========================================================================
+   7. Sacred Heritage Spotlight (3-Column Grid of Theyyams)
+   ========================================================================== */
+
+.newspaper-spotlight-grid .view-frontpage,
+.newspaper-spotlight-grid .views-element-container > div[class*="js-view-dom-id-"],
+.newspaper-spotlight-grid .view-display-id-block_theyyam {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1.25rem !important;
+}
+
+@media (min-width: 520px) {
+  .newspaper-spotlight-grid .view-frontpage,
+  .newspaper-spotlight-grid .views-element-container > div[class*="js-view-dom-id-"],
+  .newspaper-spotlight-grid .view-display-id-block_theyyam {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 820px) {
+  .newspaper-spotlight-grid .view-frontpage,
+  .newspaper-spotlight-grid .views-element-container > div[class*="js-view-dom-id-"],
+  .newspaper-spotlight-grid .view-display-id-block_theyyam {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+.newspaper-spotlight-grid .views-row {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+.newspaper-spotlight-grid .views-row > .timeline-card {
+  flex: 1 1 auto;
+  border: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.08));
+  border-top: 3px solid var(--kaliyattam-gold, #d97706);
+  border-radius: var(--radius-md, 10px);
+  background: var(--theme-surface, #ffffff);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.04));
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.newspaper-spotlight-grid .views-row > .timeline-card:hover {
+  border-color: var(--kaliyattam-gold, #d97706);
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.18);
+  transform: translateY(-2px);
+}
+
+/* Featured image for Theyyam spotlight cards */
+.newspaper-spotlight-grid .timeline-card-featured-img,
+.newspaper-spotlight-grid .timeline-card-featured-img .field,
+.newspaper-spotlight-grid .timeline-card-featured-img .field__item,
+.newspaper-spotlight-grid .timeline-card-featured-img picture {
+  display: block !important;
+  width: 100% !important;
+}
+
+.newspaper-spotlight-grid .timeline-card-featured-img img {
+  display: block !important;
+  width: 100% !important;
+  height: 180px !important;
+  object-fit: cover !important;
+  border-radius: var(--radius-xs, 4px);
+  transition: transform var(--transition-normal, 250ms ease);
+}
+
+.newspaper-spotlight-grid .views-row > .timeline-card:hover .timeline-card-featured-img img {
+  transform: scale(1.02);
+}
+
+/* Slider and gallery adaptations for spotlight cards */
+.newspaper-spotlight-grid .timeline-media-slider .flickity-viewport {
+  height: 180px !important;
+}
+
+.newspaper-spotlight-grid .timeline-media-slider.flickity-enabled,
+.newspaper-spotlight-grid .timeline-media-slider .flickity-cell {
+  background: transparent !important;
+}
+
+.newspaper-spotlight-grid .timeline-media-slider .flickity-cell,
+.newspaper-spotlight-grid .timeline-media-slider .flickity-cell > div,
+.newspaper-spotlight-grid .timeline-media-slider .flickity-cell > div > div,
+.newspaper-spotlight-grid .timeline-media-slider .field--name-field-media-image,
+.newspaper-spotlight-grid .timeline-media-slider .field__item,
+.newspaper-spotlight-grid .timeline-media-slider picture,
+.newspaper-spotlight-grid .timeline-media-slider img {
+  height: 100% !important;
+  width: 100% !important;
+  flex: 1 1 100% !important;
+  object-fit: cover !important;
+}
+
+.newspaper-spotlight-grid .timeline-card-title a {
+  font-family: var(--font-serif-heading, Georgia, serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--theme-text, #1c1917);
+  text-decoration: none;
+}
+
+.newspaper-spotlight-grid .timeline-card-title a:hover {
+  color: var(--kaliyattam-gold-dark, #b45309);
+}
+
+.newspaper-spotlight-grid .timeline-card-text {
+  font-size: 0.85rem;
+  line-height: var(--leading-snug, 1.45);
+  color: var(--theme-text-secondary, #52525b);
+}
+
+/* ==========================================================================
+   8. Editorial Rail Boxes (Right Sidebar Desk)
+   ========================================================================== */
+
+.newspaper-rail-box {
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #cbd5e1);
+  border-radius: var(--radius-md, 10px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.04));
+  overflow: hidden;
+}
+
+.rail-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  background: var(--theme-surface-warm, #f4efe8);
+  border-bottom: 1px solid var(--theme-border, #cbd5e1);
+}
+
+.rail-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.rail-icon {
+  font-size: 1.1rem;
+}
+
+.rail-title {
+  margin: 0;
+  font-family: var(--font-serif-heading, Georgia, serif);
+  font-size: var(--text-base, 1rem);
+  font-weight: 700;
+  color: var(--theme-text, #1c1917);
+}
+
+.rail-action-link {
+  font-size: 0.785rem;
+  font-weight: 600;
+  color: var(--kaliyattam-primary, #890000);
+  text-decoration: none;
+}
+
+.rail-action-link:hover {
+  text-decoration: underline;
+}
+
+.rail-box-content {
+  padding: 1rem;
+}
+
+/* --- Compact Upcoming Events Agenda --- */
+.newspaper-rail-box--events .rail-box-content {
+  padding: 0.75rem;
+}
+
+.newspaper-rail-box--events .view-frontpage,
+.newspaper-rail-box--events .views-element-container > div[class*="js-view-dom-id-"] {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.85rem !important;
+}
+
+.newspaper-rail-box--events .timeline-card {
+  padding: 0.85rem;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--theme-surface-alt, #fafafa);
+  border: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.06));
+  border-left: 3px solid var(--kaliyattam-primary, #890000);
+  box-shadow: none;
+  margin: 0;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.newspaper-rail-box--events .timeline-card:hover {
+  background: var(--theme-surface, #ffffff);
+  border-color: var(--kaliyattam-gold, #d97706);
+  transform: translateX(2px);
+}
+
+/* Hide bulky author header and action bar in rail agenda */
+.newspaper-rail-box--events .timeline-card-header,
+.newspaper-rail-box--events .timeline-card-header--wiki,
+.newspaper-rail-box--events .timeline-card-actions {
+  display: none !important;
+}
+
+.newspaper-rail-box--events .timeline-card-title {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  line-height: var(--leading-snug, 1.35) !important;
+  margin: 0 0 0.4rem 0 !important;
+}
+
+.newspaper-rail-box--events .timeline-card-title a {
+  color: var(--theme-text, #1c1917);
+  text-decoration: none;
+}
+
+.newspaper-rail-box--events .timeline-card-title a:hover {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.newspaper-rail-box--events .timeline-card-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+.newspaper-rail-box--events .timeline-chip {
+  font-size: 0.785rem;
+  padding: 0.2rem 0.45rem;
+}
+
+.newspaper-rail-box--events .timeline-chip--date {
+  background: rgba(137, 0, 0, 0.08);
+  color: var(--kaliyattam-primary, #890000);
+  font-weight: 600;
+  border-radius: var(--radius-xs, 4px);
+}
+
+/* --- Community Voices & Recent Discussions --- */
+.newspaper-comments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.newspaper-comment-item {
+  padding: 0.85rem 1rem;
+  background: var(--theme-surface-alt, #fafafa);
+  border-left: 3px solid var(--kaliyattam-primary, #890000);
+  border-radius: 0 var(--radius-sm, 6px) var(--radius-sm, 6px) 0;
+  font-size: var(--text-sm, 0.875rem);
+  position: relative;
+  transition: background var(--transition-fast, 150ms ease);
+}
+
+.newspaper-comment-item:hover {
+  background: var(--theme-surface-warm, #f4efe8);
+}
+
+.newspaper-comment-item .views-field-comment-body {
+  font-style: italic;
+  color: var(--theme-text, #1c1917);
+  margin-bottom: 0.45rem;
+  line-height: var(--leading-normal, 1.5);
+}
+
+.newspaper-comment-item .views-field-comment-body::before {
+  content: "“";
+  font-size: 1.35rem;
+  color: var(--kaliyattam-primary, #890000);
+  font-weight: 700;
+  margin-right: 0.25rem;
+  line-height: 0;
+  vertical-align: -0.2em;
+}
+
+.newspaper-comment-item .views-field-comment-body::after {
+  content: "”";
+  font-size: 1.35rem;
+  color: var(--kaliyattam-primary, #890000);
+  font-weight: 700;
+  margin-left: 0.25rem;
+  line-height: 0;
+  vertical-align: -0.2em;
+}
+
+.newspaper-comment-item .views-field-name {
+  font-weight: 700;
+  color: var(--kaliyattam-primary, #890000);
+  display: inline;
+}
+
+.newspaper-comment-item .views-field-title {
+  display: inline;
+  color: var(--theme-text-secondary, #52525b);
+  font-size: 0.8125rem;
+}
+
+.newspaper-comment-item .views-field-title a {
+  color: var(--theme-text-secondary, #52525b);
+  text-decoration: underline;
+}
+
+.newspaper-comment-item .views-field-changed {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--theme-text-muted, #71717a);
+}
+
+/* --- Shrines Summary Box --- */
+.shrines-intro {
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--leading-normal, 1.5);
+  color: var(--theme-text-secondary, #52525b);
+  margin-bottom: 0.85rem;
+}
+
+.shrines-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shrines-highlights li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--theme-surface-alt, #fafafa);
+  border: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.06));
+  color: var(--theme-text, #1c1917);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.shrines-highlights li a:hover {
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+}
+
+.shrines-highlights li a:hover .badge-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.badge-count {
+  font-size: 0.725rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-xs, 4px);
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--theme-text-secondary, #52525b);
+}
+
+/* ==========================================================================
+   9. Dark Mode Refinements
+   ========================================================================== */
+
+[data-theme="dark"] .newspaper-masthead {
+  border-bottom-color: var(--kaliyattam-primary-light, #a81414);
+}
+
+[data-theme="dark"] .title-serif {
+  color: var(--kaliyattam-gold-light, #fbbf24);
+}
+
+[data-theme="dark"] .season-badge-box {
+  background: var(--kaliyattam-slate, #27272a);
+  border-color: rgba(251, 191, 36, 0.25);
+}
+
+[data-theme="dark"] .quicklink-pill {
+  background-color: var(--kaliyattam-slate, #27272a);
+  border-color: var(--kaliyattam-charcoal, #3f3f46);
+  color: var(--kaliyattam-light, #ffffff);
+}
+
+[data-theme="dark"] .quicklink-pill:hover {
+  background-color: var(--kaliyattam-primary-light, #a81414);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .rail-box-header {
+  background: var(--kaliyattam-slate, #27272a);
+  border-bottom-color: var(--kaliyattam-charcoal, #3f3f46);
+}
+
+[data-theme="dark"] .newspaper-comment-item,
+[data-theme="dark"] .shrines-highlights li a,
+[data-theme="dark"] .newspaper-rail-box--events .timeline-card {
+  background: var(--kaliyattam-slate, #27272a);
+  border-color: var(--kaliyattam-charcoal, #3f3f46);
+}
+
+[data-theme="dark"] .newspaper-comment-item:hover {
+  background: #323238;
+}
+
+[data-theme="dark"] .badge-count {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--kaliyattam-text-light-muted, rgba(255, 255, 255, 0.75));
+}

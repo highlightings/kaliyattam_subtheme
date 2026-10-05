@@ -903,7 +903,7 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $variables['attributes']['class'][] = 'view-id-' . $view_id;
   $variables['attributes']['class'][] = 'view-display-id-' . $display_id;
 
-  // Attach timeline-feeds library contextually to timeline, feed, and card views.
+  // Attach timeline-feeds and frontpage-newspaper libraries contextually.
   $timeline_views = [
     'events',
     'events_calendar',
@@ -915,10 +915,15 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
     'timeline_location',
     'sitewide_timeline',
     'timeline_type',
+    'frontpage',
   ];
   if (in_array($view_id, $timeline_views, TRUE) || str_contains($view_id, 'timeline') || str_contains($view_id, 'feed')) {
     $variables['#attached']['library'][] = 'kaliyattam_subtheme/timeline-feeds';
   }
+  if ($view_id === 'frontpage') {
+    $variables['#attached']['library'][] = 'kaliyattam_subtheme/frontpage-newspaper';
+  }
+
 
   // Event Date Archives & Hub navigation toolbar: unified across /events, /events/past, /events/calendar, /events/YYYY, /events/YYYY/MM, /events/YYYY/MM/DD.
   $is_events_view = ($view_id === 'events' && in_array($display_id, ['page_1', 'page_2', 'page_year', 'page_month', 'page_day'], TRUE));

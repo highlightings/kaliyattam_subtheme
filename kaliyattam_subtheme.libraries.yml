@@ -73,3 +73,11 @@ timeline-feeds:
   dependencies:
     - core/drupal
     - core/once
+
+frontpage-newspaper:
+  version: 1.0
+  css:
+    theme:
+      css/frontpage-newspaper.css: {}
+  dependencies:
+    - core/drupal

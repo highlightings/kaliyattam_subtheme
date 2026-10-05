@@ -121,21 +121,21 @@
     {% endif %}
 
     <div class="timeline-card-text">
-      {% if content.field_content is not empty %}
+      {% if node.hasField('field_content') and not node.field_content.isEmpty() %}
         {{ content.field_content }}
-      {% elseif content.body is not empty %}
+      {% elseif node.hasField('body') and not node.body.isEmpty() %}
         {{ content.body }}
       {% endif %}
     </div>
 
     {# Media Grid / Lazy Video Embed #}
-    {% if content.field_media is not empty %}
+    {% if node.hasField('field_media') and not node.field_media.isEmpty() %}
       <div class="timeline-card-media-wrapper">
         <div class="timeline-card-media-grid">
           {{ content.field_media }}
         </div>
       </div>
-    {% elseif content.field_featured_image is not empty %}
+    {% elseif node.hasField('field_featured_image') and not node.field_featured_image.isEmpty() %}
       <div class="timeline-card-media-wrapper">
         <div class="timeline-card-featured-img">
           {{ content.field_featured_image }}
