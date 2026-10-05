@@ -4,6 +4,7 @@ dependencies:
   module:
     - kaliyattam_core
     - system
+    - user
   theme:
     - kaliyattam_subtheme
 id: kaliyattam_subtheme_updates_cover
@@ -29,3 +30,10 @@ visibility:
     id: request_path
     negate: false
     pages: "/updates\n/updates/*\n/updates_1\n/updates_1/*"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

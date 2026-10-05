@@ -223,7 +223,7 @@
 
         // Check if query params indicate search or filters are active
         const urlParams = new URLSearchParams(window.location.search);
-        const hasFilterActive = urlParams.has('search') || urlParams.has('place') || (urlParams.has('type') && urlParams.get('type') !== 'All');
+        const hasFilterActive = urlParams.has('search') || urlParams.has('place');
         if (hasFilterActive) {
           exposedForm.classList.add('is-open');
           searchBtn.classList.add('is-active');
@@ -633,4 +633,3 @@
     }
   };
 })(Drupal, once);
-
