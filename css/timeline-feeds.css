@@ -530,12 +530,21 @@ body[data-feed-layout="list"] .timeline-card-media-wrapper iframe {
 }
 
 /* Theyyam Chip: Clean inline comma-separated list with truncation */
-.view-locations-map .timeline-chip--theyyam {
+.view-locations-map .timeline-chip--theyyam,
+.view-timeline-locations .timeline-chip--theyyam,
+.view-temples .timeline-chip--theyyam,
+.view-locations .timeline-chip--theyyam {
   display: none !important;
 }
 
 .timeline-chip--theyyam {
   max-width: 100%;
+}
+
+.post-meta-chips-bottom {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: 0.5rem;
 }
 
 .timeline-chip--theyyam > div,

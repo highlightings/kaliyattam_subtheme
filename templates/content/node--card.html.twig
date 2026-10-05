@@ -165,7 +165,7 @@
           </span>
         {% endif %}
 
-        {% if has_theyyam %}
+        {% if has_theyyam and node.bundle != 'location' %}
           <div class="timeline-chip timeline-chip--theyyam" title="{{ 'Related Theyyam'|t }}">
             <span class="chip-label" aria-hidden="true">🎭</span>
             {{ theyyam_rendered|raw }}

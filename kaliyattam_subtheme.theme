@@ -269,13 +269,9 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
     $variables['last_updated_date'] = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'medium');
   }
 
-  // Remove related theyyam chips from locations_map view attachment (shown on full view).
-  if ($node->bundle() === 'location') {
-    $path_info = \Drupal::request()->getPathInfo();
-    $is_map_view = (!empty($variables['view']) && $variables['view']->id() === 'locations_map');
-    if ($is_map_view || str_starts_with($path_info, '/temples/map')) {
-      unset($variables['content']['field_theyyam']);
-    }
+  // Remove related theyyam chips from location cards (shown on full view only).
+  if ($node->bundle() === 'location' && $variables['view_mode'] !== 'full') {
+    unset($variables['content']['field_theyyam']);
   }
 }
 
@@ -942,21 +938,25 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
     $has_search = !empty(\Drupal::request()->query->get('search'));
 
     $tabs_html = '
-      <div class="timeline-tabs-bar-wrapper">
-        <div class="timeline-tabs-bar">
-          <nav class="timeline-nav-tabs" aria-label="' . t('Events Navigation') . '">
-            <a href="/events" class="timeline-nav-tab' . ($is_upcoming ? ' is-active' : '') . '" data-tab="upcoming">
+      <div class="timeline-tabs-bar-wrapper events-archive-header">
+        <div class="timeline-tabs-bar events-archive-toolbar">
+          <nav class="timeline-nav-tabs vector-menu-content-list" aria-label="' . t('Events Navigation') . '">
+            <a href="/events" class="timeline-nav-tab events-tab-upcoming' . ($is_upcoming ? ' is-active selected' : '') . '" data-tab="upcoming">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
               <span class="tab-label">' . t('Upcoming') . '</span>
             </a>
-            <a href="/events/calendar" class="timeline-nav-tab' . ($is_calendar ? ' is-active' : '') . '" data-tab="calendar">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              <span class="tab-label">' . t('Calendar') . '</span>
-            </a>
-            <a href="/events/past" class="timeline-nav-tab' . ($is_past ? ' is-active' : '') . '" data-tab="past">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
-              <span class="tab-label">' . t('Archive') . '</span>
-            </a>
+            <span class="events-tab-calendar d-inline-flex' . ($is_calendar ? ' is-active' : '') . '">
+              <a href="/events/calendar" class="timeline-nav-tab' . ($is_calendar ? ' is-active selected' : '') . '" data-tab="calendar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span class="tab-label">' . t('Calendar view') . '</span>
+              </a>
+            </span>
+            <span class="events-tab-archive d-inline-flex' . ($is_past ? ' is-active' : '') . '">
+              <a href="/events/past" class="timeline-nav-tab' . ($is_past ? ' is-active selected' : '') . '" data-tab="past">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                <span class="tab-label">' . t('Archive') . '</span>
+              </a>
+            </span>
             ' . ($is_by_date ? '
             <a href="/events/' . $year . '" class="timeline-nav-tab is-active" data-tab="year">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -1026,19 +1026,19 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
       }
 
       $tabs_html = '
-        <div class="timeline-tabs-bar-wrapper">
-          <div class="timeline-tabs-bar">
-            <nav class="timeline-nav-tabs" aria-label="' . t('Events Timeline Navigation') . '">
+        <div class="timeline-tabs-bar-wrapper events-archive-header">
+          <div class="timeline-tabs-bar events-archive-toolbar">
+            <nav class="timeline-nav-tabs vector-menu-content-list" aria-label="' . t('Events Timeline Navigation') . '">
               <a href="/timeline/events?when=3&sort_newest=DESC" class="timeline-nav-tab' . ($active_tab === 'new' ? ' is-active' : '') . '" data-tab="new">
                 <span class="tab-label">' . t('New') . '</span>
               </a>
               <a href="/timeline/events?when=3&favorites=1" class="timeline-nav-tab' . ($active_tab === 'top' ? ' is-active' : '') . '" data-tab="top">
                 <span class="tab-label">' . t('Top') . '</span>
               </a>
-              <a href="/timeline/events?when=1" class="timeline-nav-tab' . ($active_tab === 'upcoming' ? ' is-active' : '') . '" data-tab="upcoming">
+              <a href="/events" class="timeline-nav-tab events-tab-upcoming' . ($active_tab === 'upcoming' ? ' is-active' : '') . '" data-tab="upcoming">
                 <span class="tab-label">' . t('Upcoming') . '</span>
               </a>
-              <a href="/timeline/events?when=2" class="timeline-nav-tab' . ($active_tab === 'past' ? ' is-active' : '') . '" data-tab="past">
+              <a href="/events/past" class="timeline-nav-tab events-tab-archive' . ($active_tab === 'past' ? ' is-active' : '') . '" data-tab="past">
                 <span class="tab-label">' . t('Past') . '</span>
               </a>
               <a href="/events/calendar" class="timeline-nav-tab" data-tab="calendar">
@@ -1364,23 +1364,23 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
       ],
       [
         'text' => $author_name,
-        'url' => '/user/' . $author_uid . '/timeline?page=1',
+        'url' => '/user/' . $author_uid . '/timeline',
       ],
       [
         'text' => t('posts'),
-        'url' => '/posts',
+        'url' => '/user/' . $author_uid . '/posts',
       ],
       [
         'text' => $year,
-        'url' => '/posts?year=' . $year,
+        'url' => '/user/' . $author_uid . '/posts/' . $year,
       ],
       [
         'text' => $month,
-        'url' => '/posts?year=' . $year . '&month=' . $month,
+        'url' => '/user/' . $author_uid . '/posts/' . $year . '/' . $month,
       ],
       [
         'text' => $day,
-        'url' => '/posts?year=' . $year . '&month=' . $month . '&day=' . $day,
+        'url' => '/user/' . $author_uid . '/posts/' . $year . '/' . $month . '/' . $day,
       ],
       [
         'text' => (string) $nid,
@@ -1443,27 +1443,83 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
 
   $route_name = $route_match->getRouteName();
 
-  // Format breadcrumbs for user timelines (/user/{uid}/timeline): Home > {User} > Timeline.
+  // Format breadcrumbs for user timelines (/user/{uid}/timeline or /user/{uid}/posts):
   if (in_array($route_name, ['view.timeline_user.page_timeline', 'entity.user.canonical', 'entity.user.edit_form'], TRUE)) {
     $user_param = $route_match->getParameter('user') ?? $route_match->getParameter('arg_0');
     $user_entity = is_numeric($user_param) ? \Drupal\user\Entity\User::load($user_param) : ($user_param instanceof \Drupal\user\UserInterface ? $user_param : NULL);
     $user_display_name = $user_entity ? $user_entity->getDisplayName() : ('User ' . $user_param);
     $user_uid = $user_entity ? $user_entity->id() : $user_param;
 
-    $variables['breadcrumb'] = [
+    $req = \Drupal::request();
+    $archive_path = $req->attributes->get('_user_post_archive_path');
+    $path_info = $req->getPathInfo();
+    $is_posts_path = $archive_path || str_contains($path_info, '/posts');
+
+    $q_year = $req->query->get('year');
+    $q_month = $req->query->get('month');
+    $q_day = $req->query->get('day');
+
+    $breadcrumbs = [
       [
         'text' => t('Home'),
         'url' => '/',
       ],
       [
         'text' => $user_display_name,
-        'url' => '/user/' . $user_uid . '/timeline?page=1',
-      ],
-      [
-        'text' => t('Timeline'),
-        'url' => '',
+        'url' => '/user/' . $user_uid . '/timeline',
       ],
     ];
+
+    if ($is_posts_path || $q_year) {
+      if ($q_year) {
+        $breadcrumbs[] = [
+          'text' => t('posts'),
+          'url' => '/user/' . $user_uid . '/posts',
+        ];
+        if ($q_month) {
+          $breadcrumbs[] = [
+            'text' => $q_year,
+            'url' => '/user/' . $user_uid . '/posts/' . $q_year,
+          ];
+          if ($q_day) {
+            $breadcrumbs[] = [
+              'text' => $q_month,
+              'url' => '/user/' . $user_uid . '/posts/' . $q_year . '/' . $q_month,
+            ];
+            $breadcrumbs[] = [
+              'text' => $q_day,
+              'url' => '',
+            ];
+          }
+          else {
+            $breadcrumbs[] = [
+              'text' => $q_month,
+              'url' => '',
+            ];
+          }
+        }
+        else {
+          $breadcrumbs[] = [
+            'text' => $q_year,
+            'url' => '',
+          ];
+        }
+      }
+      else {
+        $breadcrumbs[] = [
+          'text' => t('posts'),
+          'url' => '',
+        ];
+      }
+    }
+    else {
+      $breadcrumbs[] = [
+        'text' => t('Timeline'),
+        'url' => '',
+      ];
+    }
+
+    $variables['breadcrumb'] = $breadcrumbs;
     return;
   }
 

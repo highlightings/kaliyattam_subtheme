@@ -59,26 +59,6 @@
           </div>
         </div>
       </div>
-
-      {# Associated Entity Chips (Theyyam / Location) #}
-      <div class="node-meta-chips">
-        {% if node.field_theyyam is not empty and node.field_theyyam.entity %}
-          {% set theyyam = node.field_theyyam.entity %}
-          {% set theyyam_url = path('entity.node.canonical', {'node': theyyam.id()}) %}
-          <a href="{{ theyyam_url }}" class="timeline-chip timeline-chip--theyyam">
-            <span class="chip-icon" aria-hidden="true">🎭</span>
-            <span class="chip-text">{{ theyyam.label() }}</span>
-          </a>
-        {% endif %}
-        {% if node.field_where is not empty and node.field_where.entity %}
-          {% set place = node.field_where.entity %}
-          {% set place_url = path('entity.node.canonical', {'node': place.id()}) %}
-          <a href="{{ place_url }}" class="timeline-chip timeline-chip--place">
-            <span class="chip-icon" aria-hidden="true">🛕</span>
-            <span class="chip-text">{{ place.label() }}</span>
-          </a>
-        {% endif %}
-      </div>
     </div>
 
     <div{{ content_attributes.addClass('node__content') }}>
@@ -133,6 +113,38 @@
         {{ content|without('field_content', 'field_media', 'field_theyyam', 'field_where', 'field_comments_without_title', 'field_comments', 'field_tags', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title', 'content_moderation_control') }}
       </div>
 
+      {# Associated Entity Chips below content (Theyyam followed by Place) #}
+      {% set has_theyyam_chip = node.field_theyyam is not empty and node.field_theyyam.entity %}
+      {% set has_where_chip = node.field_where is not empty and node.field_where.entity %}
+      {% if has_theyyam_chip or has_where_chip %}
+        <div class="node-meta-chips post-meta-chips-bottom my-3 d-flex flex-wrap align-items-center gap-2">
+          {% if has_theyyam_chip %}
+            {% for item in node.field_theyyam %}
+              {% if item.entity %}
+                {% set theyyam = item.entity %}
+                {% set theyyam_url = path('entity.node.canonical', {'node': theyyam.id()}) %}
+                <a href="{{ theyyam_url }}" class="timeline-chip timeline-chip--theyyam">
+                  <span class="chip-icon" aria-hidden="true">🎭</span>
+                  <span class="chip-text">{{ theyyam.label() }}</span>
+                </a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if has_where_chip %}
+            {% for item in node.field_where %}
+              {% if item.entity %}
+                {% set place = item.entity %}
+                {% set place_url = path('entity.node.canonical', {'node': place.id()}) %}
+                <a href="{{ place_url }}" class="timeline-chip timeline-chip--place">
+                  <span class="chip-icon" aria-hidden="true">🛕</span>
+                  <span class="chip-text">{{ place.label() }}</span>
+                </a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
+
       {# Node Interaction Bar (Bottom of Content) #}
       <div class="node-interaction-bar post-interaction-bar d-flex flex-wrap align-items-center gap-2 py-3 my-4">
         {% if logged_in %}
@@ -142,6 +154,9 @@
             {% endif %}
             {% if flag_like_node is not empty %}
               {{ flag_like_node }}
+            {% endif %}
+            {% if flag_bookmark is not empty %}
+              {{ flag_bookmark }}
             {% endif %}
             <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
               <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
@@ -160,6 +175,9 @@
             </a>
             <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like this post'|t }}">
               <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i><span>{{ 'Like'|t }}</span>
+            </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark this post'|t }}">
+              <i class="bi bi-bookmark me-1" aria-hidden="true"></i><span>{{ 'Bookmark'|t }}</span>
             </a>
             <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
               <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>

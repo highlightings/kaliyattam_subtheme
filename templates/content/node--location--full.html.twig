@@ -205,6 +205,9 @@
             <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like'|t }}">
               <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i><span>{{ 'Like'|t }}</span>
             </a>
+            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark'|t }}">
+              <i class="bi bi-bookmark me-1" aria-hidden="true"></i><span>{{ 'Bookmark'|t }}</span>
+            </a>
             <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
               <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
             </button>
