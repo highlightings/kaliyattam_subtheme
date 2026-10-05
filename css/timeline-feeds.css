@@ -1304,6 +1304,48 @@ body[data-feed-layout="list"] .view-timeline-type .views-infinite-scroll-content
   padding: 1.25rem 1.4rem !important;
 }
 
+/* Grid Layout: Wiki card header (Temples & Places) - Place badge below title and date */
+.timeline-feed--grid .timeline-card-wiki-group,
+.is-grid-layout .timeline-card-wiki-group,
+body[data-feed-layout="grid"] .timeline-card-wiki-group {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.timeline-feed--grid .timeline-card-wiki-title-row,
+.is-grid-layout .timeline-card-wiki-title-row,
+body[data-feed-layout="grid"] .timeline-card-wiki-title-row {
+  display: contents !important;
+}
+
+.timeline-feed--grid .timeline-card-wiki-group .timeline-card-title,
+.is-grid-layout .timeline-card-wiki-group .timeline-card-title,
+body[data-feed-layout="grid"] .timeline-card-wiki-group .timeline-card-title {
+  order: 1 !important;
+  width: 100% !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.timeline-feed--grid .timeline-card-wiki-group .timeline-card-time-line,
+.is-grid-layout .timeline-card-wiki-group .timeline-card-time-line,
+body[data-feed-layout="grid"] .timeline-card-wiki-group .timeline-card-time-line {
+  order: 2 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.timeline-feed--grid .timeline-card-wiki-group .timeline-badge,
+.is-grid-layout .timeline-card-wiki-group .timeline-badge,
+body[data-feed-layout="grid"] .timeline-card-wiki-group .timeline-badge {
+  order: 3 !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  padding: 0.25rem 0.65rem !important;
+  font-size: 0.75rem !important;
+  margin-top: 0.15rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
 .timeline-feed--list .timeline-card,
 .is-list-layout .timeline-card {
   padding: 1.5rem 1.75rem !important;
