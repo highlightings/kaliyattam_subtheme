@@ -717,3 +717,397 @@ body:has(.updates-community-page) .site-content {
     padding: 0 1rem;
   }
 }
+
+/* ==========================================================================
+   6. UPDATES_1: THREE COLUMN LAYOUT (25% - 50% - 25%) & STREAM FEED
+   ========================================================================== */
+.updates-1-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.updates-1-three-columns {
+  display: grid;
+  grid-template-columns: minmax(260px, 25%) minmax(0, 50%) minmax(260px, 25%);
+  gap: 1.75rem;
+  align-items: start;
+  padding: 1.75rem 0 3.5rem 0;
+}
+
+/* Fixed Sidebars (Left & Right 25% columns) */
+.updates-1-fixed-sidebar {
+  position: sticky;
+  top: 85px;
+  max-height: calc(100vh - 105px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #d6bfa8 transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-right: 0.25rem;
+}
+
+.updates-1-fixed-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.updates-1-fixed-sidebar::-webkit-scrollbar-thumb {
+  background-color: #d6bfa8;
+  border-radius: 4px;
+}
+
+/* Middle Stream Column (50%) */
+.updates-1-stream-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.updates-1-submenu {
+  background: #ffffff;
+  border: 1px solid #e7ded4;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.updates-1-header {
+  margin-bottom: 0.5rem;
+}
+
+.updates-1-stream-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.updates-1-stream-item {
+  width: 100%;
+}
+
+/* Ensure all stream cards follow card 166 styling */
+.updates-1-stream-feed .timeline-card {
+  width: 100%;
+  margin-bottom: 0;
+  background: #ffffff;
+  border: 1px solid #e7ded4;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.updates-1-stream-feed .timeline-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(137, 0, 0, 0.09), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  border-color: #d6bfa8;
+}
+
+/* Infinite scroll pager styling */
+.updates-1-pager-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0;
+}
+
+/* Sidebar Cards */
+.updates-sidebar-card {
+  background: #ffffff;
+  border: 1px solid #e7ded4;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.updates-sidebar-heading {
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--kaliyattam-primary, #890000);
+  margin: 0 0 0.85rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f4ede4;
+}
+
+/* User / Guest Card */
+.updates-user-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.updates-user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--kaliyattam-primary, #890000) 0%, var(--kaliyattam-gold-dark, #b45309) 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(137, 0, 0, 0.28);
+  flex-shrink: 0;
+}
+
+.updates-user-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--kaliyattam-text, #1c1917);
+  margin: 0 0 0.15rem 0;
+}
+
+.updates-user-profile-link {
+  font-size: 0.8rem;
+  color: var(--kaliyattam-primary, #890000);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.updates-user-profile-link:hover {
+  text-decoration: underline;
+}
+
+.updates-btn-create-post {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.updates-btn-create-post:hover {
+  background: var(--kaliyattam-primary-dark, #5c0000);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Guest Card */
+.updates-guest-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.updates-guest-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--kaliyattam-primary, #890000);
+  margin: 0 0 0.4rem 0;
+}
+
+.updates-guest-desc {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--kaliyattam-text-secondary, #52525b);
+  margin: 0 0 1rem 0;
+}
+
+.updates-guest-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.updates-sidebar-btn {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.updates-sidebar-btn-primary {
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+}
+
+.updates-sidebar-btn-primary:hover {
+  background: var(--kaliyattam-primary-dark, #5c0000);
+  color: #ffffff;
+}
+
+.updates-sidebar-btn-secondary {
+  background: #fdfaf7;
+  color: var(--kaliyattam-primary, #890000);
+  border: 1px solid #d6bfa8;
+}
+
+.updates-sidebar-btn-secondary:hover {
+  background: #f7f0e6;
+}
+
+/* Quick Navigation Menu */
+.updates-sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.updates-sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--kaliyattam-text, #1c1917);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.updates-sidebar-menu li a:hover {
+  background: #fdfaf7;
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.updates-sidebar-menu li a.is-active {
+  background: #fef2f2;
+  color: var(--kaliyattam-primary, #890000);
+  font-weight: 600;
+}
+
+.updates-sidebar-menu .menu-badge {
+  margin-left: auto;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 10px;
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* Widget Header */
+.updates-sidebar-card .widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f4ede4;
+}
+
+.updates-sidebar-card .widget-header .updates-sidebar-heading {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.updates-sidebar-card .widget-header-link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--kaliyattam-primary, #890000);
+  text-decoration: none;
+}
+
+.updates-sidebar-card .widget-header-link:hover {
+  text-decoration: underline;
+}
+
+/* Sidebar items list */
+.sidebar-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.sidebar-item-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.sidebar-item-link:hover {
+  background: #fdfaf7;
+}
+
+.sidebar-item-badge {
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.sidebar-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.sidebar-item-title {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--kaliyattam-text, #1c1917);
+  line-height: 1.35;
+  transition: color 0.15s ease;
+}
+
+.sidebar-item-link:hover .sidebar-item-title {
+  color: var(--kaliyattam-primary, #890000);
+}
+
+.sidebar-item-meta {
+  font-size: 0.74rem;
+  color: var(--kaliyattam-primary, #890000);
+  font-weight: 500;
+}
+
+.updates-heritage-text {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--kaliyattam-text-secondary, #52525b);
+  margin: 0;
+}
+
+/* Responsive 3-Column Breakpoints */
+@media (max-width: 1100px) {
+  .updates-1-three-columns {
+    grid-template-columns: minmax(220px, 30%) minmax(0, 70%);
+  }
+  .updates-1-col--right {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .updates-1-three-columns {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 1rem 0 2.5rem 0;
+  }
+  .updates-1-col--left {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+  .updates-1-col--right {
+    display: flex;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}

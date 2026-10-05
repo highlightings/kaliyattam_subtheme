@@ -28,4 +28,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/updates\n/updates/*"
+    pages: "/updates\n/updates/*\n/updates_1\n/updates_1/*"
