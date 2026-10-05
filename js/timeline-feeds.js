@@ -157,8 +157,11 @@
       }
 
       function applyTimelineLayout(layout) {
+        // Set body attribute for clean CSS targeting across entire page
+        document.body.setAttribute('data-feed-layout', layout);
+
         const feedWrappers = document.querySelectorAll(
-          '.timeline-feed .view-content, .views-infinite-scroll-content-wrapper, .view-content, [class*="js-view-dom-id"] .view-content, .view-timeline-site .views-element-container:has(.timeline-pinned-indicator) div[class*="js-view-dom-id-"], .view-display-id-attachment_pinned, .view-display-id-attachment_pinned .view-content'
+          '.views-infinite-scroll-content-wrapper, .view-events .view-content, .view-timeline-site .view-content, .timeline-feed-content, [class*="js-view-dom-id"] > .view-content, .view-content:has(.timeline-feed-item), .view-content:has(.timeline-card)'
         );
         feedWrappers.forEach(function (wrapper) {
           if (layout === 'grid') {
@@ -171,7 +174,9 @@
         });
 
         // Set state class on the view containers so CSS can consistently style pinned attachments and list mode
-        const timelineViews = document.querySelectorAll('.view-timeline-site, .view-timeline-events, .view-timeline-theyyam, .view-timeline-location, .view-timeline-locations, .view-timeline-type, .view-theyyam-views, .view-events');
+        const timelineViews = document.querySelectorAll(
+          '.view-timeline-site, .view-timeline-events, .view-timeline-theyyam, .view-timeline-location, .view-timeline-locations, .view-timeline-type, .view-theyyam-views, .view-events, .view:has(.timeline-card)'
+        );
         timelineViews.forEach(function (view) {
           if (layout === 'grid') {
             view.classList.add('is-grid-layout');

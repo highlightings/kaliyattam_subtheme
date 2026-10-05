@@ -150,13 +150,25 @@
     {% set address_rendered = content.field_location_address|render %}
     {% set tags_rendered = content.field_tags|render %}
 
+    {# Google Maps URL for Location cards on /temples #}
+    {% set maps_url = '' %}
+    {% if node.bundle() == 'location' %}
+      {% if node.field_geofield and node.field_geofield.lat and node.field_geofield.lon %}
+        {% set maps_url = 'https://www.google.com/maps/search/?api=1&query=' ~ node.field_geofield.lat|trim ~ ',' ~ node.field_geofield.lon|trim %}
+      {% elseif has_address %}
+        {% set addr_query = [node.label(), node.field_location_address.address_line1, node.field_location_address.locality, node.field_location_address.postal_code]|filter(v => v is not empty)|join(', ') %}
+        {% set maps_url = 'https://www.google.com/maps/search/?api=1&query=' ~ addr_query|url_encode %}
+      {% endif %}
+    {% endif %}
+
     {% set has_when = when_rendered|striptags|trim is not empty %}
     {% set has_theyyam = theyyam_rendered|striptags|trim is not empty %}
     {% set has_where = where_rendered|striptags|trim is not empty %}
     {% set has_address = address_rendered|striptags|trim is not empty %}
     {% set has_tags = tags_rendered|striptags|trim is not empty %}
+    {% set has_map_link = (node.bundle() == 'location' and maps_url is not empty) %}
 
-    {% if has_when or has_theyyam or has_where or has_address or has_tags %}
+    {% if has_when or has_theyyam or has_where or has_address or has_tags or has_map_link %}
       <div class="timeline-card-chips">
         {% if has_when %}
           <span class="timeline-chip timeline-chip--date" title="{{ 'Event Time'|t }}">
@@ -179,7 +191,13 @@
           </div>
         {% endif %}
 
-        {% if has_address %}
+        {% if has_map_link %}
+          <div class="timeline-chip timeline-chip--address timeline-chip--map-link" title="{{ 'View on Google Maps'|t }}">
+            <a href="{{ maps_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'View @title on Google Maps'|t({'@title': node.label()}) }}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </a>
+          </div>
+        {% elseif has_address %}
           <div class="timeline-chip timeline-chip--address" title="{{ 'Location Address'|t }}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             {{ address_rendered|raw }}

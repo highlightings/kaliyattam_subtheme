@@ -573,23 +573,54 @@ body[data-feed-layout="list"] .timeline-card-media-wrapper iframe {
   color: var(--kaliyattam-text-muted, #71717a);
 }
 
-/* Address Chip: Clean compact inline format with truncation */
+/* Address Chip: Clean compact inline format with Google Maps link support */
 .timeline-chip--address {
   line-height: 1.35;
   max-width: 100%;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: inline-flex;
+  align-items: center;
   word-break: break-word;
 }
 
 .timeline-chip--address svg {
   flex-shrink: 0;
   display: inline-block;
-  vertical-align: -0.15em;
-  margin-right: 0.25rem;
+  vertical-align: middle;
+}
+
+/* Location Map Link Chip (Icon-only Google Maps link for /temples) */
+.timeline-chip--map-link,
+.timeline-chip--address:has(a) {
+  display: inline-flex !important;
+  padding: 0.3rem 0.55rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  background-color: var(--kaliyattam-surface-warm, #f4efe8);
+  border: 1px solid var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08));
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-chip--map-link a,
+.timeline-chip--address a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kaliyattam-primary, #890000);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.timeline-chip--map-link:hover,
+.timeline-chip--address:has(a):hover {
+  background-color: var(--kaliyattam-primary, #890000);
+  border-color: var(--kaliyattam-primary, #890000);
+  box-shadow: 0 2px 6px rgba(137, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.timeline-chip--map-link:hover a,
+.timeline-chip--address:has(a):hover a {
+  color: #ffffff;
 }
 
 .timeline-chip--address p,
@@ -1171,32 +1202,19 @@ html, body {
    Timeline Feeds: Grid & List Layouts
    ========================================================================== */
 
-/* Feed Stream Layout: matches /events wide card layout and container bounds */
+/* Feed Stream Layout: Grid Mode (Multi-column responsive grid) */
 .timeline-feed--grid,
-.timeline-feed--list,
-.view-timeline-site .view-content,
-.view-timeline-site .views-infinite-scroll-content-wrapper,
-.view-timeline-locations .view-content,
-.view-timeline-locations .views-infinite-scroll-content-wrapper,
-.view-timeline-type .view-content,
-.view-timeline-type .views-infinite-scroll-content-wrapper,
-.view-timeline-events .view-content,
-.view-timeline-events .views-infinite-scroll-content-wrapper,
-.view-timeline-theyyam .view-content,
-.view-timeline-theyyam .views-infinite-scroll-content-wrapper,
-.view-timeline-location .view-content,
-.view-timeline-location .views-infinite-scroll-content-wrapper,
-.view-locations-map .view-content,
-.view-locations-map .views-infinite-scroll-content-wrapper,
-.view-events .view-content,
-.view-events .views-infinite-scroll-content-wrapper,
-.is-grid-layout .view-content,
+.is-grid-layout > .views-infinite-scroll-content-wrapper,
 .is-grid-layout .views-infinite-scroll-content-wrapper,
-.is-grid-layout .view-display-id-attachment_pinned .view-content,
-.is-list-layout .view-content,
-.is-list-layout .views-infinite-scroll-content-wrapper {
-  display: flex !important;
-  flex-direction: column !important;
+.view-events.is-grid-layout .view-content,
+.view-events.is-grid-layout .timeline-feed-content,
+body[data-feed-layout="grid"] .timeline-feed--grid,
+body[data-feed-layout="grid"] .view-events .view-content,
+body[data-feed-layout="grid"] .view-timeline-site .views-infinite-scroll-content-wrapper,
+body[data-feed-layout="grid"] .view-timeline-locations .views-infinite-scroll-content-wrapper,
+body[data-feed-layout="grid"] .view-timeline-type .views-infinite-scroll-content-wrapper {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)) !important;
   gap: 1.5rem !important;
   align-items: stretch !important;
   width: 100% !important;
@@ -1204,17 +1222,52 @@ html, body {
   margin-bottom: 2rem !important;
 }
 
+@media (max-width: 767px) {
+  .timeline-feed--grid,
+  .is-grid-layout > .views-infinite-scroll-content-wrapper,
+  .is-grid-layout .views-infinite-scroll-content-wrapper,
+  .view-events.is-grid-layout .view-content,
+  .view-events.is-grid-layout .timeline-feed-content,
+  body[data-feed-layout="grid"] .timeline-feed--grid,
+  body[data-feed-layout="grid"] .view-events .view-content,
+  body[data-feed-layout="grid"] .view-timeline-site .views-infinite-scroll-content-wrapper,
+  body[data-feed-layout="grid"] .view-timeline-locations .views-infinite-scroll-content-wrapper,
+  body[data-feed-layout="grid"] .view-timeline-type .views-infinite-scroll-content-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Feed Stream Layout: List Mode (Single column stacked cards) */
+.timeline-feed--list,
+.is-list-layout > .views-infinite-scroll-content-wrapper,
+.is-list-layout .views-infinite-scroll-content-wrapper,
+.view-events.is-list-layout .view-content,
+.view-events.is-list-layout .timeline-feed-content,
+.is-list-layout .view-content,
+.is-list-layout .view-display-id-attachment_pinned,
+.is-list-layout .view-display-id-attachment_pinned .view-content,
+.view-timeline-site.is-list-layout div[class*="js-view-dom-id-"],
+body[data-feed-layout="list"] .timeline-feed--list,
+body[data-feed-layout="list"] .view-events .view-content,
+body[data-feed-layout="list"] .view-timeline-site .views-infinite-scroll-content-wrapper,
+body[data-feed-layout="list"] .view-timeline-locations .views-infinite-scroll-content-wrapper,
+body[data-feed-layout="list"] .view-timeline-type .views-infinite-scroll-content-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Feed Item Rows */
 .timeline-feed-item,
+.views-row:has(.timeline-card),
 .timeline-feed--grid > .timeline-feed-item,
 .timeline-feed--list > .timeline-feed-item,
-.view-timeline-site .timeline-feed-item,
-.view-timeline-locations .timeline-feed-item,
-.view-timeline-type .timeline-feed-item,
-.view-timeline-events .timeline-feed-item,
-.view-timeline-theyyam .timeline-feed-item,
-.view-timeline-location .timeline-feed-item,
-.view-locations-map .timeline-feed-item,
-.view-events .timeline-feed-item,
 .is-grid-layout .timeline-feed-item,
 .is-list-layout .timeline-feed-item {
   margin-bottom: 0 !important;
@@ -1225,17 +1278,17 @@ html, body {
   box-sizing: border-box !important;
 }
 
+.timeline-feed--grid > .timeline-feed-item,
+.timeline-feed--grid > .views-row,
+.is-grid-layout .timeline-feed-item,
+.is-grid-layout .views-row {
+  height: 100% !important;
+}
+
+/* Timeline Cards */
 .timeline-card,
 .timeline-feed--grid .timeline-card,
 .timeline-feed--list .timeline-card,
-.view-timeline-site .timeline-card,
-.view-timeline-locations .timeline-card,
-.view-timeline-type .timeline-card,
-.view-timeline-events .timeline-card,
-.view-timeline-theyyam .timeline-card,
-.view-timeline-location .timeline-card,
-.view-locations-map .timeline-card,
-.view-events .timeline-card,
 .is-grid-layout .timeline-card,
 .is-list-layout .timeline-card {
   height: 100% !important;
@@ -1246,11 +1299,18 @@ html, body {
   box-sizing: border-box !important;
 }
 
+.timeline-feed--grid .timeline-card,
+.is-grid-layout .timeline-card {
+  padding: 1.25rem 1.4rem !important;
+}
+
+.timeline-feed--list .timeline-card,
+.is-list-layout .timeline-card {
+  padding: 1.5rem 1.75rem !important;
+}
+
 .timeline-feed--grid .timeline-card-body,
 .timeline-feed--list .timeline-card-body,
-.view-timeline-site .timeline-card-body,
-.view-timeline-locations .timeline-card-body,
-.view-timeline-type .timeline-card-body,
 .is-grid-layout .timeline-card-body,
 .is-list-layout .timeline-card-body {
   flex: 1 1 auto;
@@ -1258,42 +1318,9 @@ html, body {
 
 .timeline-feed--grid .timeline-card-actions,
 .timeline-feed--list .timeline-card-actions,
-.view-timeline-site .timeline-card-actions,
-.view-timeline-locations .timeline-card-actions,
-.view-timeline-type .timeline-card-actions,
 .is-grid-layout .timeline-card-actions,
 .is-list-layout .timeline-card-actions {
   margin-top: auto;
-}
-
-/* List Layout (Expanded width single column centered feed) */
-.timeline-feed--list,
-.is-list-layout .timeline-feed--list,
-.is-list-layout .views-infinite-scroll-content-wrapper,
-.is-list-layout .view-content,
-.is-list-layout .view-display-id-attachment_pinned,
-.is-list-layout .view-display-id-attachment_pinned .view-content,
-.view-timeline-site.is-list-layout div[class*="js-view-dom-id-"] {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 1.5rem !important;
-  max-width: 100% !important;
-  width: 100% !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-.timeline-feed--list > .timeline-feed-item,
-.is-list-layout .timeline-feed-item {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-bottom: 0 !important;
-}
-
-.timeline-feed--list .timeline-card,
-.is-list-layout .timeline-card {
-  width: 100% !important;
-  padding: 1.5rem 1.75rem !important;
 }
 
 /* List Mode: date and place chips stacked one over the other */

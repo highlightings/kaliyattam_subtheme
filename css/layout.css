@@ -375,10 +375,10 @@ ul.tabs {
   width: 100%;
 }
 
-.view-content:has(.timeline-card),
-.view-content:has(.timeline-feed-item),
-.views-infinite-scroll-content-wrapper:has(.timeline-card),
-.views-infinite-scroll-content-wrapper:has(.timeline-feed-item) {
+.view-content:has(.timeline-card):not(.timeline-feed--grid),
+.view-content:has(.timeline-feed-item):not(.timeline-feed--grid),
+.views-infinite-scroll-content-wrapper:has(.timeline-card):not(.timeline-feed--grid),
+.views-infinite-scroll-content-wrapper:has(.timeline-feed-item):not(.timeline-feed--grid) {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

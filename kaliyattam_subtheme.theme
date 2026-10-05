@@ -988,6 +988,24 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
           </nav>
           <div class="timeline-tabs-actions">
             ' . $day_badge . '
+            ' . (!$is_calendar ? '
+            <div id="near-me-toggle-wrapper" class="near-me-wrapper">
+              <button type="button" id="btn-near-me" class="btn-near-me" aria-label="' . t('Find events near me') . '">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg>
+                <span>' . t('Near Me') . '</span>
+              </button>
+              <span id="near-me-status" class="near-me-status"></span>
+            </div>
+            <div class="timeline-view-switcher" role="group" aria-label="' . t('Layout view switcher') . '">
+              <button type="button" class="view-switch-btn is-active" data-layout="grid" title="' . t('Grid view') . '" aria-label="' . t('Grid view') . '" aria-pressed="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span class="switcher-text">' . t('Grid') . '</span>
+              </button>
+              <button type="button" class="view-switch-btn" data-layout="list" title="' . t('List view') . '" aria-label="' . t('List view') . '" aria-pressed="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+                <span class="switcher-text">' . t('List') . '</span>
+              </button>
+            </div>' : '') . '
           </div>
         </div>
         ' . ($show_months ? '
