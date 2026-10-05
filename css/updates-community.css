@@ -1,0 +1,700 @@
+/**
+ * @file
+ * Styles for Kaliyattam Updates / Community Feed Page (/updates).
+ * Inspired by released.in/test2 aesthetic:
+ * - Airy hero cover with gradient title and rounded action buttons
+ * - Submenu navigation bar
+ * - Modern 3-column responsive card feed
+ * - Subtle author details on events
+ * - No author details on Theyyam & Temples (last updated date only)
+ * - Full author details on posts
+ */
+
+/* ==========================================================================
+   0. PAGE-LEVEL RESET & SUPPRESSION
+   ========================================================================== */
+body:has(.updates-community-page) .block-page-title-block,
+body:has(.updates-cover-wrapper) .block-page-title-block,
+body:has(.updates-community-page) .site-breadcrumb {
+  display: none !important;
+}
+
+body:has(.updates-community-page) .site-main > .container {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+body:has(.updates-community-page) .site-content {
+  width: 100% !important;
+}
+
+/* ==========================================================================
+   1. HERO COVER BANNER (inspired by released.in/test2)
+   ========================================================================== */
+.updates-community-page {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.updates-cover-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+  padding: 4.5rem 1.5rem 4rem 1.5rem;
+  text-align: center;
+}
+
+.updates-cover-gradient {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.08) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 70%);
+}
+
+.updates-cover-container {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.updates-cover-title {
+  font-family: inherit;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 1.25rem 0;
+}
+
+.updates-cover-title .cover-title-line-1 {
+  display: block;
+  color: #1e293b;
+  padding-bottom: 0.25rem;
+}
+
+.updates-cover-title .cover-title-line-2 {
+  display: block;
+  background: linear-gradient(90deg, #10b981 0%, #3b82f6 50%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 0.25rem;
+}
+
+.updates-cover-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: #475569;
+  max-width: 680px;
+  margin: 0 auto 2.25rem auto;
+}
+
+.updates-cover-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.updates-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.75rem 1.6rem;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.updates-btn-primary {
+  background: #2563eb;
+  color: #ffffff !important;
+  border: 1px solid #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.22);
+}
+
+.updates-btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1e40af;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.32);
+}
+
+.updates-btn-secondary {
+  background: #ffffff;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.updates-btn-secondary:hover {
+  background: #f8fafc;
+  color: #0f172a !important;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.updates-btn-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   2. COMMUNITY SUBMENU BAR (inspired by released.in/test2 bx-menu-main-bar)
+   ========================================================================== */
+.updates-submenu-bar {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.updates-submenu-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.updates-submenu-list {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.updates-submenu-list::-webkit-scrollbar {
+  display: none;
+}
+
+.updates-submenu-item {
+  margin: 0;
+  padding: 0;
+}
+
+.updates-submenu-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.85rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #64748b;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.updates-submenu-link:hover {
+  color: #1e293b;
+  border-bottom-color: #cbd5e1;
+}
+
+.updates-submenu-item.is-active .updates-submenu-link {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+  font-weight: 600;
+}
+
+.submenu-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   3. COMMUNITY FEED & 3-COLUMN RESPONSIVE CARD GRID
+   ========================================================================== */
+.updates-main-content {
+  background: #f8fafc;
+  padding: 2.5rem 0 4rem 0;
+  min-height: 50vh;
+}
+
+.updates-feed-wrapper {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.updates-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .updates-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .updates-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.updates-grid-item {
+  width: 100%;
+}
+
+/* ==========================================================================
+   4. CARD STYLING ON /UPDATES (Matching released.in/test2 Card Aesthetics)
+   ========================================================================== */
+.view-updates .timeline-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.view-updates .timeline-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.view-updates .timeline-card-header {
+  padding: 1.15rem 1.25rem 0.65rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* A. POSTS: Full author details included */
+.view-updates .timeline-card--post .timeline-card-author-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.view-updates .timeline-card--post .timeline-card-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.25);
+}
+
+.view-updates .timeline-card--post .timeline-card-author-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-decoration: none;
+}
+
+.view-updates .timeline-card--post .timeline-card-author-name:hover {
+  color: #2563eb;
+}
+
+.view-updates .timeline-card--post .timeline-card-time {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+/* B. EVENTS: Subtle author details */
+.view-updates .timeline-card-event-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.view-updates .timeline-card-event-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.view-updates .timeline-card-event-header .timeline-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.view-updates .timeline-card-event-header .timeline-card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.view-updates .timeline-card-event-header .timeline-card-title a:hover {
+  color: #2563eb;
+}
+
+.view-updates .timeline-card-subtle-author {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.76rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.view-updates .timeline-card-subtle-author .subtle-author-text {
+  color: #64748b;
+}
+
+.view-updates .timeline-card-subtle-author .subtle-author-link {
+  color: #475569;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.view-updates .timeline-card-subtle-author .subtle-author-link:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.view-updates .timeline-card-subtle-author .subtle-author-sep {
+  color: #cbd5e1;
+}
+
+.view-updates .timeline-card-subtle-author .subtle-author-time {
+  color: #94a3b8;
+}
+
+/* C. THEYYAM & TEMPLES (is_wiki): No author details, ONLY Last updated date */
+.view-updates .timeline-card-header--wiki .timeline-card-wiki-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.view-updates .timeline-card-header--wiki .timeline-card-wiki-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.view-updates .timeline-card-header--wiki .timeline-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.view-updates .timeline-card-header--wiki .timeline-card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.view-updates .timeline-card-header--wiki .timeline-card-title a:hover {
+  color: #2563eb;
+}
+
+.view-updates .timeline-card-header--wiki .timeline-card-time-line {
+  font-size: 0.76rem;
+  color: #64748b;
+}
+
+.view-updates .timeline-card-header--wiki .timeline-card-time-link {
+  color: #64748b;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.view-updates .timeline-card-header--wiki .timeline-card-time-link:hover {
+  color: #2563eb;
+}
+
+/* Badges */
+.view-updates .timeline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.view-updates .timeline-badge--post {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.view-updates .timeline-badge--event {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.view-updates .timeline-badge--theyyam {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.view-updates .timeline-badge--location {
+  background: #fefce8;
+  color: #854d0e;
+}
+
+/* Card Body */
+.view-updates .timeline-card-body {
+  padding: 1rem 1.25rem;
+  flex: 1 1 auto;
+}
+
+.view-updates .timeline-card-body .timeline-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 0.65rem 0;
+}
+
+.view-updates .timeline-card-body .timeline-card-title a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.view-updates .timeline-card-body .timeline-card-title a:hover {
+  color: #2563eb;
+}
+
+.view-updates .timeline-card-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #334155;
+  margin-bottom: 0.85rem;
+  word-break: break-word;
+}
+
+.view-updates .timeline-card-media-wrapper {
+  margin-top: 0.85rem;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+.view-updates .timeline-card-media-wrapper img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.view-updates .timeline-card:hover .timeline-card-media-wrapper img {
+  transform: scale(1.02);
+}
+
+/* Chips Row */
+.view-updates .timeline-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.view-updates .timeline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  text-decoration: none;
+}
+
+.view-updates .timeline-chip--date {
+  background: #ecfdf5;
+  color: #065f46;
+  font-weight: 600;
+}
+
+.view-updates .timeline-chip--theyyam {
+  background: #fff1f2;
+  color: #9f1239;
+}
+
+.view-updates .timeline-chip--place {
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+.view-updates .timeline-chip a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.view-updates .timeline-chip a:hover {
+  text-decoration: underline;
+}
+
+/* Card Actions Footer */
+.view-updates .timeline-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid #f1f5f9;
+  background: #ffffff;
+  border-radius: 0 0 14px 14px;
+}
+
+.view-updates .timeline-action-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.view-updates .timeline-action-link,
+.view-updates .timeline-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #64748b;
+  background: none;
+  border: none;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.view-updates .timeline-action-link:hover,
+.view-updates .timeline-action-btn:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.view-updates .action-more {
+  margin-left: auto;
+}
+
+.view-updates .action-more .more-action-link {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.view-updates .action-more .more-action-link:hover {
+  color: #1d4ed8;
+}
+
+/* Empty State & Pager */
+.updates-empty-wrapper {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+}
+
+.updates-pager-wrapper {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.updates-pager-wrapper .pagination {
+  display: flex;
+  gap: 0.35rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.updates-pager-wrapper .page-item .page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.65rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.updates-pager-wrapper .page-item.active .page-link {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.updates-pager-wrapper .page-item .page-link:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .updates-cover-wrapper {
+    padding: 3rem 1.25rem 2.5rem 1.25rem;
+  }
+
+  .updates-cover-title {
+    margin-bottom: 1rem;
+  }
+
+  .updates-cover-subtitle {
+    margin-bottom: 1.75rem;
+  }
+
+  .updates-main-content {
+    padding: 1.5rem 0 3rem 0;
+  }
+
+  .updates-feed-wrapper {
+    padding: 0 1rem;
+  }
+}

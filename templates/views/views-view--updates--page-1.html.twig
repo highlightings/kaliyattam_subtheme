@@ -1,0 +1,117 @@
+{#
+/**
+ * @file
+ * Theme override for Kaliyattam Updates view (display page_1).
+ *
+ * Implements a modern community feed layout inspired by released.in/test2:
+ * - Clean hero cover with "Welcome to the community" headline and gradient typography
+ * - Action buttons ("Explore Timeline" and "Login") with verified valid links
+ * - Submenu filter bar with links to site sections
+ * - Responsive 3-column community card grid
+ * - Author rules:
+ *   - Posts: Full author details (avatar, author name, timestamp)
+ *   - Events: Subtle author details (inline muted line, no bulky avatar)
+ *   - Theyyam & Temples: No author details, only last updated date
+ */
+#}
+{%
+  set classes = [
+    'view',
+    'view-updates',
+    'view-id-updates',
+    'view-display-id-page_1',
+    'updates-community-page',
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+  ]
+%}
+
+{{ attach_library('kaliyattam_subtheme/updates-community') }}
+{{ attach_library('kaliyattam_subtheme/timeline-feeds') }}
+
+<div{{ attributes.addClass(classes) }}>
+
+  {# 1. Hero Cover Banner (inspired by released.in/test2) #}
+  <section class="updates-cover-wrapper" aria-label="{{ 'Community Welcome'|t }}">
+    <div class="updates-cover-gradient"></div>
+    <div class="updates-cover-container">
+      <h1 class="updates-cover-title">
+        <span class="cover-title-line-1">{{ 'Welcome to'|t }}</span>
+        <span class="cover-title-line-2">{{ 'the community'|t }}</span>
+      </h1>
+      <p class="updates-cover-subtitle">
+        {{ 'The best social media network for people to connect, collaborate, share content and inspire each other.'|t }}
+      </p>
+      <div class="updates-cover-actions">
+        <a href="/timeline" class="updates-btn updates-btn-primary" id="updates-hero-btn-explore">
+          {{ 'Explore Timeline'|t }}
+        </a>
+        <a href="/user/login" class="updates-btn updates-btn-secondary" id="updates-hero-btn-login">
+          <svg class="updates-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+          <span>{{ 'Login'|t }}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {# 2. Community Navigation Submenu Bar (matching released.in/test2 bx-menu-main-bar) #}
+  <nav class="updates-submenu-bar" role="navigation" aria-label="{{ 'Community Sections'|t }}">
+    <div class="updates-submenu-container">
+      <ul class="updates-submenu-list">
+        <li class="updates-submenu-item is-active">
+          <a href="/updates" class="updates-submenu-link" aria-current="page">
+            <span class="submenu-icon" aria-hidden="true">✨</span>
+            <span>{{ 'All Updates'|t }}</span>
+          </a>
+        </li>
+        <li class="updates-submenu-item">
+          <a href="/timeline" class="updates-submenu-link">
+            <span class="submenu-icon" aria-hidden="true">📜</span>
+            <span>{{ 'Timeline'|t }}</span>
+          </a>
+        </li>
+        <li class="updates-submenu-item">
+          <a href="/events" class="updates-submenu-link">
+            <span class="submenu-icon" aria-hidden="true">📅</span>
+            <span>{{ 'Events'|t }}</span>
+          </a>
+        </li>
+        <li class="updates-submenu-item">
+          <a href="/theyyam" class="updates-submenu-link">
+            <span class="submenu-icon" aria-hidden="true">🎭</span>
+            <span>{{ 'Theyyam'|t }}</span>
+          </a>
+        </li>
+        <li class="updates-submenu-item">
+          <a href="/temples" class="updates-submenu-link">
+            <span class="submenu-icon" aria-hidden="true">🛕</span>
+            <span>{{ 'Temples'|t }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  {# 3. Main Community Cards Feed #}
+  <main class="updates-main-content">
+    <div class="updates-feed-wrapper">
+      {% if rows %}
+        <div class="updates-cards-grid">
+          {{ rows }}
+        </div>
+      {% elseif empty %}
+        <div class="updates-empty-wrapper">
+          {{ empty }}
+        </div>
+      {% endif %}
+
+      {% if pager %}
+        <div class="updates-pager-wrapper">
+          {{ pager }}
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+</div>

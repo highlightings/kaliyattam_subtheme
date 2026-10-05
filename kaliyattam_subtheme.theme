@@ -68,6 +68,17 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
   $variables['attributes']['class'][] = 'node--type-' . Html::cleanCssIdentifier($node->bundle());
   $variables['attributes']['class'][] = 'node--view-mode-' . Html::cleanCssIdentifier($variables['view_mode']);
 
+  // Determine if viewing inside /updates or updates view.
+  $is_updates_page = FALSE;
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name === 'view.updates.page_1') {
+    $is_updates_page = TRUE;
+  }
+  elseif (isset($variables['view']) && $variables['view'] instanceof \Drupal\views\ViewExecutable && $variables['view']->id() === 'updates') {
+    $is_updates_page = TRUE;
+  }
+  $variables['is_updates_page'] = $is_updates_page;
+
   // Remove contextual links from card and teaser view modes to prevent clashing with card links.
   if (in_array($variables['view_mode'], ['card', 'teaser', 'timeline_card', 'miniteaser'], TRUE)) {
     unset($variables['title_suffix']['contextual_links']);
@@ -916,12 +927,16 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
     'sitewide_timeline',
     'timeline_type',
     'frontpage',
+    'updates',
   ];
   if (in_array($view_id, $timeline_views, TRUE) || str_contains($view_id, 'timeline') || str_contains($view_id, 'feed')) {
     $variables['#attached']['library'][] = 'kaliyattam_subtheme/timeline-feeds';
   }
   if ($view_id === 'frontpage') {
     $variables['#attached']['library'][] = 'kaliyattam_subtheme/frontpage-newspaper';
+  }
+  if ($view_id === 'updates') {
+    $variables['#attached']['library'][] = 'kaliyattam_subtheme/updates-community';
   }
 
 

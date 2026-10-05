@@ -81,3 +81,11 @@ frontpage-newspaper:
       css/frontpage-newspaper.css: {}
   dependencies:
     - core/drupal
+
+updates-community:
+  version: 1.0
+  css:
+    theme:
+      css/updates-community.css: {}
+  dependencies:
+    - core/drupal
