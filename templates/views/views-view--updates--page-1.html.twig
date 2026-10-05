@@ -31,35 +31,36 @@
 <div{{ attributes.addClass(classes) }}>
 
   {# 1. Community Navigation Submenu Bar (matching released.in/test2 bx-menu-main-bar) #}
+  {% set selected_type = view.exposed_raw_input.type|default('') %}
   <nav class="updates-submenu-bar" role="navigation" aria-label="{{ 'Community Sections'|t }}">
     <div class="updates-submenu-container">
       <ul class="updates-submenu-list">
-        <li class="updates-submenu-item is-active">
-          <a href="/updates" class="updates-submenu-link" aria-current="page">
+        <li class="updates-submenu-item{{ selected_type is empty ? ' is-active' : '' }}">
+          <a href="/updates" class="updates-submenu-link"{% if selected_type is empty %} aria-current="page"{% endif %}>
             <span class="submenu-icon" aria-hidden="true">✨</span>
-            <span>{{ 'All Updates'|t }}</span>
+            <span>{{ 'All'|t }}</span>
           </a>
         </li>
-        <li class="updates-submenu-item">
-          <a href="/timeline" class="updates-submenu-link">
-            <span class="submenu-icon" aria-hidden="true">📜</span>
-            <span>{{ 'Timeline'|t }}</span>
+        <li class="updates-submenu-item{{ selected_type == 'post' ? ' is-active' : '' }}">
+          <a href="/updates?type=post" class="updates-submenu-link"{% if selected_type == 'post' %} aria-current="page"{% endif %}>
+            <span class="submenu-icon" aria-hidden="true">📝</span>
+            <span>{{ 'Posts'|t }}</span>
           </a>
         </li>
-        <li class="updates-submenu-item">
-          <a href="/events" class="updates-submenu-link">
+        <li class="updates-submenu-item{{ selected_type == 'event' ? ' is-active' : '' }}">
+          <a href="/updates?type=event" class="updates-submenu-link"{% if selected_type == 'event' %} aria-current="page"{% endif %}>
             <span class="submenu-icon" aria-hidden="true">📅</span>
             <span>{{ 'Events'|t }}</span>
           </a>
         </li>
-        <li class="updates-submenu-item">
-          <a href="/theyyam" class="updates-submenu-link">
+        <li class="updates-submenu-item{{ selected_type == 'theyyam' ? ' is-active' : '' }}">
+          <a href="/updates?type=theyyam" class="updates-submenu-link"{% if selected_type == 'theyyam' %} aria-current="page"{% endif %}>
             <span class="submenu-icon" aria-hidden="true">🎭</span>
             <span>{{ 'Theyyam'|t }}</span>
           </a>
         </li>
-        <li class="updates-submenu-item">
-          <a href="/temples" class="updates-submenu-link">
+        <li class="updates-submenu-item{{ selected_type == 'location' ? ' is-active' : '' }}">
+          <a href="/updates?type=location" class="updates-submenu-link"{% if selected_type == 'location' %} aria-current="page"{% endif %}>
             <span class="submenu-icon" aria-hidden="true">🛕</span>
             <span>{{ 'Temples'|t }}</span>
           </a>
