@@ -3,14 +3,11 @@
  * @file
  * Theme override for Kaliyattam Updates 1 view (display page_2 at /updates_1).
  *
- * Implements a modern 3-column layout (25% - 50% - 25%):
- * - Fixed left column (25%): Community navigation, user profile/guest card, quick filters
- * - Middle stream column (50%):
- *   - Submenu bar with verified section links
- *   - "timeline-tabs-bar-wrapper" tabs (Latest, Popular, Search)
- *   - Collapsible exposed search form
- *   - Stream of content cards (node 166 styling) with infinite scroll
- * - Fixed right column (25%): Upcoming ritual events, featured Theyyams, sacred temples
+ * Renders the community stream feed with:
+ * - Submenu bar with section shortcuts
+ * - "timeline-tabs-bar-wrapper" tabs (Latest, Popular, Search)
+ * - Collapsible exposed search form
+ * - Stream of content cards (node 166 styling) with infinite scroll
  */
 #}
 {%
@@ -30,95 +27,78 @@
 
 <div{{ attributes.addClass(classes) }}>
 
-  <div class="updates-1-container">
-    <div class="updates-1-three-columns">
+  <div class="updates-1-stream-main">
 
-      {# 1. LEFT COLUMN (25%): Fixed Navigation & Devotee Shortcuts #}
-      <aside class="updates-1-col updates-1-col--left updates-1-fixed-sidebar" aria-label="{{ 'Community Navigation'|t }}">
-        {{ left_sidebar_content }}
-      </aside>
+    {# Submenu Navigation Bar (matching /updates) #}
+    <nav class="updates-submenu-bar updates-1-submenu" role="navigation" aria-label="{{ 'Community Sections'|t }}">
+      <div class="updates-submenu-container">
+        <ul class="updates-submenu-list">
+          <li class="updates-submenu-item is-active">
+            <a href="/updates_1" class="updates-submenu-link" aria-current="page">
+              <span class="submenu-icon" aria-hidden="true">✨</span>
+              <span>{{ 'All Updates'|t }}</span>
+            </a>
+          </li>
+          <li class="updates-submenu-item">
+            <a href="/timeline" class="updates-submenu-link">
+              <span class="submenu-icon" aria-hidden="true">📜</span>
+              <span>{{ 'Timeline'|t }}</span>
+            </a>
+          </li>
+          <li class="updates-submenu-item">
+            <a href="/events" class="updates-submenu-link">
+              <span class="submenu-icon" aria-hidden="true">📅</span>
+              <span>{{ 'Events'|t }}</span>
+            </a>
+          </li>
+          <li class="updates-submenu-item">
+            <a href="/theyyam" class="updates-submenu-link">
+              <span class="submenu-icon" aria-hidden="true">🎭</span>
+              <span>{{ 'Theyyam'|t }}</span>
+            </a>
+          </li>
+          <li class="updates-submenu-item">
+            <a href="/temples" class="updates-submenu-link">
+              <span class="submenu-icon" aria-hidden="true">🛕</span>
+              <span>{{ 'Temples'|t }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-      {# 2. MIDDLE COLUMN (50%): Community Feed & Stream #}
-      <main class="updates-1-col updates-1-col--middle updates-1-stream-main" role="main" aria-label="{{ 'Community Stream'|t }}">
+    {# Tabs Bar: Latest, Popular, Search #}
+    {% if header %}
+      <div class="updates-1-header">
+        {{ header }}
+      </div>
+    {% endif %}
 
-        {# Submenu Navigation Bar (matching /updates) #}
-        <nav class="updates-submenu-bar updates-1-submenu" role="navigation" aria-label="{{ 'Community Sections'|t }}">
-          <div class="updates-submenu-container">
-            <ul class="updates-submenu-list">
-              <li class="updates-submenu-item is-active">
-                <a href="/updates_1" class="updates-submenu-link" aria-current="page">
-                  <span class="submenu-icon" aria-hidden="true">✨</span>
-                  <span>{{ 'All Updates'|t }}</span>
-                </a>
-              </li>
-              <li class="updates-submenu-item">
-                <a href="/timeline" class="updates-submenu-link">
-                  <span class="submenu-icon" aria-hidden="true">📜</span>
-                  <span>{{ 'Timeline'|t }}</span>
-                </a>
-              </li>
-              <li class="updates-submenu-item">
-                <a href="/events" class="updates-submenu-link">
-                  <span class="submenu-icon" aria-hidden="true">📅</span>
-                  <span>{{ 'Events'|t }}</span>
-                </a>
-              </li>
-              <li class="updates-submenu-item">
-                <a href="/theyyam" class="updates-submenu-link">
-                  <span class="submenu-icon" aria-hidden="true">🎭</span>
-                  <span>{{ 'Theyyam'|t }}</span>
-                </a>
-              </li>
-              <li class="updates-submenu-item">
-                <a href="/temples" class="updates-submenu-link">
-                  <span class="submenu-icon" aria-hidden="true">🛕</span>
-                  <span>{{ 'Temples'|t }}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+    {# Exposed Search Form #}
+    {% if exposed %}
+      <div class="updates-1-exposed-form">
+        {{ exposed }}
+      </div>
+    {% endif %}
 
-        {# Tabs Bar: Latest, Popular, Search #}
-        {% if header %}
-          <div class="updates-1-header">
-            {{ header }}
-          </div>
-        {% endif %}
+    {# Stream Cards Feed #}
+    {% if rows %}
+      <div class="updates-1-stream-feed">
+        {{ rows }}
+      </div>
+    {% elseif empty %}
+      <div class="updates-empty-wrapper">
+        {{ empty }}
+      </div>
+    {% endif %}
 
-        {# Exposed Search Form #}
-        {% if exposed %}
-          <div class="updates-1-exposed-form">
-            {{ exposed }}
-          </div>
-        {% endif %}
+    {# Infinite Scroll Pager #}
+    {% if pager %}
+      <div class="updates-1-pager-wrapper">
+        {{ pager }}
+      </div>
+    {% endif %}
 
-        {# Stream Cards Feed #}
-        {% if rows %}
-          <div class="updates-1-stream-feed">
-            {{ rows }}
-          </div>
-        {% elseif empty %}
-          <div class="updates-empty-wrapper">
-            {{ empty }}
-          </div>
-        {% endif %}
-
-        {# Infinite Scroll Pager #}
-        {% if pager %}
-          <div class="updates-1-pager-wrapper">
-            {{ pager }}
-          </div>
-        {% endif %}
-
-      </main>
-
-      {# 3. RIGHT COLUMN (25%): Fixed Upcoming Events & Cultural Highlights #}
-      <aside class="updates-1-col updates-1-col--right updates-1-fixed-sidebar" aria-label="{{ 'Community Highlights'|t }}">
-        {{ right_sidebar_content }}
-      </aside>
-
-    </div>
   </div>
 
 </div>

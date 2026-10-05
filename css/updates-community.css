@@ -721,22 +721,18 @@ body:has(.updates-community-page) .site-content {
 /* ==========================================================================
    6. UPDATES_1: THREE COLUMN LAYOUT (25% - 50% - 25%) & STREAM FEED
    ========================================================================== */
-.updates-1-container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.updates-1-three-columns {
+.path-updates-1 .site-layout.has-both-sidebars {
   display: grid;
   grid-template-columns: minmax(260px, 25%) minmax(0, 50%) minmax(260px, 25%);
   gap: 1.75rem;
   align-items: start;
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 1.75rem 0 3.5rem 0;
 }
 
-/* Fixed Sidebars (Left & Right 25% columns) */
-.updates-1-fixed-sidebar {
+.path-updates-1 .site-sidebar-first,
+.path-updates-1 .site-sidebar-second {
   position: sticky;
   top: 85px;
   max-height: calc(100vh - 105px);
@@ -749,13 +745,40 @@ body:has(.updates-community-page) .site-content {
   padding-right: 0.25rem;
 }
 
-.updates-1-fixed-sidebar::-webkit-scrollbar {
+.path-updates-1 .site-sidebar-first::-webkit-scrollbar,
+.path-updates-1 .site-sidebar-second::-webkit-scrollbar {
   width: 5px;
 }
 
-.updates-1-fixed-sidebar::-webkit-scrollbar-thumb {
+.path-updates-1 .site-sidebar-first::-webkit-scrollbar-thumb,
+.path-updates-1 .site-sidebar-second::-webkit-scrollbar-thumb {
   background-color: #d6bfa8;
   border-radius: 4px;
+}
+
+.path-updates-1 .site-content {
+  min-width: 0;
+}
+
+/* Sidebar blocks in Drupal block system */
+.path-updates-1 .site-sidebar .block {
+  margin-bottom: 0;
+  background: #ffffff;
+  border: 1px solid #e7ded4;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.path-updates-1 .site-sidebar .block h2:not(.visually-hidden) {
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--kaliyattam-primary, #890000);
+  margin: 0 0 0.85rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f4ede4;
 }
 
 /* Middle Stream Column (50%) */
@@ -814,11 +837,10 @@ body:has(.updates-community-page) .site-content {
 
 /* Sidebar Cards */
 .updates-sidebar-card {
-  background: #ffffff;
-  border: 1px solid #e7ded4;
-  border-radius: 14px;
-  padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
 }
 
 .updates-sidebar-heading {
@@ -833,6 +855,7 @@ body:has(.updates-community-page) .site-content {
 }
 
 /* User / Guest Card */
+.user-card-header,
 .updates-user-header {
   display: flex;
   align-items: center;
@@ -840,6 +863,7 @@ body:has(.updates-community-page) .site-content {
   margin-bottom: 0.85rem;
 }
 
+.user-avatar-circle,
 .updates-user-avatar {
   width: 44px;
   height: 44px;
@@ -855,6 +879,7 @@ body:has(.updates-community-page) .site-content {
   flex-shrink: 0;
 }
 
+.user-name,
 .updates-user-name {
   font-size: 1rem;
   font-weight: 700;
@@ -862,45 +887,64 @@ body:has(.updates-community-page) .site-content {
   margin: 0 0 0.15rem 0;
 }
 
-.updates-user-profile-link {
-  font-size: 0.8rem;
-  color: var(--kaliyattam-primary, #890000);
-  text-decoration: none;
-  font-weight: 500;
+.user-role-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.12rem 0.5rem;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 6px;
 }
 
-.updates-user-profile-link:hover {
-  text-decoration: underline;
+.user-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
 }
 
-.updates-btn-create-post {
+.btn-user-action {
+  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  width: 100%;
-  padding: 0.6rem 1rem;
-  background: var(--kaliyattam-primary, #890000);
-  color: #ffffff;
+  gap: 0.35rem;
+  padding: 0.5rem 0.65rem;
   border-radius: 8px;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition: all 0.2s ease;
 }
 
-.updates-btn-create-post:hover {
+.btn-user-action--primary {
+  background: var(--kaliyattam-primary, #890000);
+  color: #ffffff;
+}
+
+.btn-user-action--primary:hover {
   background: var(--kaliyattam-primary-dark, #5c0000);
   color: #ffffff;
-  transform: translateY(-1px);
+}
+
+.btn-user-action--secondary {
+  background: #fdfaf7;
+  color: var(--kaliyattam-primary, #890000);
+  border: 1px solid #d6bfa8;
+}
+
+.btn-user-action--secondary:hover {
+  background: #f7f0e6;
 }
 
 /* Guest Card */
+.guest-card-icon,
 .updates-guest-icon {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
 }
 
+.guest-card-title,
 .updates-guest-title {
   font-size: 1.05rem;
   font-weight: 700;
@@ -908,6 +952,7 @@ body:has(.updates-community-page) .site-content {
   margin: 0 0 0.4rem 0;
 }
 
+.guest-card-desc,
 .updates-guest-desc {
   font-size: 0.84rem;
   line-height: 1.5;
@@ -915,11 +960,13 @@ body:has(.updates-community-page) .site-content {
   margin: 0 0 1rem 0;
 }
 
+.guest-card-actions,
 .updates-guest-actions {
   display: flex;
   gap: 0.5rem;
 }
 
+.btn-guest-action,
 .updates-sidebar-btn {
   flex: 1;
   text-align: center;
@@ -931,22 +978,26 @@ body:has(.updates-community-page) .site-content {
   transition: all 0.2s ease;
 }
 
+.btn-guest-action--register,
 .updates-sidebar-btn-primary {
   background: var(--kaliyattam-primary, #890000);
   color: #ffffff;
 }
 
+.btn-guest-action--register:hover,
 .updates-sidebar-btn-primary:hover {
   background: var(--kaliyattam-primary-dark, #5c0000);
   color: #ffffff;
 }
 
+.btn-guest-action--login,
 .updates-sidebar-btn-secondary {
   background: #fdfaf7;
   color: var(--kaliyattam-primary, #890000);
   border: 1px solid #d6bfa8;
 }
 
+.btn-guest-action--login:hover,
 .updates-sidebar-btn-secondary:hover {
   background: #f7f0e6;
 }
@@ -985,18 +1036,8 @@ body:has(.updates-community-page) .site-content {
   font-weight: 600;
 }
 
-.updates-sidebar-menu .menu-badge {
-  margin-left: auto;
-  font-size: 0.7rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: 10px;
-  background: #fef3c7;
-  color: #92400e;
-  font-weight: 600;
-}
-
 /* Widget Header */
-.updates-sidebar-card .widget-header {
+.widget-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1005,20 +1046,20 @@ body:has(.updates-community-page) .site-content {
   border-bottom: 1px solid #f4ede4;
 }
 
-.updates-sidebar-card .widget-header .updates-sidebar-heading {
+.widget-header .updates-sidebar-heading {
   margin: 0;
   padding: 0;
   border: none;
 }
 
-.updates-sidebar-card .widget-header-link {
+.widget-header-link {
   font-size: 0.78rem;
   font-weight: 600;
   color: var(--kaliyattam-primary, #890000);
   text-decoration: none;
 }
 
-.updates-sidebar-card .widget-header-link:hover {
+.widget-header-link:hover {
   text-decoration: underline;
 }
 
@@ -1029,51 +1070,47 @@ body:has(.updates-community-page) .site-content {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.4rem;
 }
 
-.sidebar-item-link {
+.sidebar-item {
+  list-style: none;
+}
+
+.sidebar-item a {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.6rem;
   padding: 0.45rem 0.5rem;
   border-radius: 8px;
-  text-decoration: none;
-  transition: background 0.15s ease;
-}
-
-.sidebar-item-link:hover {
-  background: #fdfaf7;
-}
-
-.sidebar-item-badge {
-  font-size: 1.05rem;
-  flex-shrink: 0;
-  line-height: 1.2;
-}
-
-.sidebar-item-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.sidebar-item-title {
   font-size: 0.86rem;
   font-weight: 600;
   color: var(--kaliyattam-text, #1c1917);
-  line-height: 1.35;
-  transition: color 0.15s ease;
+  text-decoration: none;
+  transition: all 0.15s ease;
 }
 
-.sidebar-item-link:hover .sidebar-item-title {
-  color: var(--kaliyattam-primary, #890000);
+.block-views-blockupdates-sidebar-events-block .sidebar-item a::before {
+  content: '📅';
+  font-size: 1.05rem;
+  line-height: 1.2;
 }
 
-.sidebar-item-meta {
-  font-size: 0.74rem;
+.block-views-blockupdates-sidebar-theyyams-block .sidebar-item a::before {
+  content: '🎭';
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.block-views-blockupdates-sidebar-temples-block .sidebar-item a::before {
+  content: '🛕';
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.sidebar-item a:hover {
+  background: #fdfaf7;
   color: var(--kaliyattam-primary, #890000);
-  font-weight: 500;
 }
 
 .updates-heritage-text {
@@ -1085,26 +1122,26 @@ body:has(.updates-community-page) .site-content {
 
 /* Responsive 3-Column Breakpoints */
 @media (max-width: 1100px) {
-  .updates-1-three-columns {
+  .path-updates-1 .site-layout.has-both-sidebars {
     grid-template-columns: minmax(220px, 30%) minmax(0, 70%);
   }
-  .updates-1-col--right {
+  .path-updates-1 .site-sidebar-second {
     display: none;
   }
 }
 
 @media (max-width: 768px) {
-  .updates-1-three-columns {
+  .path-updates-1 .site-layout.has-both-sidebars {
     grid-template-columns: 1fr;
     gap: 1.25rem;
     padding: 1rem 0 2.5rem 0;
   }
-  .updates-1-col--left {
+  .path-updates-1 .site-sidebar-first {
     position: static;
     max-height: none;
     overflow-y: visible;
   }
-  .updates-1-col--right {
+  .path-updates-1 .site-sidebar-second {
     display: flex;
     position: static;
     max-height: none;
