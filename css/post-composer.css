@@ -666,39 +666,26 @@
   color: var(--theme-text, #1c1917);
 }
 
-.post-composer-form .field--name-field-event .form-autocomplete,
-.post-composer-form .form-item-field-where-0-target-id .form-autocomplete {
+.post-composer-form .post-composer-tag-details .tagify {
   box-sizing: border-box;
-  width: 100%;
-  min-height: 42px;
-  padding: 0.65rem 0.9rem;
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 0.25rem 0.5rem !important;
   color: var(--theme-text, #1c1917);
   background: var(--theme-input-bg, #ffffff);
-  border: 1px solid var(--theme-input-border, #cbd5e1);
-  border-radius: 8px;
+  border: 1px solid var(--theme-input-border, #cbd5e1) !important;
+  border-radius: 8px !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.post-composer-form .form-item-field-theyyam .tagify {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 42px;
-  padding: 0.25rem 0.5rem;
-  color: var(--theme-text, #1c1917);
-  background: var(--theme-input-bg, #ffffff);
-  border: 1px solid var(--theme-input-border, #cbd5e1);
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-}
-
-.post-composer-form .form-item-field-theyyam .tagify__input {
+.post-composer-form .post-composer-tag-details .tagify__input {
   color: var(--theme-text, #1c1917);
   line-height: 1.5;
   margin-block: 0;
   padding-block: 0.25rem !important;
 }
 
-.post-composer-form .form-item-field-theyyam .tagify__tag {
+.post-composer-form .post-composer-tag-details .tagify__tag {
   --tag-bg: var(--theme-surface-warm, #f4efe8);
   --tag-text-color: var(--theme-text, #1c1917);
   --tag-hover: var(--theme-border, #cbd5e1);

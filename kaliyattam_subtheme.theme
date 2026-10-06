@@ -526,6 +526,10 @@ function kaliyattam_subtheme_alter_post_form(array &$form, \Drupal\Core\Form\For
     ],
   ];
 
+  if (isset($form['field_event'])) {
+    $form['tag_this_post']['field_event'] = $form['field_event'];
+    unset($form['field_event']);
+  }
   if (isset($form['field_theyyam'])) {
     $form['tag_this_post']['field_theyyam'] = $form['field_theyyam'];
     unset($form['field_theyyam']);
