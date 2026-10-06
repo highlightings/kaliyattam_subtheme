@@ -10,7 +10,7 @@
  * - Responsive media grid (1-4 images)
  * - Click-to-play video embed (zero iframe until clicked)
  * - Related chips (Theyyam, Place, Event date)
- * - Action bar: Favorite, Like, Comments, Copy Link, Pin
+ * - Action bar: Like, Comments
  */
 #}
 {%
@@ -237,23 +237,12 @@
   </div>
 
   {# Card Action Bar #}
-  {% set fav_rendered = content.flag_favorite_node|render %}
-  {% set like_rendered = content.flag_like_node is not empty ? content.flag_like_node|render : '' %}
-  {% set pin_personal_rendered = content.flag_sticky_user_timeline is not empty ? content.flag_sticky_user_timeline|render : '' %}
-  {% set pin_sitewide_rendered = content.flag_sticky_timeline is not empty ? content.flag_sticky_timeline|render : '' %}
+  {% set like_action = flag_like_node is not empty ? flag_like_node : content.flag_like_node %}
 
   <footer class="timeline-card-actions">
-    {# Favorite Node Action #}
-    {% if '<a' in fav_rendered %}
-      <div class="timeline-action-item action-favorite">
-        {{ fav_rendered|raw }}
-      </div>
-    {% endif %}
-
-    {# Like Node Action (Posts) #}
-    {% if '<a' in like_rendered %}
+    {% if like_action is not empty %}
       <div class="timeline-action-item action-like">
-        {{ like_rendered|raw }}
+        {{ like_action }}
       </div>
     {% endif %}
 
@@ -262,33 +251,13 @@
       <a href="{{ url }}#comments" class="timeline-action-link comments-action-link" title="{{ 'Join the discussion'|t }}">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <span class="action-label">{{ 'Comments'|t }}</span>
-        {% if node.field_comments_without_title.comment_count is defined and node.field_comments_without_title.comment_count > 0 %}
+        {% if node.field_comments_without_title.comment_count is defined %}
           <span class="action-count">{{ node.field_comments_without_title.comment_count }}</span>
-        {% elseif node.field_comments.comment_count is defined and node.field_comments.comment_count > 0 %}
+        {% elseif node.field_comments.comment_count is defined %}
           <span class="action-count">{{ node.field_comments.comment_count }}</span>
         {% endif %}
       </a>
     </div>
-
-    {# Copy Link Action #}
-    <div class="timeline-action-item action-copy">
-      <button type="button" class="timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <span class="action-label">{{ 'Share'|t }}</span>
-      </button>
-    </div>
-
-    {# Pin Actions for Permitted Users #}
-    {% if '<a' in pin_personal_rendered %}
-      <div class="timeline-action-item action-pin-personal">
-        {{ pin_personal_rendered|raw }}
-      </div>
-    {% endif %}
-    {% if '<a' in pin_sitewide_rendered %}
-      <div class="timeline-action-item action-pin-sitewide">
-        {{ pin_sitewide_rendered|raw }}
-      </div>
-    {% endif %}
 
     {# More / Read More Action #}
     {% if url %}

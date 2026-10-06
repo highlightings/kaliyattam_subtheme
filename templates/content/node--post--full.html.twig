@@ -45,11 +45,6 @@
               <i class="icon icon-user bi-person me-1" aria-hidden="true"></i>
               <span>{{ author_name }}</span>
             </a>
-            {% if flag_follow_user is not empty %}
-              <span class="node-follow-wrapper ms-2">
-                {{ flag_follow_user }}
-              </span>
-            {% endif %}
           </div>
           <div class="node-meta-date">
             <time datetime="{{ node.getCreatedTime()|date('c') }}">
@@ -95,7 +90,7 @@
 
       {# Main fields #}
       <div class="node-main-fields">
-        {{ content|without('field_content', 'field_media', 'field_theyyam', 'field_where', 'field_comments_without_title', 'field_comments', 'field_tags', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title', 'content_moderation_control') }}
+        {{ content|without('field_content', 'field_media', 'field_theyyam', 'field_where', 'field_event', 'field_comments_without_title', 'field_comments', 'field_tags', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title', 'content_moderation_control') }}
       </div>
 
       {# Associated Entity Chips below content (Theyyam followed by Place) #}
@@ -130,52 +125,7 @@
         </div>
       {% endif %}
 
-      {# Node Interaction Bar (Bottom of Content) #}
-      <div class="node-interaction-bar post-interaction-bar d-flex flex-wrap align-items-center gap-2 py-3 my-4">
-        {% if logged_in %}
-          <div class="node-action-flags d-flex flex-wrap align-items-center gap-2">
-            {% if flag_favorite_node is not empty %}
-              {{ flag_favorite_node }}
-            {% endif %}
-            {% if flag_like_node is not empty %}
-              {{ flag_like_node }}
-            {% endif %}
-            {% if flag_bookmark is not empty %}
-              {{ flag_bookmark }}
-            {% endif %}
-            <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
-              <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
-            </button>
-            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}" aria-expanded="false">
-              <i class="bi bi-chat-dots me-1" aria-hidden="true"></i><span>{{ 'Comments'|t }}</span>
-              {% if comment_count is defined and comment_count > 0 %}
-                <span class="action-count ms-1">{{ comment_count }}</span>
-              {% endif %}
-            </a>
-          </div>
-        {% else %}
-          <div class="post-action-links-anon node-action-flags-anon d-flex flex-wrap align-items-center gap-2">
-            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to favorite this post'|t }}">
-              <i class="bi bi-heart me-1" aria-hidden="true"></i><span>{{ 'Favorite'|t }}</span>
-            </a>
-            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to like this post'|t }}">
-              <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i><span>{{ 'Like'|t }}</span>
-            </a>
-            <a href="{{ path('user.login', {}, {'query': {'destination': url}}) }}" class="action-flag action-flag-anon" title="{{ 'Log in to bookmark this post'|t }}">
-              <i class="bi bi-bookmark me-1" aria-hidden="true"></i><span>{{ 'Bookmark'|t }}</span>
-            </a>
-            <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Copy link to this item'|t }}">
-              <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
-            </button>
-            <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}" aria-expanded="false">
-              <i class="bi bi-chat-dots me-1" aria-hidden="true"></i><span>{{ 'Comments'|t }}</span>
-              {% if comment_count is defined and comment_count > 0 %}
-                <span class="action-count ms-1">{{ comment_count }}</span>
-              {% endif %}
-            </a>
-          </div>
-        {% endif %}
-      </div>
+      {% include '@kaliyattam_subtheme/content/node-actions.html.twig' %}
 
       {# Comments Section #}
       <section id="comments" class="node-comments-section comments-collapsible mt-5 pt-3">

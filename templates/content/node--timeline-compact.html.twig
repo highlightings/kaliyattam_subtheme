@@ -32,9 +32,14 @@
       <div class="compact-meta">{{ content.field_theyyam }}</div>
     {% endif %}
   </div>
-  {% if content.flag_favorite_node is not empty %}
+  {% set like_action = flag_like_node is not empty ? flag_like_node : content.flag_like_node %}
+  {% if like_action is not empty %}
     <div class="compact-flag">
-      {{ content.flag_favorite_node }}
+      {{ like_action }}
     </div>
   {% endif %}
+  <a href="{{ url }}#comments" class="compact-comments" title="{{ 'Comments'|t }}">
+    <i class="bi bi-chat-dots" aria-hidden="true"></i>
+    <span>{{ node.field_comments_without_title.comment_count|default(node.field_comments.comment_count|default(0)) }}</span>
+  </a>
 </div>

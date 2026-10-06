@@ -1,0 +1,39 @@
+<div class="node-interaction-bar post-interaction-bar d-flex flex-wrap align-items-center gap-2 py-3 my-4">
+  {% if logged_in %}
+    {% if flag_like_node is not empty %}
+      {{ flag_like_node }}
+    {% endif %}
+    {% if flag_follow_user is not empty %}
+      {{ flag_follow_user }}
+    {% endif %}
+    {% if follow_content_enabled and flag_follow_content is not empty %}
+      {{ flag_follow_content }}
+    {% endif %}
+    {% if flag_offensive_content is not empty %}
+      {{ flag_offensive_content }}
+    {% endif %}
+  {% else %}
+    {% set login_url = path('user.login', {}, {'query': {'destination': url}}) %}
+    <a href="{{ login_url }}" class="action-flag action-flag-anon" title="{{ 'Log in to like this content'|t }}">
+      <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i><span>{{ 'Like'|t }}</span>
+    </a>
+    <a href="{{ login_url }}" class="action-flag action-flag-anon" title="{{ 'Log in to follow the author'|t }}">
+      <i class="bi bi-person-plus me-1" aria-hidden="true"></i><span>{{ 'Follow'|t }}</span>
+    </a>
+    {% if follow_content_enabled %}
+      <a href="{{ login_url }}" class="action-flag action-flag-anon" title="{{ 'Log in to follow this content'|t }}">
+        <i class="bi bi-bookmark-plus me-1" aria-hidden="true"></i><span>{{ 'Follow'|t }}</span>
+      </a>
+    {% endif %}
+    <a href="{{ login_url }}" class="action-flag action-flag-anon" title="{{ 'Log in to report this content'|t }}">
+      <i class="bi bi-flag me-1" aria-hidden="true"></i><span>{{ 'Report'|t }}</span>
+    </a>
+  {% endif %}
+  <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Share this content'|t }}">
+    <i class="bi bi-share me-1" aria-hidden="true"></i><span>{{ 'Share'|t }}</span>
+  </button>
+  <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}" aria-expanded="false">
+    <i class="bi bi-chat-dots me-1" aria-hidden="true"></i><span>{{ 'Comments'|t }}</span>
+    <span class="action-count ms-1">{{ comment_count|default(0) }}</span>
+  </a>
+</div>

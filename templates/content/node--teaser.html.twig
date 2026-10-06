@@ -14,16 +14,33 @@
       {{ content.field_featured_image }}
     {% endblock %}
     {% block content %}
-      {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'url') }}
+      {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_like_comment', 'url') }}
     {% endblock %}
     {% block footer %}
-      {% if url %}
-        <div class="card-footer-action">
-          <a href="{{ url }}" class="card-action-btn" title="{{ 'View details for'|t }} {{ label }}">
-            <span>{{ 'More'|t }} &raquo;</span>
+      {% set like_action = flag_like_node is not empty ? flag_like_node : content.flag_like_node %}
+      <div class="timeline-card-actions">
+        {% if like_action is not empty %}
+          <div class="timeline-action-item action-like">{{ like_action }}</div>
+        {% endif %}
+        <div class="timeline-action-item action-comments">
+          <a href="{{ url }}#comments" class="timeline-action-link comments-action-link" title="{{ 'Join the discussion'|t }}">
+            <i class="bi bi-chat-dots" aria-hidden="true"></i>
+            <span class="action-label">{{ 'Comments'|t }}</span>
+            {% if node.field_comments_without_title.comment_count is defined %}
+              <span class="action-count">{{ node.field_comments_without_title.comment_count }}</span>
+            {% elseif node.field_comments.comment_count is defined %}
+              <span class="action-count">{{ node.field_comments.comment_count }}</span>
+            {% endif %}
           </a>
         </div>
-      {% endif %}
+        {% if url %}
+          <div class="card-footer-action">
+            <a href="{{ url }}" class="card-action-btn" title="{{ 'View details for'|t }} {{ label }}">
+              <span>{{ 'More'|t }} &raquo;</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
     {% endblock %}
   {% endembed %}
 </div>

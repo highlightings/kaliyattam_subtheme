@@ -133,10 +133,14 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
   $variables['author_url'] = '/user/' . $author_uid . '/timeline?page=1';
   if ($author && \Drupal::hasService('flag.link_builder')) {
     try {
-      $variables['flag_follow_user'] = \Drupal::service('flag.link_builder')->build('user', $author_uid, 'favorite_user');
+      $variables['flag_follow_user'] = \Drupal::service('flag.link_builder')->build('user', $author_uid, 'following');
     }
     catch (\Exception $e) {
       $variables['flag_follow_user'] = [];
+      \Drupal::logger('kaliyattam_subtheme')->warning('Unable to build user-follow action for user @uid: @message', [
+        '@uid' => $author_uid,
+        '@message' => $e->getMessage(),
+      ]);
     }
   }
 
@@ -245,11 +249,31 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
 
     if (\Drupal::hasService('flag.link_builder')) {
       $link_builder = \Drupal::service('flag.link_builder');
-      foreach (['favorite_node', 'like_node', 'bookmark'] as $flag_id) {
+      foreach (['like_node', 'offensive_content'] as $flag_id) {
         try {
-          $variables['flag_' . $flag_id] = $link_builder->build('node', $node->id(), $flag_id);
+          $variables['flag_' . $flag_id] = $link_builder->build('node', $node->id(), $flag_id, $variables['view_mode']);
         }
-        catch (\Exception $e) {}
+        catch (\Exception $e) {
+          \Drupal::logger('kaliyattam_subtheme')->warning('Unable to build @flag action for node @nid: @message', [
+            '@flag' => $flag_id,
+            '@nid' => $node->id(),
+            '@message' => $e->getMessage(),
+          ]);
+        }
+      }
+
+      $variables['follow_content_enabled'] = in_array($node->bundle(), ['theyyam', 'location', 'event'], TRUE);
+      if ($variables['follow_content_enabled']) {
+        try {
+          $variables['flag_follow_content'] = $link_builder->build('node', $node->id(), 'follow_content', $variables['view_mode']);
+        }
+        catch (\Exception $e) {
+          $variables['flag_follow_content'] = [];
+          \Drupal::logger('kaliyattam_subtheme')->warning('Unable to build content-follow action for node @nid: @message', [
+            '@nid' => $node->id(),
+            '@message' => $e->getMessage(),
+          ]);
+        }
       }
     }
   }
@@ -1789,10 +1813,6 @@ function kaliyattam_subtheme_preprocess_breadcrumb(array &$variables): void {
         [
           'text' => t('Home'),
           'url' => '/',
-        ],
-        [
-          'text' => t('Timeline'),
-          'url' => '/timeline',
         ],
         [
           'text' => $type_labels[$route_name],
