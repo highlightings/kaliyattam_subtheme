@@ -1286,7 +1286,7 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
       if ($sort_by === 'changed') {
         $active_tab = 'changed';
       }
-      elseif ($sort_by === 'count' || $sort_by === 'sort_favorite') {
+      elseif ($sort_by === 'count' || $sort_by === 'sort_likes') {
         $active_tab = 'popular';
       }
       elseif (!empty($search)) {
@@ -1342,7 +1342,7 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
       if ($sort_by === 'changed') {
         $active_tab = 'changed';
       }
-      elseif ($sort_by === 'count' || $sort_by === 'sort_favorite') {
+      elseif ($sort_by === 'count' || $sort_by === 'sort_likes') {
         $active_tab = 'popular';
       }
       elseif (!empty($search)) {
@@ -1395,7 +1395,7 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
       $search = $params['search'] ?? '';
 
       $active_tab = 'latest';
-      if ($sort_by === 'count' || $sort_by === 'sort_favorite') {
+      if ($sort_by === 'count' || $sort_by === 'sort_likes') {
         $active_tab = 'popular';
       }
       elseif (!empty($search)) {

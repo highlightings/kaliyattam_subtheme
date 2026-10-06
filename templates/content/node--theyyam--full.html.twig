@@ -39,7 +39,7 @@
 
       {# Main node fields #}
       <div class="node-main-fields">
-        {{ content|without('field_media', 'field_comments', 'field_featured_image', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
+        {{ content|without('field_media', 'field_comments', 'field_featured_image', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links', 'uid', 'created', 'title') }}
       </div>
 
       {% include '@kaliyattam_subtheme/content/node-actions.html.twig' %}

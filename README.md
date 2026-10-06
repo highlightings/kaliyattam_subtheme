@@ -27,7 +27,7 @@ kaliyattam_subtheme/
 │   ├── article.css       # Long-form article and editorial styling
 │   ├── base.css          # Modern CSS reset and typography
 │   ├── carousel.css      # Standalone carousel styles
-│   ├── custom.css        # Site-specific overrides and flag bookmarks
+│   ├── custom.css        # Site-specific overrides and flag actions
 │   ├── event-detail.css  # Hero event detail layout
 │   ├── icons.css         # Lightweight inline SVG icon system
 │   ├── layout.css        # Responsive CSS Grid & layout system

@@ -14,7 +14,7 @@
       {{ content.field_featured_image }}
     {% endblock %}
     {% block content %}
-      {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'flag_favorite_node', 'flag_bookmark', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_like_comment', 'url') }}
+      {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'url') }}
     {% endblock %}
     {% block footer %}
       {% set like_action = flag_like_node is not empty ? flag_like_node : content.flag_like_node %}
