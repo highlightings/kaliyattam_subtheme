@@ -88,6 +88,15 @@
     </div>
   </div>
 {% elseif primary %}
+  {% if is_user_toolbar %}
+    <nav class="updates-submenu-bar user-tabs-bar" aria-label="{{ 'User sections'|t }}">
+      <div class="updates-submenu-container">
+        <ul class="updates-submenu-list tabs tabs--primary">
+          {{ primary }}
+        </ul>
+      </div>
+    </nav>
+  {% else %}
   <div class="local-tasks-container">
     <details class="local-tasks-collapsible" {% if tasks_open %}open{% endif %}>
       <summary class="local-tasks-summary" title="{{ 'Toggle page management options'|t }}">
@@ -117,6 +126,7 @@
       </div>
     </details>
   </div>
+  {% endif %}
 {% endif %}
 {% if secondary %}
   <div class="local-tasks-secondary-container">

@@ -13,6 +13,16 @@ use Drupal\Component\Utility\Html;
  * Implements hook_preprocess_html().
  */
 function kaliyattam_subtheme_preprocess_html(array &$variables): void {
+  $route_name = (string) \Drupal::routeMatch()->getRouteName();
+  $current_path = \Drupal::service('path.current')->getPath();
+
+  if (str_starts_with($route_name, 'view.timeline_') || str_starts_with($current_path, '/timeline/') || $current_path === '/timeline') {
+    $variables['attributes']['class'][] = 'is-timeline-page';
+  }
+  if ($current_path === '/user' || str_starts_with($current_path, '/user/')) {
+    $variables['attributes']['class'][] = 'is-user-page';
+  }
+
   // Add node-type class to body if viewing a node.
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node instanceof \Drupal\node\NodeInterface) {
@@ -37,6 +47,10 @@ function kaliyattam_subtheme_preprocess_page(array &$variables): void {
 
   // Support /node/{node}/timeline for Location and Event nodes by embedding appropriate view.
   $route_match = \Drupal::routeMatch();
+  $current_path = \Drupal::service('path.current')->getPath();
+  if (str_starts_with((string) $route_match->getRouteName(), 'view.timeline_') || $current_path === '/user' || str_starts_with($current_path, '/user/')) {
+    $variables['#attached']['library'][] = 'kaliyattam_subtheme/updates-community';
+  }
   if ($route_match->getRouteName() === 'view.timeline_theyyam.page_timeline') {
     $node = $route_match->getParameter('node');
     if (is_string($node) || is_numeric($node)) {
@@ -131,6 +145,9 @@ function kaliyattam_subtheme_preprocess_node(array &$variables): void {
   $variables['author_uid'] = $author_uid;
   $variables['author_initial'] = mb_strtoupper(mb_substr($author_name, 0, 1));
   $variables['author_url'] = '/user/' . $author_uid . '/timeline?page=1';
+  if ($variables['view_mode'] === 'full') {
+    $variables['follow_user_enabled'] = $node->bundle() === 'post';
+  }
   if ($author && \Drupal::hasService('flag.link_builder')) {
     try {
       $variables['flag_follow_user'] = \Drupal::service('flag.link_builder')->build('user', $author_uid, 'following');
@@ -734,6 +751,8 @@ function kaliyattam_subtheme_preprocess_menu_local_tasks(array &$variables): voi
 
   $active_tab_title = '';
   $is_admin_action = FALSE;
+  $current_path = \Drupal::service('path.current')->getPath();
+  $variables['is_user_toolbar'] = $current_path === '/user' || str_starts_with($current_path, '/user/');
 
   $is_canonical_view = in_array($current_route, [
     'entity.node.canonical',
@@ -938,6 +957,18 @@ function kaliyattam_subtheme_preprocess_views_view(array &$variables): void {
   $view = $variables['view'];
   $view_id = $view->id();
   $display_id = $view->current_display;
+
+  if ($view_id === 'updates' && $display_id === 'page_2') {
+    $variables['has_exposed_controls'] = FALSE;
+    foreach (['filter', 'sort'] as $handler_type) {
+      foreach ($view->display_handler->getHandlers($handler_type) as $handler) {
+        if (!empty($handler->options['exposed'])) {
+          $variables['has_exposed_controls'] = TRUE;
+          break 2;
+        }
+      }
+    }
+  }
 
   // Add standard Drupal view CSS classes to attributes.
   $variables['attributes']['class'][] = 'view';

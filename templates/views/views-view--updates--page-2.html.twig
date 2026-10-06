@@ -76,7 +76,7 @@
     {% endif %}
 
     {# Exposed Search Form #}
-    {% if exposed %}
+    {% if exposed and has_exposed_controls %}
       <div class="updates-1-exposed-form">
         {{ exposed }}
       </div>

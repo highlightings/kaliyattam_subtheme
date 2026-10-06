@@ -989,8 +989,10 @@ body[data-feed-layout="list"] .timeline-card-media-wrapper iframe {
 .timeline-empty-state {
   text-align: center;
   padding: 3rem 1.5rem;
-  background-color: var(--kaliyattam-surface-warm, #f4efe8);
+  background: var(--theme-surface, var(--kaliyattam-surface-warm, #f4efe8));
+  border: 1px solid var(--theme-border, var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08)));
   border-radius: var(--radius-md, 12px);
+  box-shadow: var(--theme-card-shadow, 0 2px 8px rgba(0, 0, 0, 0.04));
   margin: 1.5rem 0;
 }
 
@@ -1003,13 +1005,40 @@ body[data-feed-layout="list"] .timeline-card-media-wrapper iframe {
   font-family: var(--font-serif-heading, Georgia, serif);
   font-size: 1.25rem;
   margin: 0 0 0.5rem 0;
-  color: var(--kaliyattam-text, #1c1917);
+  color: var(--theme-text, var(--kaliyattam-text, #1c1917));
 }
 
 .timeline-empty-state p {
-  color: var(--kaliyattam-text-muted, #71717a);
+  color: var(--theme-text-secondary, var(--kaliyattam-text-muted, #71717a));
   margin: 0;
   font-size: var(--text-base, 1rem);
+}
+
+/* The configured empty-state format filters its wrapper div, leaving direct children. */
+body.is-timeline-page .site-content .view:has(> h3) {
+  padding: 2rem 1.5rem;
+  background: var(--theme-surface, var(--kaliyattam-surface-warm, #f4efe8));
+  border: 1px solid var(--theme-border, var(--kaliyattam-border-subtle, rgba(0, 0, 0, 0.08)));
+  border-radius: var(--radius-md, 12px);
+  box-shadow: var(--theme-card-shadow, 0 2px 8px rgba(0, 0, 0, 0.04));
+  color: var(--theme-text, var(--kaliyattam-text, #1c1917));
+  text-align: center;
+}
+
+body.is-timeline-page .site-content .view:has(> h3) > p:first-of-type {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+}
+
+body.is-timeline-page .site-content .view:has(> h3) > h3 {
+  margin: 0 0 0.5rem;
+  color: var(--theme-text, var(--kaliyattam-text, #1c1917));
+  font-family: var(--font-serif-heading, Georgia, serif);
+}
+
+body.is-timeline-page .site-content .view:has(> h3) > p:last-of-type {
+  margin: 0;
+  color: var(--theme-text-secondary, var(--kaliyattam-text-muted, #71717a));
 }
 
 /* ==========================================================================

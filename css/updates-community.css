@@ -170,6 +170,99 @@ body:has(.updates-community-page) .site-content {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
+/* Timeline and profile tabs share the same underline navigation as Updates. */
+body.is-timeline-page .site-main > .container,
+body.is-user-page .site-main > .container {
+  max-width: var(--container-max-width, 1240px);
+}
+
+body.is-timeline-page .site-layout,
+body.is-user-page .site-layout {
+  width: 100%;
+}
+
+.user-tabs-bar {
+  margin: 0 0 1.5rem;
+  z-index: 15;
+}
+
+.user-tabs-bar .tabs--primary {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.user-tabs-bar .tabs--primary > li {
+  flex: 0 0 auto;
+}
+
+.user-tabs-bar .tabs--primary > li > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.1rem;
+  padding: 0.85rem 1.15rem;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--kaliyattam-text-secondary, #52525b) !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.user-tabs-bar .tabs--primary > li > a:hover,
+.user-tabs-bar .tabs--primary > li.is-active > a,
+.user-tabs-bar .tabs--primary > li > a.is-active {
+  color: var(--kaliyattam-primary, #890000) !important;
+  border-bottom-color: var(--kaliyattam-primary, #890000) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.user-tabs-bar .tabs--primary > li.is-active > a,
+.user-tabs-bar .tabs--primary > li > a.is-active {
+  font-weight: 700 !important;
+}
+
+body.is-timeline-page .vector-page-toolbar {
+  width: 100%;
+  margin: 0 0 1.5rem;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #e7ded4);
+  border-radius: var(--radius-md, 10px);
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.04));
+}
+
+body.is-timeline-page .timeline-tabs-bar-wrapper {
+  border-color: var(--theme-border, #e7ded4);
+  background: var(--theme-surface, #ffffff);
+}
+
+body.is-user-page .view-timeline-user,
+body.is-user-page .view-timeline-followed-content,
+body.is-user-page .view-mn-user-tabs-views {
+  color: var(--theme-text, #1c1917);
+}
+
+body.is-user-page .site-content > .block,
+body.is-user-page .site-content > .views-element-container,
+body.is-user-page .site-content > .view {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .user-tabs-bar .updates-submenu-container {
+    padding-inline: 0.75rem;
+  }
+
+  .user-tabs-bar .tabs--primary > li > a {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.85rem;
+  }
+}
+
 .updates-submenu-container {
   max-width: 1380px;
   margin: 0 auto;
@@ -737,6 +830,10 @@ body:has(.updates-community-page) .site-content {
 
 .updates-1-header {
   margin-bottom: 0.5rem;
+}
+
+.updates-1-exposed-form:not(:has(.views-exposed-form.is-open)) {
+  display: none;
 }
 
 .updates-1-stream-feed {
