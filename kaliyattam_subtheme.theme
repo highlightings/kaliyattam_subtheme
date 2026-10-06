@@ -48,6 +48,10 @@ function kaliyattam_subtheme_preprocess_page(array &$variables): void {
   // Support /node/{node}/timeline for Location and Event nodes by embedding appropriate view.
   $route_match = \Drupal::routeMatch();
   $current_path = \Drupal::service('path.current')->getPath();
+  if (preg_match('/^\/user\/\d+\/scheduled$/', $current_path)) {
+    unset($variables['page']['sidebar_first'], $variables['page']['sidebar_second']);
+  }
+
   if (str_starts_with((string) $route_match->getRouteName(), 'view.timeline_') || $current_path === '/user' || str_starts_with($current_path, '/user/')) {
     $variables['#attached']['library'][] = 'kaliyattam_subtheme/updates-community';
   }
