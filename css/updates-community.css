@@ -20,7 +20,7 @@ body:has(.updates-community-page) .site-breadcrumb {
   display: none !important;
 }
 
-body:has(.updates-community-page) .site-main > .container {
+body:has(.updates-community-page):not(.path-updates-1) .site-main > .container {
   max-width: 100% !important;
   padding: 0 !important;
 }
@@ -138,16 +138,16 @@ body:has(.updates-community-page) .site-content {
 }
 
 .updates-btn-secondary {
-  background: #ffffff;
+  background: var(--theme-surface, #ffffff);
   color: var(--kaliyattam-text, #1c1917) !important;
-  border: 1px solid #dcd3c8;
+  border: 1px solid var(--theme-border, #dcd3c8);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .updates-btn-secondary:hover {
-  background: #fdfaf7;
-  color: var(--kaliyattam-primary, #890000) !important;
-  border-color: var(--kaliyattam-gold, #d97706);
+  background: var(--theme-surface-alt, #fdfaf7);
+  color: var(--theme-accent, #890000) !important;
+  border-color: var(--theme-border-hover, #d97706);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
 }
@@ -162,8 +162,8 @@ body:has(.updates-community-page) .site-content {
    2. COMMUNITY SUBMENU BAR (Kaliyattam Brand Underlines & Accents)
    ========================================================================== */
 .updates-submenu-bar {
-  background: #ffffff;
-  border-bottom: 1px solid #e7ded4;
+  background: var(--theme-surface, #ffffff);
+  border-bottom: 1px solid var(--theme-border, #e7ded4);
   position: sticky;
   top: 0;
   z-index: 15;
@@ -282,8 +282,8 @@ body:has(.updates-community-page) .site-content {
    4. CARD STYLING ON /UPDATES (Kaliyattam Warm Surfaces & Sacred Accents)
    ========================================================================== */
 .view-updates .timeline-card {
-  background: #ffffff;
-  border: 1px solid #e7ded4;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #e7ded4);
   border-radius: 14px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
@@ -294,13 +294,13 @@ body:has(.updates-community-page) .site-content {
 
 .view-updates .timeline-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 28px -6px rgba(137, 0, 0, 0.09), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
-  border-color: #d6bfa8;
+  box-shadow: var(--theme-card-shadow-hover, 0 14px 28px -6px rgba(137, 0, 0, 0.09));
+  border-color: var(--theme-border-hover, #d6bfa8);
 }
 
 .view-updates .timeline-card-header {
   padding: 1.15rem 1.25rem 0.65rem 1.25rem;
-  border-bottom: 1px solid #f4ede4;
+  border-bottom: 1px solid var(--theme-border, #f4ede4);
 }
 
 /* A. POSTS: Full author details included */
@@ -595,8 +595,8 @@ body:has(.updates-community-page) .site-content {
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1.25rem;
-  border-top: 1px solid #f4ede4;
-  background: #ffffff;
+  border-top: 1px solid var(--theme-border, #f4ede4);
+  background: var(--theme-surface, #ffffff);
   border-radius: 0 0 14px 14px;
 }
 
@@ -624,8 +624,8 @@ body:has(.updates-community-page) .site-content {
 
 .view-updates .timeline-action-link:hover,
 .view-updates .timeline-action-btn:hover {
-  background: #fdfaf7;
-  color: var(--kaliyattam-primary, #890000);
+  background: var(--theme-surface-alt, #fdfaf7);
+  color: var(--theme-accent, #890000);
 }
 
 .view-updates .action-more {
@@ -633,21 +633,21 @@ body:has(.updates-community-page) .site-content {
 }
 
 .view-updates .action-more .more-action-link {
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, #890000);
   font-weight: 600;
 }
 
 .view-updates .action-more .more-action-link:hover {
-  color: var(--kaliyattam-primary-dark, #5c0000);
+  color: var(--theme-accent-hover, #5c0000);
 }
 
 /* Empty State & Pager */
 .updates-empty-wrapper {
   text-align: center;
   padding: 4rem 1.5rem;
-  background: #ffffff;
+  background: var(--theme-surface, #ffffff);
   border-radius: 14px;
-  border: 1px solid #e7ded4;
+  border: 1px solid var(--theme-border, #e7ded4);
 }
 
 .updates-pager-wrapper {
@@ -672,8 +672,8 @@ body:has(.updates-community-page) .site-content {
   height: 2.25rem;
   padding: 0 0.65rem;
   border-radius: 8px;
-  border: 1px solid #e7ded4;
-  background: #ffffff;
+  border: 1px solid var(--theme-border, #e7ded4);
+  background: var(--theme-surface, #ffffff);
   color: var(--kaliyattam-text, #1c1917);
   font-size: 0.88rem;
   font-weight: 500;
@@ -688,9 +688,9 @@ body:has(.updates-community-page) .site-content {
 }
 
 .updates-pager-wrapper .page-item .page-link:hover {
-  background: #fdfaf7;
-  border-color: var(--kaliyattam-gold, #d97706);
-  color: var(--kaliyattam-primary, #890000);
+  background: var(--theme-surface-alt, #fdfaf7);
+  border-color: var(--theme-border-hover, #d97706);
+  color: var(--theme-accent, #890000);
 }
 
 /* ==========================================================================
@@ -719,69 +719,8 @@ body:has(.updates-community-page) .site-content {
 }
 
 /* ==========================================================================
-   6. UPDATES_1: THREE COLUMN LAYOUT (25% - 50% - 25%) & STREAM FEED
+   6. UPDATES_1 STREAM FEED
    ========================================================================== */
-.path-updates-1 .site-layout.has-both-sidebars {
-  display: grid;
-  grid-template-columns: minmax(260px, 25%) minmax(0, 50%) minmax(260px, 25%);
-  gap: 1.75rem;
-  align-items: start;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 1.75rem 0 3.5rem 0;
-}
-
-.path-updates-1 .site-sidebar-first,
-.path-updates-1 .site-sidebar-second {
-  position: sticky;
-  top: 85px;
-  max-height: calc(100vh - 105px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #d6bfa8 transparent;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding-right: 0.25rem;
-}
-
-.path-updates-1 .site-sidebar-first::-webkit-scrollbar,
-.path-updates-1 .site-sidebar-second::-webkit-scrollbar {
-  width: 5px;
-}
-
-.path-updates-1 .site-sidebar-first::-webkit-scrollbar-thumb,
-.path-updates-1 .site-sidebar-second::-webkit-scrollbar-thumb {
-  background-color: #d6bfa8;
-  border-radius: 4px;
-}
-
-.path-updates-1 .site-content {
-  min-width: 0;
-}
-
-/* Sidebar blocks in Drupal block system */
-.path-updates-1 .site-sidebar .block {
-  margin-bottom: 0;
-  background: #ffffff;
-  border: 1px solid #e7ded4;
-  border-radius: 14px;
-  padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-}
-
-.path-updates-1 .site-sidebar .block h2:not(.visually-hidden) {
-  font-size: 0.92rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--kaliyattam-primary, #890000);
-  margin: 0 0 0.85rem 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f4ede4;
-}
-
-/* Middle Stream Column (50%) */
 .updates-1-stream-main {
   display: flex;
   flex-direction: column;
@@ -790,8 +729,8 @@ body:has(.updates-community-page) .site-content {
 }
 
 .updates-1-submenu {
-  background: #ffffff;
-  border: 1px solid #e7ded4;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #e7ded4);
   border-radius: 12px;
   margin-bottom: 0.5rem;
 }
@@ -814,18 +753,18 @@ body:has(.updates-community-page) .site-content {
 .updates-1-stream-feed .timeline-card {
   width: 100%;
   margin-bottom: 0;
-  background: #ffffff;
-  border: 1px solid #e7ded4;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #e7ded4);
   border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--theme-card-shadow, 0 2px 8px rgba(0, 0, 0, 0.04));
   overflow: hidden;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .updates-1-stream-feed .timeline-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -4px rgba(137, 0, 0, 0.09), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
-  border-color: #d6bfa8;
+  box-shadow: var(--theme-card-shadow-hover, 0 12px 28px -4px rgba(137, 0, 0, 0.09));
+  border-color: var(--theme-border-hover, #d6bfa8);
 }
 
 /* Infinite scroll pager styling */
@@ -848,10 +787,10 @@ body:has(.updates-community-page) .site-content {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, #890000);
   margin: 0 0 0.85rem 0;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f4ede4;
+  border-bottom: 1px solid var(--theme-border, #f4ede4);
 }
 
 /* User / Guest Card */
@@ -883,7 +822,7 @@ body:has(.updates-community-page) .site-content {
 .updates-user-name {
   font-size: 1rem;
   font-weight: 700;
-  color: #1c1917;
+  color: var(--theme-text, #1c1917);
   margin: 0 0 0.15rem 0;
 }
 
@@ -928,13 +867,13 @@ body:has(.updates-community-page) .site-content {
 }
 
 .btn-user-action--secondary {
-  background: #fdfaf7;
-  color: var(--kaliyattam-primary, #890000);
-  border: 1px solid #d6bfa8;
+  background: var(--theme-surface-alt, #fdfaf7);
+  color: var(--theme-accent, #890000);
+  border: 1px solid var(--theme-border, #d6bfa8);
 }
 
 .btn-user-action--secondary:hover {
-  background: #f7f0e6;
+  background: var(--theme-surface-warm, #f7f0e6);
 }
 
 /* Guest Card */
@@ -948,7 +887,7 @@ body:has(.updates-community-page) .site-content {
 .updates-guest-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, #890000);
   margin: 0 0 0.4rem 0;
 }
 
@@ -956,7 +895,7 @@ body:has(.updates-community-page) .site-content {
 .updates-guest-desc {
   font-size: 0.84rem;
   line-height: 1.5;
-  color: #52525b;
+  color: var(--theme-text-secondary, #52525b);
   margin: 0 0 1rem 0;
 }
 
@@ -992,14 +931,14 @@ body:has(.updates-community-page) .site-content {
 
 .btn-guest-action--login,
 .updates-sidebar-btn-secondary {
-  background: #fdfaf7;
-  color: var(--kaliyattam-primary, #890000);
-  border: 1px solid #d6bfa8;
+  background: var(--theme-surface-alt, #fdfaf7);
+  color: var(--theme-accent, #890000);
+  border: 1px solid var(--theme-border, #d6bfa8);
 }
 
 .btn-guest-action--login:hover,
 .updates-sidebar-btn-secondary:hover {
-  background: #f7f0e6;
+  background: var(--theme-surface-warm, #f7f0e6);
 }
 
 /* Quick Navigation Menu */
@@ -1020,19 +959,19 @@ body:has(.updates-community-page) .site-content {
   border-radius: 8px;
   font-size: 0.88rem;
   font-weight: 500;
-  color: #1c1917;
+  color: var(--theme-text, #1c1917);
   text-decoration: none;
   transition: all 0.15s ease;
 }
 
 .updates-sidebar-menu li a:hover {
-  background: #fdfaf7;
-  color: var(--kaliyattam-primary, #890000);
+  background: var(--theme-surface-alt, #fdfaf7);
+  color: var(--theme-accent, #890000);
 }
 
 .updates-sidebar-menu li a.is-active {
-  background: #fef2f2;
-  color: var(--kaliyattam-primary, #890000);
+  background: var(--theme-surface-warm, #fef2f2);
+  color: var(--theme-accent, #890000);
   font-weight: 600;
 }
 
@@ -1043,7 +982,7 @@ body:has(.updates-community-page) .site-content {
   justify-content: space-between;
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f4ede4;
+  border-bottom: 1px solid var(--theme-border, #f4ede4);
 }
 
 .widget-header .updates-sidebar-heading {
@@ -1055,7 +994,7 @@ body:has(.updates-community-page) .site-content {
 .widget-header-link {
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, #890000);
   text-decoration: none;
 }
 
@@ -1085,7 +1024,7 @@ body:has(.updates-community-page) .site-content {
   border-radius: 8px;
   font-size: 0.86rem;
   font-weight: 600;
-  color: #1c1917;
+  color: var(--theme-text, #1c1917);
   text-decoration: none;
   transition: all 0.15s ease;
 }
@@ -1109,44 +1048,15 @@ body:has(.updates-community-page) .site-content {
 }
 
 .sidebar-item a:hover {
-  background: #fdfaf7;
-  color: var(--kaliyattam-primary, #890000);
+  background: var(--theme-surface-alt, #fdfaf7);
+  color: var(--theme-accent, #890000);
 }
 
 .updates-heritage-text {
   font-size: 0.82rem;
   line-height: 1.55;
-  color: #52525b;
+  color: var(--theme-text-secondary, #52525b);
   margin: 0;
-}
-
-/* Responsive 3-Column Breakpoints */
-@media (max-width: 1100px) {
-  .path-updates-1 .site-layout.has-both-sidebars {
-    grid-template-columns: minmax(220px, 30%) minmax(0, 70%);
-  }
-  .path-updates-1 .site-sidebar-second {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .path-updates-1 .site-layout.has-both-sidebars {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    padding: 1rem 0 2.5rem 0;
-  }
-  .path-updates-1 .site-sidebar-first {
-    position: static;
-    max-height: none;
-    overflow-y: visible;
-  }
-  .path-updates-1 .site-sidebar-second {
-    display: flex;
-    position: static;
-    max-height: none;
-    overflow-y: visible;
-  }
 }
 
 .site-layout.has-both-sidebars .site-sidebar .updates-sidebar-heading,
@@ -1154,16 +1064,16 @@ body:has(.updates-community-page) .site-content {
 .site-layout.has-both-sidebars .site-sidebar h3.updates-user-name,
 .site-layout.has-both-sidebars .site-sidebar h3.guest-card-title,
 .site-layout.has-both-sidebars .site-sidebar h3.updates-guest-title {
-  color: #1c1917;
+  color: var(--theme-text, #1c1917);
 }
 
 .site-layout.has-both-sidebars .site-sidebar .updates-sidebar-heading {
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, #890000);
 }
 
 .site-layout.has-both-sidebars .site-sidebar .updates-sidebar-menu li a,
 .site-layout.has-both-sidebars .site-sidebar .sidebar-item a {
-  color: #1c1917;
+  color: var(--theme-text, #1c1917);
 }
 
 .site-layout.has-both-sidebars .site-sidebar .btn-user-action--primary,
@@ -1175,11 +1085,17 @@ body:has(.updates-community-page) .site-content {
 .site-layout.has-both-sidebars .site-sidebar .btn-user-action--secondary,
 .site-layout.has-both-sidebars .site-sidebar .btn-guest-action--login,
 .site-layout.has-both-sidebars .site-sidebar .updates-sidebar-btn-secondary {
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, #890000);
 }
 
 .site-layout.has-both-sidebars .site-sidebar .guest-card-desc,
 .site-layout.has-both-sidebars .site-sidebar .updates-guest-desc,
 .site-layout.has-both-sidebars .site-sidebar .updates-heritage-text {
-  color: #52525b;
+  color: var(--theme-text-secondary, #52525b);
+}
+
+:root[data-theme="dark"] .updates-cover-wrapper,
+html.dark .updates-cover-wrapper {
+  background: var(--theme-surface-warm, #243247);
+  border-bottom-color: var(--theme-border, #64748b);
 }

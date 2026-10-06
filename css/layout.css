@@ -112,7 +112,7 @@
 
 .local-tasks-summary:hover {
   background: var(--theme-surface, #ffffff);
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, var(--kaliyattam-primary, #890000));
   border-color: var(--theme-border-hover, #cbd5e1);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
@@ -120,7 +120,7 @@
 .local-tasks-collapsible[open] > .local-tasks-summary {
   background: var(--theme-surface, #ffffff);
   border-color: var(--theme-border-hover, #cbd5e1);
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, var(--kaliyattam-primary, #890000));
   box-shadow: 0 2px 8px rgba(137, 0, 0, 0.08);
 }
 
@@ -345,7 +345,7 @@ ul.tabs {
   max-height: calc(100vh - 105px);
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #d6bfa8 transparent;
+  scrollbar-color: var(--theme-border-hover) transparent;
   gap: 1.25rem;
   padding-right: 0.25rem;
 }
@@ -355,17 +355,19 @@ ul.tabs {
 }
 
 .site-layout.has-both-sidebars .site-sidebar::-webkit-scrollbar-thumb {
-  background-color: #d6bfa8;
+  background-color: var(--theme-border-hover);
   border-radius: 4px;
 }
 
 .site-layout.has-both-sidebars .site-sidebar .block {
   margin-bottom: 0;
-  background: #ffffff;
-  border: 1px solid #e7ded4;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border, #e7ded4);
   border-radius: 14px;
   padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--theme-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.03));
+  color: var(--theme-text, #1c1917);
+  transition: background-color var(--transition-normal, 0.25s ease), border-color var(--transition-normal, 0.25s ease), color var(--transition-normal, 0.25s ease);
 }
 
 .site-layout.has-both-sidebars .site-sidebar .block h2:not(.visually-hidden) {
@@ -373,10 +375,10 @@ ul.tabs {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--kaliyattam-primary, #890000);
+  color: var(--theme-accent, var(--kaliyattam-primary, #890000));
   margin: 0 0 0.85rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f4ede4;
+  border-bottom: 1px solid var(--theme-border, #f4ede4);
 }
 
 .site-layout.has-both-sidebars .site-content {
