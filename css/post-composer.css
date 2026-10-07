@@ -40,6 +40,14 @@
   display: none !important;
 }
 
+.post-composer-form .post-composer-tag-details.is-collapsed {
+  display: none !important;
+}
+
+.post-composer-form .post-composer-advanced.is-collapsed {
+  display: none !important;
+}
+
 /* ==========================================================================
    3. Author Header (Facebook / LinkedIn Style)
    ========================================================================== */

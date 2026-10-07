@@ -49,6 +49,7 @@ post-composer:
   dependencies:
     - core/drupal
     - core/drupalSettings
+    - core/jquery
     - core/once
 
 node-form:

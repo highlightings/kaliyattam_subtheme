@@ -16,7 +16,6 @@
   backdrop-filter: blur(5px) !important;
   -webkit-backdrop-filter: blur(5px) !important;
   opacity: 1 !important;
-  z-index: 1250 !important;
 }
 
 /* ==========================================================================
@@ -28,7 +27,6 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
   overflow: hidden !important;
   background: #ffffff !important;
-  z-index: 1260 !important;
   padding: 0 !important;
   font-family: inherit;
 }

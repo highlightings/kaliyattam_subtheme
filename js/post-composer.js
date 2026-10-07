@@ -3,7 +3,7 @@
  * JavaScript behaviors for Facebook / LinkedIn style Post Composer.
  */
 
-(function (Drupal, once) {
+(function (Drupal, once, $) {
   'use strict';
 
   Drupal.behaviors.kaliyattamPostComposer = {
@@ -23,6 +23,99 @@
         const emojiTray = form.querySelector('.post-composer-emoji-tray');
         const emojiCloseBtn = form.querySelector('.emoji-tray-close');
         const advancedDrawer = form.querySelector('.post-composer-advanced');
+        const tagDrawer = form.querySelector('.post-composer-tag-details');
+        let protectedDialogContent = null;
+
+        function setAdvancedOpen(open) {
+          if (advancedDrawer) {
+            advancedDrawer.classList.toggle('is-collapsed', !open);
+          }
+          if (tagDrawer) {
+            tagDrawer.classList.toggle('is-collapsed', !open);
+            tagDrawer.open = open;
+          }
+          if (advancedBtn) {
+            advancedBtn.classList.toggle('is-active', open);
+            advancedBtn.setAttribute('aria-expanded', String(open));
+          }
+        }
+
+        function protectComposerDialog(dialogContent) {
+          if (
+            !dialogContent ||
+            protectedDialogContent === dialogContent ||
+            !$.fn.dialog
+          ) {
+            return;
+          }
+
+          const dialogWrapper = dialogContent.closest('.ui-dialog');
+          if (!dialogWrapper) {
+            return;
+          }
+
+          $(dialogContent).dialog('option', 'closeOnEscape', false);
+          const moveNestedDialogsToBody = function (event) {
+            if (
+              event.target instanceof Element &&
+              !event.target.contains(form) &&
+              event.settings &&
+              $(dialogContent).dialog('isOpen')
+            ) {
+              event.settings.appendTo = document.body;
+            }
+          };
+          window.addEventListener('dialog:beforecreate', moveNestedDialogsToBody);
+          dialogContent.addEventListener('dialog:beforeclose', function (event) {
+            if (event.target === dialogContent) {
+              window.removeEventListener('dialog:beforecreate', moveNestedDialogsToBody);
+            }
+          }, { once: true });
+          dialogWrapper.addEventListener('keydown', function (event) {
+            if (
+              event.key === 'Escape' &&
+              event.target.closest('.ui-dialog') === dialogWrapper
+            ) {
+              event.preventDefault();
+              const closeButton = dialogWrapper.querySelector('.ui-dialog-titlebar-close');
+              if (closeButton) {
+                closeButton.click();
+              }
+            }
+          });
+          dialogWrapper.addEventListener('click', function (event) {
+            if (
+              event.target instanceof Element &&
+              event.target.closest('.ui-dialog') !== dialogWrapper
+            ) {
+              event.stopPropagation();
+            }
+          });
+          protectedDialogContent = dialogContent;
+        }
+
+        protectComposerDialog(form.closest('.ui-dialog-content'));
+        window.addEventListener('dialog:aftercreate', function (event) {
+          if (
+            event.target instanceof Element &&
+            event.target.classList.contains('ui-dialog-content') &&
+            event.target.contains(form)
+          ) {
+            protectComposerDialog(event.target);
+          }
+          else if (
+            event.target instanceof Element &&
+            event.target.classList.contains('ui-dialog-content')
+          ) {
+            const nestedDialog = event.target.closest('.ui-dialog');
+            if (nestedDialog && !nestedDialog.dataset.composerDialogGuard) {
+              nestedDialog.addEventListener('click', function (nestedEvent) {
+                nestedEvent.stopPropagation();
+              });
+              nestedDialog.dataset.composerDialogGuard = 'true';
+            }
+          }
+        });
 
         /**
          * Helper to retrieve active CKEditor 5 instance for the form.
@@ -47,24 +140,24 @@
           return values.length > 0 ? values[0] : null;
         }
 
-        // Helper to find and trigger the CKEditor Media button
+        // Open CKEditor's media picker from the Photo and Video actions.
         function triggerMediaLibrary() {
-          let mediaBtn = form.querySelector('.ck-button[data-cke-tooltip-text="Insert Media"], .ck-button[data-cke-tooltip-text*="Media"]') ||
-                         document.querySelector('.ck-button[data-cke-tooltip-text="Insert Media"], .ck-button[data-cke-tooltip-text*="Media"]');
-          if (!mediaBtn) {
-            // Check if collapsed into overflow toolbar button ("Show more items")
-            const overflowBtn = form.querySelector('.ck-toolbar .ck-dropdown__button[data-cke-tooltip-text*="more"]') ||
-                                document.querySelector('.ck-toolbar .ck-dropdown__button[data-cke-tooltip-text*="more"]');
-            if (overflowBtn) {
-              overflowBtn.click();
-              mediaBtn = document.querySelector('.ck-button[data-cke-tooltip-text="Insert Media"], .ck-button[data-cke-tooltip-text*="Media"]');
+          let mediaButton = form.querySelector('.ck-button[data-cke-tooltip-text="Insert Media"], .ck-button[data-cke-tooltip-text*="Media"]') ||
+            document.querySelector('.ck-button[data-cke-tooltip-text="Insert Media"], .ck-button[data-cke-tooltip-text*="Media"]');
+          if (!mediaButton) {
+            const overflowButton = form.querySelector('.ck-toolbar .ck-dropdown__button[data-cke-tooltip-text*="more"]') ||
+              document.querySelector('.ck-toolbar .ck-dropdown__button[data-cke-tooltip-text*="more"]');
+            if (overflowButton) {
+              overflowButton.click();
+              mediaButton = document.querySelector('.ck-button[data-cke-tooltip-text="Insert Media"], .ck-button[data-cke-tooltip-text*="Media"]');
             }
           }
-          if (mediaBtn) {
-            mediaBtn.click();
-            return true;
+          if (!mediaButton) {
+            Drupal.announce(Drupal.t('The media library is unavailable.'), 'assertive');
+            return false;
           }
-          return false;
+          mediaButton.click();
+          return true;
         }
 
         // 1. Photo Action: trigger native Media Library modal
@@ -158,16 +251,9 @@
         if (tagBtn) {
           tagBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            const tagDrawer = form.querySelector('.post-composer-tag-details');
+            setAdvancedOpen(true);
             if (tagDrawer) {
-              tagDrawer.open = !tagDrawer.open;
-            }
-            if (advancedDrawer && advancedDrawer.classList.contains('is-collapsed')) {
-              advancedDrawer.classList.remove('is-collapsed');
-              if (advancedBtn) {
-                advancedBtn.classList.add('is-active');
-                advancedBtn.setAttribute('aria-expanded', 'true');
-              }
+              tagDrawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
             const tagWrapper = form.querySelector('.field--name-field-tags, .field--name-field-theyyam');
             if (tagWrapper) {
@@ -184,19 +270,10 @@
         if (advancedBtn && advancedDrawer) {
           advancedBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            const isCollapsed = advancedDrawer.classList.contains('is-collapsed');
-            if (isCollapsed) {
-              advancedDrawer.classList.remove('is-collapsed');
-              advancedBtn.classList.add('is-active');
-              advancedBtn.setAttribute('aria-expanded', 'true');
-            } else {
-              advancedDrawer.classList.add('is-collapsed');
-              advancedBtn.classList.remove('is-active');
-              advancedBtn.setAttribute('aria-expanded', 'false');
-            }
+            setAdvancedOpen(advancedDrawer.classList.contains('is-collapsed'));
           });
         }
       });
     }
   };
-})(Drupal, once);
+})(Drupal, once, jQuery);
